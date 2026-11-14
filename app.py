@@ -271,6 +271,12 @@ STRATEGY_STYLE = {
         "dash": "solid",
         "width": 1.8,
     },
+    "pre_release_1m": {
+        "name": "Buy on Expectation, 1M gate",
+        "color": "#8a8a8a",
+        "dash": "dashdot",
+        "width": 1.3,
+    },
     "pair_pre_release": {
         "name": "Pair on Expectation",
         "color": "#8a8a8a",
@@ -582,6 +588,9 @@ def metrics_display_df(payload: dict) -> pd.DataFrame | None:
             "sharpe": "Sharpe",
             "max_dd": "Max Drawdown",
             "excess_vs_spy_ann": "Excess vs SPY (Ann.)",
+            "jensen_alpha_ann": "Jensen α (Ann.)",
+            "jensen_alpha_t": "α t-stat",
+            "jensen_beta": "β",
         }
     )
     for col, fmt in [
@@ -590,6 +599,9 @@ def metrics_display_df(payload: dict) -> pd.DataFrame | None:
         ("Ann. Vol", "{:.1%}"),
         ("Max Drawdown", "{:.1%}"),
         ("Excess vs SPY (Ann.)", "{:+.1%}"),
+        ("Jensen α (Ann.)", "{:+.1%}"),
+        ("α t-stat", "{:+.2f}"),
+        ("β", "{:+.2f}"),
     ]:
         if col in df.columns:
             df[col] = df[col].apply(lambda v: fmt.format(v) if pd.notna(v) else "—")

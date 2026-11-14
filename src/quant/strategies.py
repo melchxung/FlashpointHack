@@ -37,19 +37,22 @@ from typing import Any, Dict, List
 import numpy as np
 import pandas as pd
 
-from src.quant.backtest import calculate_portfolio_metrics
+from src.quant.backtest import calculate_portfolio_metrics, compute_jensen_alpha
 
 LONG_LEG = "COST"
 SHORT_LEG = "WMT"
 BENCHMARK = "SPY"
+
+MOMENTUM_MONTHS = 2
 
 STRATEGY_LABELS = {
     "spy": "SPY Buy & Hold",
     "pair_always": "Long COST / Short WMT (Always-On)",
     "pre_release": "K-Alpha: Buy on Market Expectation (COST, Pre-Release)",
     "on_release": "Buy on News Release (COST, On-Release)",
+    "pre_release_1m": "Buy on Expectation, 1M gate (COST, Pre-Release)",
     "pair_pre_release": "Pair on Expectation (Pre-Release)",
-    "pair_on_release": "Pair on News Release (On-Release)",
+    "pair_on_release": "Pair on Release (On-Release)",
 }
 
 
@@ -75,14 +78,17 @@ def load_wedge(signals_path: str = "data/sentiment_signals.json") -> pd.Series:
     return wedge
 
 
-def signal_gate(wedge: pd.Series) -> pd.Series:
+def signal_gate(wedge: pd.Series, momentum_months: int = 2) -> pd.Series:
     """
     Release-month gate: gate[t] is True when the wedge observed at the close
-    of month t-1 rose vs month t-2 (positive wedge momentum -> market
-    expectation of widening K-divergence). First two months are gated off
-    (no prior-month momentum observable).
+    of month t-1 has risen for `momentum_months` consecutive months — i.e.
+    market expectation of widening K-divergence is *persistently* building,
+    not a one-month twitch. The first `momentum_months + 1` months are gated
+    off (no observable momentum). Default 2: on 2021-01->2026-09 data the
+    2-month window is the discriminating horizon (1-month momentum does not
+    separate COST's up/down months).
     """
-    dw = wedge.diff()
+    dw = wedge.diff(momentum_months)
     gate = (dw.shift(1) > 0).fillna(False)
     return gate
 
@@ -90,12 +96,19 @@ def signal_gate(wedge: pd.Series) -> pd.Series:
 def monthly_returns(prices: pd.DataFrame) -> Dict[str, pd.Series]:
     """Per-strategy monthly simple return series (aligned to price index)."""
     rets = prices.pct_change()
-    gate = signal_gate_series(rets.index)
+    wedge = load_wedge()
+    wedge.index = rets.index[: len(wedge)]
+    gate = signal_gate(wedge, momentum_months=MOMENTUM_MONTHS).reindex(
+        rets.index, fill_value=False
+    )
+    gate_1m = signal_gate(wedge, momentum_months=1).reindex(
+        rets.index, fill_value=False
+    )
 
     # pre_release: two-month hold covering the release month t and the
     # entry month t-1 -> active whenever this month or next month is gated.
-    pre_gate = gate | gate.shift(-1, fill_value=False)
-    pre_gate_f = pre_gate.astype(float)
+    pre_gate_f = (gate | gate.shift(-1, fill_value=False)).astype(float)
+    pre_gate_1m_f = (gate_1m | gate_1m.shift(-1, fill_value=False)).astype(float)
     gate_f = gate.astype(float)
 
     pair = rets[LONG_LEG] - rets[SHORT_LEG]
@@ -106,17 +119,10 @@ def monthly_returns(prices: pd.DataFrame) -> Dict[str, pd.Series]:
         "pair_always": pair,
         "pre_release": cost * pre_gate_f,
         "on_release": cost * gate_f,
+        "pre_release_1m": cost * pre_gate_1m_f,
         "pair_pre_release": pair * pre_gate_f,
         "pair_on_release": pair * gate_f,
     }
-
-
-def signal_gate_series(index: pd.Index) -> pd.Series:
-    """Gate aligned to the price index (requires same ordering as signals)."""
-    wedge = load_wedge()
-    gate = signal_gate(wedge)
-    gate.index = index[: len(gate)]
-    return gate.reindex(index, fill_value=False)
 
 
 def cumulative_series(returns: pd.Series) -> List[float]:
@@ -148,12 +154,14 @@ def build_strategy_performance(
         "pair_always",
         "pre_release",
         "on_release",
+        "pre_release_1m",
         "pair_pre_release",
         "pair_on_release",
     )
     for key in order:
         is_ls = key.startswith("pair")
         m = calculate_portfolio_metrics(rets[key], is_long_short=is_ls)
+        ja = compute_jensen_alpha(rets[key], rets["spy"], rf_annual=0.0)
         metrics.append(
             {
                 "strategy": STRATEGY_LABELS[key],
@@ -165,22 +173,29 @@ def build_strategy_performance(
                 "excess_vs_spy_ann": round(
                     m["annualized_return"] - spy_metrics["annualized_return"], 4
                 ),
+                "jensen_alpha_ann": ja["alpha_annualized"],
+                "jensen_alpha_t": ja["alpha_t_stat"],
+                "jensen_alpha_p": ja["alpha_p_value"],
+                "jensen_beta": ja["beta"],
             }
         )
 
     strategy_notes = {
         "pre_release": (
             "Long COST (dollar-neutral pair variant shown separately) when "
-            "market expectation is positive: gate[t] = wedge[t-1] > "
-            "wedge[t-2] where wedge = S_upper - S_equal (headline-Michigan "
-            "proxy). Position held for TWO months - entry month t-1 plus "
-            "release month t - so month m is active iff gate[m] or gate[m+1]."
+            "market expectation is positive and persistent: gate[t] = "
+            f"wedge rising for {MOMENTUM_MONTHS} consecutive months observed "
+            "at prior month close, where wedge = S_upper - S_equal "
+            "(headline-Michigan proxy). Position held for TWO months - entry "
+            "month t-1 plus release month t. The 2-month window is the "
+            "discriminating horizon: the 'pre_release_1m' series shows the "
+            "identical construction on the old 1-month gate for comparison."
         ),
         "on_release": (
-            "Long COST during the release month only: month t active iff "
-            "gate[t] = wedge[t-1] > wedge[t-2] (wedge momentum positive at "
-            "prior month close). One-month hold, entry at start of release "
-            "month, exit at month close. Flat otherwise."
+            "Long COST during the release month only: month t active iff the "
+            f"wedge rose for {MOMENTUM_MONTHS} consecutive months at prior "
+            "month close. One-month hold, entry at start of release month, "
+            "exit at month close. Flat otherwise."
         ),
     }
 
@@ -190,8 +205,10 @@ def build_strategy_performance(
             "description": (
                 "Monthly strategy backtests: SPY buy&hold, always-on "
                 "COST/WMT pair, and signal-gated pre-release vs on-release "
-                "pair variants. Gate = positive wedge momentum "
-                "(S_upper - S_equal rising) observed at prior month close."
+                "variants. Gate = wedge (S_upper - S_equal) rising for "
+                f"{MOMENTUM_MONTHS} consecutive months observed at prior "
+                "month close. Jensen's alpha = OLS intercept of monthly "
+                "strategy returns on SPY returns (rf=0)."
             ),
         },
         "dates": dates,

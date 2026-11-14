@@ -19,6 +19,7 @@ On the data in this repo, the signal shows no edge.
 | Rank IC, 1-month | +0.013 (p = 0.71, not significant) |
 | Affluent signal vs headline sentiment (3-month IC) | not superior (one-tailed p = 0.59) |
 | COST / WMT / affluent sentiment cointegration | not cointegrated (p = 0.29) |
+| K-Alpha strategy: long COST before expected releases (2-month wedge-momentum gate) | +16.0% annualised vs SPY +14.7%; Jensen's alpha +5.9%/yr (t = 0.85, p = 0.40) — beats SPY in-sample, alpha not significant |
 
 ## How it works
 
@@ -86,6 +87,10 @@ RUN_LIVE_TESTS=1 .venv/bin/python -m pytest -q tests/test_gemini.py
   (Sharpe, beat rate). They are not computed from data.
 - `src/sampler/client.py` and `src/sampler/claude_scorer.py` still contain local simulator
   fallbacks. The research pipeline does not use them.
+- The strategy gate (wedge rising for 2 months) is a parameter chosen on the same 70-month sample it
+  is evaluated on. `data/strategy_performance.json` includes `pre_release_1m` — the identical strategy
+  on the older 1-month gate (-0.6 pts vs SPY) — for comparison. Treat the 2M result as in-sample
+  evidence of a timing hypothesis, not a tradeable edge.
 
 ## Keys
 
