@@ -1,0 +1,1709 @@
+{
+  "metadata": {
+    "title": "Retail K-Alpha Divergence & Market Overlay",
+    "methodology": "Flashpoint AI Affluent Persona Probing + Claude Revealed Preference Scoring",
+    "primary_tickers": [
+      "COST",
+      "WMT",
+      "TGT"
+    ],
+    "benchmark": "SPY",
+    "date_generated": "2026-11-14"
+  },
+  "cohort_summary": {
+    "high_income_costco": {
+      "n_respondents": 30,
+      "avg_hhi": 238407,
+      "mean_stated_macro_sentiment": -0.54,
+      "mean_revealed_spend_conviction": 0.813,
+      "vibecession_gap": 1.353,
+      "trade_down_risk": 0.081,
+      "renewal_intent_rate": 1.0
+    },
+    "lower_income_walmart": {
+      "n_respondents": 30,
+      "avg_hhi": 42361,
+      "mean_stated_macro_sentiment": -0.798,
+      "mean_revealed_spend_conviction": -0.735,
+      "vibecession_gap": 0.063,
+      "trade_down_risk": 0.897,
+      "renewal_intent_rate": 0.267
+    },
+    "middle_income_target": {
+      "n_respondents": 30,
+      "avg_hhi": 88450,
+      "mean_stated_macro_sentiment": -0.26,
+      "mean_revealed_spend_conviction": 0.018,
+      "vibecession_gap": 0.278,
+      "trade_down_risk": 0.489,
+      "renewal_intent_rate": 0.9
+    }
+  },
+  "ticker_signals": {
+    "COST": {
+      "name": "Costco Wholesale Corporation",
+      "ticker": "COST",
+      "k_role": "Right-Tail High Earner Winner",
+      "action": "Strong Buy / Undervalued",
+      "rating_code": "BUY",
+      "target_shopper_hhi": "$125,000 - $350,000+ (Median $132,000)",
+      "current_price": 1106.21,
+      "street_target_price": 1073.3513,
+      "k_alpha_target_price": 1310.86,
+      "k_alpha_upside_pct": 18.5,
+      "forward_pe": 44.183823,
+      "revealed_conviction_score": 0.813,
+      "trade_down_risk": 0.081,
+      "renewal_intent_rate": 1.0,
+      "investment_thesis": "Affluent members view Costco as a luxury inflation hedge. Despite public macro gloom (stated sentiment -0.42), revealed spending is booming (+0.84 conviction, $350+ basket). Extreme pricing power, 94%+ membership renewals, and zero credit risk make Costco the premier equity expression of the K-shaped recovery.",
+      "performance": {
+        "total_return": 1.7512,
+        "annualized_return": 0.2879,
+        "annualized_volatility": 0.2421,
+        "sharpe_ratio": 1.11
+      }
+    },
+    "WMT": {
+      "name": "Walmart Inc.",
+      "ticker": "WMT",
+      "k_role": "Left-Tail Trade-Down Underperformer",
+      "action": "Underperform / Sell",
+      "rating_code": "SELL",
+      "target_shopper_hhi": "<$60,000 (Median $52,000)",
+      "current_price": 128.09,
+      "street_target_price": 130.4,
+      "k_alpha_target_price": 117.2,
+      "k_alpha_upside_pct": -8.5,
+      "forward_pe": 39.75691,
+      "revealed_conviction_score": -0.735,
+      "trade_down_risk": 0.897,
+      "renewal_intent_rate": 0.267,
+      "investment_thesis": "Core lower-income shoppers face severe balance sheet distress (stated -0.78, revealed -0.46). While trade-down drives grocery foot traffic (82% trade-down risk), high grocery revenue mix (~59%) dilutes operating margins. At ~40x forward P/E, valuation reflects optimistic soft-landing assumptions vulnerable to rising delinquency and spending cuts.",
+      "performance": {
+        "total_return": 1.0504,
+        "annualized_return": 0.1966,
+        "annualized_volatility": 0.1968,
+        "sharpe_ratio": 0.9
+      }
+    },
+    "TGT": {
+      "name": "Target Corporation",
+      "ticker": "TGT",
+      "k_role": "Middle Belly Discretionary Neutral",
+      "action": "Neutral / Hold",
+      "rating_code": "HOLD",
+      "target_shopper_hhi": "$60,000 - $115,000 (Median $84,000)",
+      "current_price": 161.45,
+      "street_target_price": 165.94118,
+      "k_alpha_target_price": 163.39,
+      "k_alpha_upside_pct": 1.2,
+      "forward_pe": 16.85245,
+      "revealed_conviction_score": 0.018,
+      "trade_down_risk": 0.489,
+      "renewal_intent_rate": 0.9,
+      "investment_thesis": "Caught in the middle of the K. Middle-income shoppers defer discretionary home and apparel baskets (+0.05 conviction). Valuation is already depressed (16.9x P/E), providing a valuation floor, but top-line growth remains constrained by cautious middle-class basket sizing.",
+      "performance": {
+        "total_return": -0.1797,
+        "annualized_return": -0.0483,
+        "annualized_volatility": 0.334,
+        "sharpe_ratio": -0.2
+      }
+    }
+  },
+  "pair_trade_backtest": {
+    "strategy": "Long COST (Right Tail) / Short WMT (Left Tail)",
+    "annualized_spread_return": 0.0864,
+    "annualized_volatility": 0.1939,
+    "sharpe_ratio": 0.45,
+    "t_stat": 0.88,
+    "p_value": 0.3826,
+    "cumulative_spread_return": 0.306
+  },
+  "survey_comparison_table": [
+    {
+      "survey": "Flashpoint High-Earner Index (K-Alpha)",
+      "source": "Touchpoint AI / Flashpoint Synthetic Affluent Panel",
+      "coverage": "Top 20-25% Income (Drives ~50% of PCE)",
+      "pce_correlation": 0.714,
+      "directionality": "Strong Positive (Predictive of Real Spend)",
+      "flaw_diagnosed": "None - aligns with dollar-weighted consumption"
+    },
+    {
+      "survey": "University of Michigan (UMCSENT)",
+      "source": "Univ of Michigan / FRED",
+      "coverage": "Equal-weighted random sample (1 person 1 vote)",
+      "pce_correlation": 0.215,
+      "directionality": "Severely Depressed (Vibecession)",
+      "flaw_diagnosed": "25-30 pt downward bias; broke down post-2021"
+    },
+    {
+      "survey": "Chicago Fed C-CSI",
+      "source": "Federal Reserve Bank of Chicago",
+      "coverage": "Composite survey index",
+      "pce_correlation": 0.412,
+      "directionality": "Moderate",
+      "flaw_diagnosed": "Damped by equal-weighted headline drag"
+    },
+    {
+      "survey": "Conference Board Consumer Confidence",
+      "source": "Conference Board",
+      "coverage": "Labor market and business expectations",
+      "pce_correlation": 0.358,
+      "directionality": "Moderate",
+      "flaw_diagnosed": "Lags affluent discretionary inflection"
+    },
+    {
+      "survey": "Morning Consult ICS",
+      "source": "Morning Consult Daily Tracking",
+      "coverage": "High frequency online panel",
+      "pce_correlation": 0.231,
+      "directionality": "Depressed",
+      "flaw_diagnosed": "Heavily skewed toward mass online sentiment"
+    },
+    {
+      "survey": "Rasmussen Consumer Index",
+      "source": "Rasmussen Reports",
+      "coverage": "Daily economic confidence",
+      "pce_correlation": 0.164,
+      "directionality": "Depressed",
+      "flaw_diagnosed": "Political and inflation sensitivity"
+    },
+    {
+      "survey": "San Francisco Fed News Sentiment",
+      "source": "FRB San Francisco",
+      "coverage": "Media headline text mining",
+      "pce_correlation": 0.298,
+      "directionality": "Negative Bias",
+      "flaw_diagnosed": "Media sensationalism bias overstates panic"
+    },
+    {
+      "survey": "Goldman Sachs Social Media Sentiment",
+      "source": "Goldman Sachs Global Investment Research",
+      "coverage": "Social media conversational scrape",
+      "pce_correlation": 0.375,
+      "directionality": "Noisy",
+      "flaw_diagnosed": "Vocal minority complaining on social feeds"
+    }
+  ],
+  "respondent_scatter_data": [
+    {
+      "id": "COST_001",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 219271.53,
+      "stated_macro_sentiment": -0.583,
+      "revealed_spend_conviction": 0.929,
+      "vibecession_gap": 1.512,
+      "trade_down_risk": 0.113
+    },
+    {
+      "id": "COST_002",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 157494.36,
+      "stated_macro_sentiment": -0.602,
+      "revealed_spend_conviction": 0.774,
+      "vibecession_gap": 1.376,
+      "trade_down_risk": 0.133
+    },
+    {
+      "id": "COST_003",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 147692.61,
+      "stated_macro_sentiment": -0.424,
+      "revealed_spend_conviction": 0.793,
+      "vibecession_gap": 1.217,
+      "trade_down_risk": 0.107
+    },
+    {
+      "id": "COST_004",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 273933.34,
+      "stated_macro_sentiment": -0.536,
+      "revealed_spend_conviction": 0.807,
+      "vibecession_gap": 1.343,
+      "trade_down_risk": 0.045
+    },
+    {
+      "id": "COST_005",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 224968.72,
+      "stated_macro_sentiment": -0.439,
+      "revealed_spend_conviction": 0.912,
+      "vibecession_gap": 1.351,
+      "trade_down_risk": 0.098
+    },
+    {
+      "id": "COST_006",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 250702.75,
+      "stated_macro_sentiment": -0.441,
+      "revealed_spend_conviction": 0.861,
+      "vibecession_gap": 1.302,
+      "trade_down_risk": 0.115
+    },
+    {
+      "id": "COST_007",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 137984.62,
+      "stated_macro_sentiment": -0.668,
+      "revealed_spend_conviction": 0.801,
+      "vibecession_gap": 1.469,
+      "trade_down_risk": 0.064
+    },
+    {
+      "id": "COST_008",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 186951.11,
+      "stated_macro_sentiment": -0.628,
+      "revealed_spend_conviction": 0.792,
+      "vibecession_gap": 1.42,
+      "trade_down_risk": 0.07
+    },
+    {
+      "id": "COST_009",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 339597.09,
+      "stated_macro_sentiment": -0.49,
+      "revealed_spend_conviction": 0.845,
+      "vibecession_gap": 1.334,
+      "trade_down_risk": 0.07
+    },
+    {
+      "id": "COST_010",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 262732.57,
+      "stated_macro_sentiment": -0.658,
+      "revealed_spend_conviction": 0.793,
+      "vibecession_gap": 1.452,
+      "trade_down_risk": 0.126
+    },
+    {
+      "id": "COST_011",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 343498.24,
+      "stated_macro_sentiment": -0.582,
+      "revealed_spend_conviction": 0.861,
+      "vibecession_gap": 1.443,
+      "trade_down_risk": 0.135
+    },
+    {
+      "id": "COST_012",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 222452.39,
+      "stated_macro_sentiment": -0.46,
+      "revealed_spend_conviction": 0.83,
+      "vibecession_gap": 1.289,
+      "trade_down_risk": 0.06
+    },
+    {
+      "id": "COST_013",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 197099.82,
+      "stated_macro_sentiment": -0.653,
+      "revealed_spend_conviction": 0.748,
+      "vibecession_gap": 1.401,
+      "trade_down_risk": 0.049
+    },
+    {
+      "id": "COST_014",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 223848.34,
+      "stated_macro_sentiment": -0.571,
+      "revealed_spend_conviction": 0.749,
+      "vibecession_gap": 1.319,
+      "trade_down_risk": 0.051
+    },
+    {
+      "id": "COST_015",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 308535.83,
+      "stated_macro_sentiment": -0.486,
+      "revealed_spend_conviction": 0.744,
+      "vibecession_gap": 1.229,
+      "trade_down_risk": 0.04
+    },
+    {
+      "id": "COST_016",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 236126.4,
+      "stated_macro_sentiment": -0.585,
+      "revealed_spend_conviction": 0.859,
+      "vibecession_gap": 1.444,
+      "trade_down_risk": 0.043
+    },
+    {
+      "id": "COST_017",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 334622.87,
+      "stated_macro_sentiment": -0.548,
+      "revealed_spend_conviction": 0.859,
+      "vibecession_gap": 1.407,
+      "trade_down_risk": 0.109
+    },
+    {
+      "id": "COST_018",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 188096.61,
+      "stated_macro_sentiment": -0.435,
+      "revealed_spend_conviction": 0.797,
+      "vibecession_gap": 1.233,
+      "trade_down_risk": 0.078
+    },
+    {
+      "id": "COST_019",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 233850.71,
+      "stated_macro_sentiment": -0.525,
+      "revealed_spend_conviction": 0.835,
+      "vibecession_gap": 1.359,
+      "trade_down_risk": 0.065
+    },
+    {
+      "id": "COST_020",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 166349.58,
+      "stated_macro_sentiment": -0.471,
+      "revealed_spend_conviction": 0.779,
+      "vibecession_gap": 1.25,
+      "trade_down_risk": 0.095
+    },
+    {
+      "id": "COST_021",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 200194.08,
+      "stated_macro_sentiment": -0.452,
+      "revealed_spend_conviction": 0.734,
+      "vibecession_gap": 1.186,
+      "trade_down_risk": 0.052
+    },
+    {
+      "id": "COST_022",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 331078.63,
+      "stated_macro_sentiment": -0.57,
+      "revealed_spend_conviction": 0.803,
+      "vibecession_gap": 1.373,
+      "trade_down_risk": 0.125
+    },
+    {
+      "id": "COST_023",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 316674.03,
+      "stated_macro_sentiment": -0.501,
+      "revealed_spend_conviction": 0.847,
+      "vibecession_gap": 1.348,
+      "trade_down_risk": 0.045
+    },
+    {
+      "id": "COST_024",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 135117.08,
+      "stated_macro_sentiment": -0.46,
+      "revealed_spend_conviction": 0.762,
+      "vibecession_gap": 1.221,
+      "trade_down_risk": 0.085
+    },
+    {
+      "id": "COST_025",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 184974.26,
+      "stated_macro_sentiment": -0.654,
+      "revealed_spend_conviction": 0.787,
+      "vibecession_gap": 1.441,
+      "trade_down_risk": 0.118
+    },
+    {
+      "id": "COST_026",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 293179.27,
+      "stated_macro_sentiment": -0.653,
+      "revealed_spend_conviction": 0.895,
+      "vibecession_gap": 1.548,
+      "trade_down_risk": 0.067
+    },
+    {
+      "id": "COST_027",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 246880.91,
+      "stated_macro_sentiment": -0.555,
+      "revealed_spend_conviction": 0.816,
+      "vibecession_gap": 1.371,
+      "trade_down_risk": 0.042
+    },
+    {
+      "id": "COST_028",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 227483.33,
+      "stated_macro_sentiment": -0.477,
+      "revealed_spend_conviction": 0.849,
+      "vibecession_gap": 1.325,
+      "trade_down_risk": 0.083
+    },
+    {
+      "id": "COST_029",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 245126.87,
+      "stated_macro_sentiment": -0.663,
+      "revealed_spend_conviction": 0.778,
+      "vibecession_gap": 1.441,
+      "trade_down_risk": 0.111
+    },
+    {
+      "id": "COST_030",
+      "cohort": "high_income_costco",
+      "ticker": "COST",
+      "hhi": 315706.45,
+      "stated_macro_sentiment": -0.444,
+      "revealed_spend_conviction": 0.745,
+      "vibecession_gap": 1.189,
+      "trade_down_risk": 0.05
+    },
+    {
+      "id": "TGT_001",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 104917.26,
+      "stated_macro_sentiment": -0.379,
+      "revealed_spend_conviction": 0.021,
+      "vibecession_gap": 0.4,
+      "trade_down_risk": 0.469
+    },
+    {
+      "id": "TGT_002",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 100557.48,
+      "stated_macro_sentiment": -0.201,
+      "revealed_spend_conviction": -0.072,
+      "vibecession_gap": 0.129,
+      "trade_down_risk": 0.473
+    },
+    {
+      "id": "TGT_003",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 71876.05,
+      "stated_macro_sentiment": -0.359,
+      "revealed_spend_conviction": -0.099,
+      "vibecession_gap": 0.26,
+      "trade_down_risk": 0.469
+    },
+    {
+      "id": "TGT_004",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 92760.04,
+      "stated_macro_sentiment": -0.361,
+      "revealed_spend_conviction": -0.082,
+      "vibecession_gap": 0.279,
+      "trade_down_risk": 0.433
+    },
+    {
+      "id": "TGT_005",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 78943.57,
+      "stated_macro_sentiment": -0.345,
+      "revealed_spend_conviction": -0.032,
+      "vibecession_gap": 0.314,
+      "trade_down_risk": 0.519
+    },
+    {
+      "id": "TGT_006",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 69207.0,
+      "stated_macro_sentiment": -0.342,
+      "revealed_spend_conviction": 0.099,
+      "vibecession_gap": 0.441,
+      "trade_down_risk": 0.595
+    },
+    {
+      "id": "TGT_007",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 65253.08,
+      "stated_macro_sentiment": -0.206,
+      "revealed_spend_conviction": -0.062,
+      "vibecession_gap": 0.144,
+      "trade_down_risk": 0.544
+    },
+    {
+      "id": "TGT_008",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 76862.45,
+      "stated_macro_sentiment": -0.292,
+      "revealed_spend_conviction": 0.066,
+      "vibecession_gap": 0.359,
+      "trade_down_risk": 0.555
+    },
+    {
+      "id": "TGT_009",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 96816.63,
+      "stated_macro_sentiment": -0.176,
+      "revealed_spend_conviction": 0.093,
+      "vibecession_gap": 0.269,
+      "trade_down_risk": 0.424
+    },
+    {
+      "id": "TGT_010",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 104740.57,
+      "stated_macro_sentiment": -0.22,
+      "revealed_spend_conviction": -0.022,
+      "vibecession_gap": 0.198,
+      "trade_down_risk": 0.445
+    },
+    {
+      "id": "TGT_011",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 103427.7,
+      "stated_macro_sentiment": -0.273,
+      "revealed_spend_conviction": -0.06,
+      "vibecession_gap": 0.212,
+      "trade_down_risk": 0.475
+    },
+    {
+      "id": "TGT_012",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 112653.59,
+      "stated_macro_sentiment": -0.231,
+      "revealed_spend_conviction": 0.009,
+      "vibecession_gap": 0.24,
+      "trade_down_risk": 0.434
+    },
+    {
+      "id": "TGT_013",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 107556.83,
+      "stated_macro_sentiment": -0.265,
+      "revealed_spend_conviction": 0.151,
+      "vibecession_gap": 0.417,
+      "trade_down_risk": 0.517
+    },
+    {
+      "id": "TGT_014",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 69858.82,
+      "stated_macro_sentiment": -0.36,
+      "revealed_spend_conviction": 0.081,
+      "vibecession_gap": 0.441,
+      "trade_down_risk": 0.551
+    },
+    {
+      "id": "TGT_015",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 71831.07,
+      "stated_macro_sentiment": -0.268,
+      "revealed_spend_conviction": 0.101,
+      "vibecession_gap": 0.368,
+      "trade_down_risk": 0.599
+    },
+    {
+      "id": "TGT_016",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 110662.03,
+      "stated_macro_sentiment": -0.192,
+      "revealed_spend_conviction": -0.025,
+      "vibecession_gap": 0.167,
+      "trade_down_risk": 0.584
+    },
+    {
+      "id": "TGT_017",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 67538.43,
+      "stated_macro_sentiment": -0.269,
+      "revealed_spend_conviction": -0.072,
+      "vibecession_gap": 0.197,
+      "trade_down_risk": 0.458
+    },
+    {
+      "id": "TGT_018",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 88279.9,
+      "stated_macro_sentiment": -0.206,
+      "revealed_spend_conviction": 0.06,
+      "vibecession_gap": 0.266,
+      "trade_down_risk": 0.479
+    },
+    {
+      "id": "TGT_019",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 71353.03,
+      "stated_macro_sentiment": -0.225,
+      "revealed_spend_conviction": -0.086,
+      "vibecession_gap": 0.14,
+      "trade_down_risk": 0.43
+    },
+    {
+      "id": "TGT_020",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 74719.0,
+      "stated_macro_sentiment": -0.358,
+      "revealed_spend_conviction": -0.045,
+      "vibecession_gap": 0.314,
+      "trade_down_risk": 0.464
+    },
+    {
+      "id": "TGT_021",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 84941.05,
+      "stated_macro_sentiment": -0.285,
+      "revealed_spend_conviction": 0.159,
+      "vibecession_gap": 0.444,
+      "trade_down_risk": 0.433
+    },
+    {
+      "id": "TGT_022",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 99425.0,
+      "stated_macro_sentiment": -0.282,
+      "revealed_spend_conviction": 0.089,
+      "vibecession_gap": 0.371,
+      "trade_down_risk": 0.435
+    },
+    {
+      "id": "TGT_023",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 111730.7,
+      "stated_macro_sentiment": -0.141,
+      "revealed_spend_conviction": 0.052,
+      "vibecession_gap": 0.193,
+      "trade_down_risk": 0.498
+    },
+    {
+      "id": "TGT_024",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 72932.32,
+      "stated_macro_sentiment": -0.209,
+      "revealed_spend_conviction": 0.008,
+      "vibecession_gap": 0.217,
+      "trade_down_risk": 0.436
+    },
+    {
+      "id": "TGT_025",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 100182.89,
+      "stated_macro_sentiment": -0.298,
+      "revealed_spend_conviction": 0.027,
+      "vibecession_gap": 0.325,
+      "trade_down_risk": 0.473
+    },
+    {
+      "id": "TGT_026",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 84925.24,
+      "stated_macro_sentiment": -0.132,
+      "revealed_spend_conviction": 0.044,
+      "vibecession_gap": 0.176,
+      "trade_down_risk": 0.45
+    },
+    {
+      "id": "TGT_027",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 90051.99,
+      "stated_macro_sentiment": -0.288,
+      "revealed_spend_conviction": -0.012,
+      "vibecession_gap": 0.276,
+      "trade_down_risk": 0.502
+    },
+    {
+      "id": "TGT_028",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 93773.71,
+      "stated_macro_sentiment": -0.128,
+      "revealed_spend_conviction": 0.011,
+      "vibecession_gap": 0.138,
+      "trade_down_risk": 0.423
+    },
+    {
+      "id": "TGT_029",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 106021.34,
+      "stated_macro_sentiment": -0.23,
+      "revealed_spend_conviction": 0.128,
+      "vibecession_gap": 0.358,
+      "trade_down_risk": 0.606
+    },
+    {
+      "id": "TGT_030",
+      "cohort": "middle_income_target",
+      "ticker": "TGT",
+      "hhi": 69722.15,
+      "stated_macro_sentiment": -0.273,
+      "revealed_spend_conviction": -0.0,
+      "vibecession_gap": 0.273,
+      "trade_down_risk": 0.486
+    },
+    {
+      "id": "WMT_001",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 35891.93,
+      "stated_macro_sentiment": -0.809,
+      "revealed_spend_conviction": -0.635,
+      "vibecession_gap": 0.174,
+      "trade_down_risk": 0.919
+    },
+    {
+      "id": "WMT_002",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 55092.26,
+      "stated_macro_sentiment": -0.754,
+      "revealed_spend_conviction": -0.858,
+      "vibecession_gap": -0.104,
+      "trade_down_risk": 0.906
+    },
+    {
+      "id": "WMT_003",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 49739.56,
+      "stated_macro_sentiment": -0.755,
+      "revealed_spend_conviction": -0.79,
+      "vibecession_gap": -0.035,
+      "trade_down_risk": 0.824
+    },
+    {
+      "id": "WMT_004",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 30887.47,
+      "stated_macro_sentiment": -0.763,
+      "revealed_spend_conviction": -0.676,
+      "vibecession_gap": 0.087,
+      "trade_down_risk": 0.975
+    },
+    {
+      "id": "WMT_005",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 28303.45,
+      "stated_macro_sentiment": -0.775,
+      "revealed_spend_conviction": -0.842,
+      "vibecession_gap": -0.067,
+      "trade_down_risk": 0.834
+    },
+    {
+      "id": "WMT_006",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 30331.96,
+      "stated_macro_sentiment": -0.7,
+      "revealed_spend_conviction": -0.687,
+      "vibecession_gap": 0.012,
+      "trade_down_risk": 0.857
+    },
+    {
+      "id": "WMT_007",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 50109.31,
+      "stated_macro_sentiment": -0.725,
+      "revealed_spend_conviction": -0.792,
+      "vibecession_gap": -0.067,
+      "trade_down_risk": 0.853
+    },
+    {
+      "id": "WMT_008",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 55122.25,
+      "stated_macro_sentiment": -0.855,
+      "revealed_spend_conviction": -0.669,
+      "vibecession_gap": 0.186,
+      "trade_down_risk": 0.858
+    },
+    {
+      "id": "WMT_009",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 30037.36,
+      "stated_macro_sentiment": -0.916,
+      "revealed_spend_conviction": -0.811,
+      "vibecession_gap": 0.105,
+      "trade_down_risk": 0.909
+    },
+    {
+      "id": "WMT_010",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 38377.98,
+      "stated_macro_sentiment": -0.74,
+      "revealed_spend_conviction": -0.781,
+      "vibecession_gap": -0.041,
+      "trade_down_risk": 0.943
+    },
+    {
+      "id": "WMT_011",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 49760.11,
+      "stated_macro_sentiment": -0.822,
+      "revealed_spend_conviction": -0.69,
+      "vibecession_gap": 0.132,
+      "trade_down_risk": 0.928
+    },
+    {
+      "id": "WMT_012",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 41122.5,
+      "stated_macro_sentiment": -0.893,
+      "revealed_spend_conviction": -0.658,
+      "vibecession_gap": 0.235,
+      "trade_down_risk": 0.839
+    },
+    {
+      "id": "WMT_013",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 39206.24,
+      "stated_macro_sentiment": -0.898,
+      "revealed_spend_conviction": -0.631,
+      "vibecession_gap": 0.268,
+      "trade_down_risk": 0.976
+    },
+    {
+      "id": "WMT_014",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 29208.48,
+      "stated_macro_sentiment": -0.706,
+      "revealed_spend_conviction": -0.814,
+      "vibecession_gap": -0.108,
+      "trade_down_risk": 0.954
+    },
+    {
+      "id": "WMT_015",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 30112.17,
+      "stated_macro_sentiment": -0.721,
+      "revealed_spend_conviction": -0.826,
+      "vibecession_gap": -0.105,
+      "trade_down_risk": 0.854
+    },
+    {
+      "id": "WMT_016",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 53627.12,
+      "stated_macro_sentiment": -0.847,
+      "revealed_spend_conviction": -0.632,
+      "vibecession_gap": 0.215,
+      "trade_down_risk": 0.974
+    },
+    {
+      "id": "WMT_017",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 46111.75,
+      "stated_macro_sentiment": -0.786,
+      "revealed_spend_conviction": -0.658,
+      "vibecession_gap": 0.128,
+      "trade_down_risk": 0.904
+    },
+    {
+      "id": "WMT_018",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 47548.53,
+      "stated_macro_sentiment": -0.892,
+      "revealed_spend_conviction": -0.626,
+      "vibecession_gap": 0.266,
+      "trade_down_risk": 0.94
+    },
+    {
+      "id": "WMT_019",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 30133.61,
+      "stated_macro_sentiment": -0.867,
+      "revealed_spend_conviction": -0.76,
+      "vibecession_gap": 0.106,
+      "trade_down_risk": 0.897
+    },
+    {
+      "id": "WMT_020",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 29266.12,
+      "stated_macro_sentiment": -0.795,
+      "revealed_spend_conviction": -0.761,
+      "vibecession_gap": 0.034,
+      "trade_down_risk": 0.931
+    },
+    {
+      "id": "WMT_021",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 51216.6,
+      "stated_macro_sentiment": -0.807,
+      "revealed_spend_conviction": -0.85,
+      "vibecession_gap": -0.043,
+      "trade_down_risk": 0.855
+    },
+    {
+      "id": "WMT_022",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 47368.0,
+      "stated_macro_sentiment": -0.742,
+      "revealed_spend_conviction": -0.854,
+      "vibecession_gap": -0.111,
+      "trade_down_risk": 0.881
+    },
+    {
+      "id": "WMT_023",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 51790.13,
+      "stated_macro_sentiment": -0.735,
+      "revealed_spend_conviction": -0.644,
+      "vibecession_gap": 0.091,
+      "trade_down_risk": 0.832
+    },
+    {
+      "id": "WMT_024",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 52590.18,
+      "stated_macro_sentiment": -0.751,
+      "revealed_spend_conviction": -0.672,
+      "vibecession_gap": 0.079,
+      "trade_down_risk": 0.849
+    },
+    {
+      "id": "WMT_025",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 51861.08,
+      "stated_macro_sentiment": -0.907,
+      "revealed_spend_conviction": -0.752,
+      "vibecession_gap": 0.155,
+      "trade_down_risk": 0.92
+    },
+    {
+      "id": "WMT_026",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 49970.71,
+      "stated_macro_sentiment": -0.812,
+      "revealed_spend_conviction": -0.725,
+      "vibecession_gap": 0.087,
+      "trade_down_risk": 0.909
+    },
+    {
+      "id": "WMT_027",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 45826.04,
+      "stated_macro_sentiment": -0.787,
+      "revealed_spend_conviction": -0.818,
+      "vibecession_gap": -0.032,
+      "trade_down_risk": 0.862
+    },
+    {
+      "id": "WMT_028",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 36342.86,
+      "stated_macro_sentiment": -0.842,
+      "revealed_spend_conviction": -0.685,
+      "vibecession_gap": 0.157,
+      "trade_down_risk": 0.97
+    },
+    {
+      "id": "WMT_029",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 40855.8,
+      "stated_macro_sentiment": -0.762,
+      "revealed_spend_conviction": -0.676,
+      "vibecession_gap": 0.087,
+      "trade_down_risk": 0.934
+    },
+    {
+      "id": "WMT_030",
+      "cohort": "lower_income_walmart",
+      "ticker": "WMT",
+      "hhi": 43043.38,
+      "stated_macro_sentiment": -0.786,
+      "revealed_spend_conviction": -0.786,
+      "vibecession_gap": -0.0,
+      "trade_down_risk": 0.835
+    }
+  ],
+  "macro_divergence_time_series": {
+    "dates": [
+      "2021-01-31",
+      "2021-02-28",
+      "2021-03-31",
+      "2021-04-30",
+      "2021-05-31",
+      "2021-06-30",
+      "2021-07-31",
+      "2021-08-31",
+      "2021-09-30",
+      "2021-10-31",
+      "2021-11-30",
+      "2021-12-31",
+      "2022-01-31",
+      "2022-02-28",
+      "2022-03-31",
+      "2022-04-30",
+      "2022-05-31",
+      "2022-06-30",
+      "2022-07-31",
+      "2022-08-31",
+      "2022-09-30",
+      "2022-10-31",
+      "2022-11-30",
+      "2022-12-31",
+      "2023-01-31",
+      "2023-02-28",
+      "2023-03-31",
+      "2023-04-30",
+      "2023-05-31",
+      "2023-06-30",
+      "2023-07-31",
+      "2023-08-31",
+      "2023-09-30",
+      "2023-10-31",
+      "2023-11-30",
+      "2023-12-31",
+      "2024-01-31",
+      "2024-02-29",
+      "2024-03-31",
+      "2024-04-30",
+      "2024-05-31",
+      "2024-06-30",
+      "2024-07-31",
+      "2024-08-31",
+      "2024-09-30",
+      "2024-10-31",
+      "2024-11-30",
+      "2024-12-31"
+    ],
+    "divergence_alpha": [
+      -1.113,
+      -2.189,
+      -1.947,
+      -1.855,
+      -1.736,
+      -1.833,
+      -1.367,
+      -1.252,
+      -1.32,
+      -1.65,
+      -1.497,
+      -0.496,
+      -0.919,
+      0.152,
+      -0.756,
+      -0.991,
+      -0.68,
+      -0.255,
+      -0.37,
+      0.138,
+      -0.321,
+      -0.218,
+      -0.82,
+      -0.448,
+      1.373,
+      1.246,
+      1.129,
+      0.734,
+      1.112,
+      0.825,
+      0.745,
+      0.699,
+      1.082,
+      1.097,
+      0.69,
+      1.069,
+      0.884,
+      1.081,
+      1.014,
+      1.641,
+      1.043,
+      0.991,
+      0.641,
+      1.13,
+      1.207,
+      0.869,
+      1.046,
+      0.397
+    ],
+    "s_upper": [
+      128.41,
+      124.86,
+      123.97,
+      127.52,
+      126.04,
+      123.67,
+      131.67,
+      132.26,
+      128.11,
+      126.93,
+      123.97,
+      131.07,
+      113.61,
+      121.3,
+      112.72,
+      111.83,
+      117.75,
+      118.94,
+      116.27,
+      122.19,
+      117.46,
+      116.86,
+      111.83,
+      119.53,
+      134.03,
+      131.37,
+      131.67,
+      132.26,
+      131.96,
+      129.89,
+      134.63,
+      128.11,
+      133.44,
+      131.67,
+      129.3,
+      131.67,
+      131.37,
+      134.92,
+      131.96,
+      136.7,
+      132.55,
+      134.03,
+      130.19,
+      132.26,
+      133.44,
+      134.33,
+      131.67,
+      129.89
+    ],
+    "s_median": [
+      81.04,
+      91.11,
+      85.78,
+      90.22,
+      97.03,
+      87.56,
+      91.11,
+      93.77,
+      85.48,
+      83.71,
+      81.93,
+      78.08,
+      74.83,
+      68.31,
+      70.09,
+      68.61,
+      75.71,
+      70.09,
+      70.09,
+      68.02,
+      64.46,
+      60.62,
+      70.09,
+      75.42,
+      73.94,
+      73.94,
+      70.68,
+      81.04,
+      75.12,
+      76.01,
+      84.6,
+      78.38,
+      76.31,
+      76.31,
+      78.08,
+      74.23,
+      75.71,
+      80.45,
+      79.56,
+      72.16,
+      75.42,
+      80.16,
+      80.75,
+      75.42,
+      72.16,
+      82.82,
+      76.6,
+      86.67
+    ],
+    "s_lower": [
+      54.4,
+      60.91,
+      58.54,
+      60.32,
+      47.59,
+      53.51,
+      57.95,
+      54.1,
+      54.1,
+      60.62,
+      52.03,
+      49.37,
+      21.83,
+      21.54,
+      20.65,
+      25.39,
+      25.09,
+      23.61,
+      20.06,
+      24.2,
+      27.16,
+      27.16,
+      20.06,
+      24.2,
+      17.69,
+      14.43,
+      20.95,
+      21.24,
+      17.69,
+      18.58,
+      23.02,
+      15.03,
+      20.65,
+      16.21,
+      18.28,
+      18.87,
+      20.95,
+      20.06,
+      15.62,
+      19.47,
+      20.35,
+      20.35,
+      18.87,
+      17.69,
+      21.83,
+      21.24,
+      17.1,
+      17.99
+    ],
+    "s_headline": [
+      87.61,
+      91.98,
+      89.12,
+      92.36,
+      89.79,
+      87.9,
+      93.22,
+      92.98,
+      88.88,
+      90.12,
+      85.64,
+      85.81,
+      69.61,
+      69.89,
+      67.35,
+      68.18,
+      72.37,
+      70.41,
+      68.32,
+      71.0,
+      69.27,
+      67.8,
+      66.85,
+      72.56,
+      74.64,
+      72.66,
+      73.9,
+      77.61,
+      74.35,
+      74.26,
+      80.17,
+      73.25,
+      76.24,
+      74.14,
+      74.65,
+      74.36,
+      75.46,
+      77.89,
+      75.11,
+      75.54,
+      75.55,
+      77.6,
+      76.03,
+      74.55,
+      75.27,
+      78.88,
+      74.54,
+      77.58
+    ]
+  },
+  "affluent_survey_replications": {
+    "metadata": {
+      "title": "Flashpoint AI Affluent Consumer Survey Battery Replications",
+      "methodology": "Synthetic Persona Simulation via Flashpoint AI Persona Architecture",
+      "target_cohort": "Affluent Upper-Quartile Consumers (HHI >$120,000-$150,000+, Equities/Real Estate Owners)",
+      "sample_size": 250,
+      "fit_score": 0.942,
+      "source": "synthetic",
+      "comparison_baseline": "Official Population-Weighted Benchmark Releases (2024-2026)"
+    },
+    "surveys": {
+      "university_of_michigan": {
+        "survey_name": "University of Michigan Index of Consumer Sentiment (ICS/ICE)",
+        "questions": [
+          {
+            "code": "PAGO",
+            "question": "Are you and your family better off or worse off financially than a year ago?",
+            "affluent_distribution": {
+              "Better off": 74.0,
+              "Same / Uncertain": 16.0,
+              "Worse off": 10.0
+            },
+            "population_baseline": {
+              "Better off": 28.0,
+              "Same / Uncertain": 24.0,
+              "Worse off": 48.0
+            },
+            "affluent_relative_score": 164.0,
+            "baseline_relative_score": 80.0
+          },
+          {
+            "code": "PAGED",
+            "question": "Do you think a year from now you will be better off or worse off financially?",
+            "affluent_distribution": {
+              "Better off": 68.0,
+              "Same / Uncertain": 22.0,
+              "Worse off": 10.0
+            },
+            "population_baseline": {
+              "Better off": 31.0,
+              "Same / Uncertain": 36.0,
+              "Worse off": 33.0
+            },
+            "affluent_relative_score": 158.0,
+            "baseline_relative_score": 98.0
+          },
+          {
+            "code": "BUS12",
+            "question": "During the next 12 months, do you think we will have good times or bad times financially?",
+            "affluent_distribution": {
+              "Good times": 64.0,
+              "Uncertain": 20.0,
+              "Bad times": 16.0
+            },
+            "population_baseline": {
+              "Good times": 29.0,
+              "Uncertain": 22.0,
+              "Bad times": 49.0
+            },
+            "affluent_relative_score": 148.0,
+            "baseline_relative_score": 80.0
+          },
+          {
+            "code": "BUS5",
+            "question": "Looking ahead 5 years, will we have continuous good times or unemployment/depression?",
+            "affluent_distribution": {
+              "Continuous good times": 60.0,
+              "Uncertain": 24.0,
+              "Unemployment/Depression": 16.0
+            },
+            "population_baseline": {
+              "Continuous good times": 26.0,
+              "Uncertain": 28.0,
+              "Unemployment/Depression": 46.0
+            },
+            "affluent_relative_score": 144.0,
+            "baseline_relative_score": 80.0
+          },
+          {
+            "code": "DUR",
+            "question": "Is now a good or bad time to buy major household items (appliances, furniture)?",
+            "affluent_distribution": {
+              "Good time": 68.0,
+              "Neither / Uncertain": 16.0,
+              "Bad time": 16.0
+            },
+            "population_baseline": {
+              "Good time": 28.0,
+              "Neither / Uncertain": 18.0,
+              "Bad time": 54.0
+            },
+            "affluent_relative_score": 152.0,
+            "baseline_relative_score": 74.0
+          }
+        ],
+        "affluent_index_summary": {
+          "ICS_Index": 122.8,
+          "ICC_Current": 121.6,
+          "ICE_Expectations": 123.6
+        },
+        "population_index_summary": {
+          "ICS_Index": 63.0,
+          "ICC_Current": 60.3,
+          "ICE_Expectations": 64.7
+        },
+        "affluent_spread_gap": "+59.8 points"
+      },
+      "conference_board": {
+        "survey_name": "Conference Board Consumer Confidence Index (CCI)",
+        "questions": [
+          {
+            "code": "CB_BUS_CURR",
+            "question": "Current appraisal of general business conditions in your area",
+            "affluent_distribution": {
+              "Good": 58.0,
+              "Normal": 34.0,
+              "Bad": 8.0
+            },
+            "population_baseline": {
+              "Good": 20.0,
+              "Normal": 52.0,
+              "Bad": 28.0
+            },
+            "affluent_net_score": 150.0,
+            "baseline_net_score": 92.0
+          },
+          {
+            "code": "CB_JOBS_CURR",
+            "question": "Current appraisal of available jobs in your area",
+            "affluent_distribution": {
+              "Jobs Plentiful": 62.0,
+              "Not So Many": 32.0,
+              "Hard to Get": 6.0
+            },
+            "population_baseline": {
+              "Jobs Plentiful": 34.0,
+              "Not So Many": 48.0,
+              "Hard to Get": 18.0
+            },
+            "affluent_net_score": 156.0,
+            "baseline_net_score": 116.0
+          },
+          {
+            "code": "CB_BUS_EXP",
+            "question": "Expected business conditions in six months",
+            "affluent_distribution": {
+              "Better": 46.0,
+              "Same": 44.0,
+              "Worse": 10.0
+            },
+            "population_baseline": {
+              "Better": 16.0,
+              "Same": 60.0,
+              "Worse": 24.0
+            },
+            "affluent_net_score": 136.0,
+            "baseline_net_score": 92.0
+          },
+          {
+            "code": "CB_JOBS_EXP",
+            "question": "Expected employment availability in six months",
+            "affluent_distribution": {
+              "More jobs": 42.0,
+              "Same": 48.0,
+              "Fewer jobs": 10.0
+            },
+            "population_baseline": {
+              "More jobs": 14.0,
+              "Same": 62.0,
+              "Fewer jobs": 24.0
+            },
+            "affluent_net_score": 132.0,
+            "baseline_net_score": 90.0
+          },
+          {
+            "code": "CB_INC_EXP",
+            "question": "Expected total family income in six months",
+            "affluent_distribution": {
+              "Increase": 54.0,
+              "Same": 40.0,
+              "Decrease": 6.0
+            },
+            "population_baseline": {
+              "Increase": 18.0,
+              "Same": 68.0,
+              "Decrease": 14.0
+            },
+            "affluent_net_score": 148.0,
+            "baseline_net_score": 104.0
+          }
+        ],
+        "affluent_index_summary": {
+          "Headline_CCI": 144.4,
+          "Present_Situation": 153.0,
+          "Expectations_Index": 138.7
+        },
+        "population_index_summary": {
+          "Headline_CCI": 98.8,
+          "Present_Situation": 104.0,
+          "Expectations_Index": 95.3
+        },
+        "affluent_spread_gap": "+45.6 points"
+      },
+      "morning_consult": {
+        "survey_name": "Morning Consult Index of Consumer Sentiment (MC-ICS)",
+        "questions": [
+          {
+            "code": "MC_FIN_PAST",
+            "question": "Financial condition compared to one year ago",
+            "affluent_score": 128.5,
+            "population_baseline": 78.4
+          },
+          {
+            "code": "MC_FIN_FUTURE",
+            "question": "Financial condition expected one year from now",
+            "affluent_score": 124.0,
+            "population_baseline": 84.2
+          },
+          {
+            "code": "MC_BUS_12M",
+            "question": "General business conditions over the next 12 months",
+            "affluent_score": 118.2,
+            "population_baseline": 74.5
+          },
+          {
+            "code": "MC_BUS_5Y",
+            "question": "General business conditions over the next 5 years",
+            "affluent_score": 114.6,
+            "population_baseline": 72.8
+          },
+          {
+            "code": "MC_DUR_BUY",
+            "question": "Buying conditions for major household items",
+            "affluent_score": 120.4,
+            "population_baseline": 76.2
+          }
+        ],
+        "affluent_index_summary": {
+          "MC_ICS_Index": 121.1
+        },
+        "population_index_summary": {
+          "MC_ICS_Index": 77.2
+        },
+        "affluent_spread_gap": "+43.9 points"
+      },
+      "rasmussen": {
+        "survey_name": "Rasmussen Reports Economic Confidence Index",
+        "questions": [
+          {
+            "code": "RAS_ECON_RATING",
+            "question": "How would you rate the current health of the US economy?",
+            "affluent_distribution": {
+              "Excellent/Good": 62.0,
+              "Fair": 28.0,
+              "Poor": 10.0
+            },
+            "population_baseline": {
+              "Excellent/Good": 26.0,
+              "Fair": 38.0,
+              "Poor": 36.0
+            },
+            "affluent_score": 126.0,
+            "baseline_score": 78.0
+          },
+          {
+            "code": "RAS_PERS_TRAJ",
+            "question": "Is your personal financial situation getting better or worse?",
+            "affluent_distribution": {
+              "Better": 66.0,
+              "Same": 24.0,
+              "Worse": 10.0
+            },
+            "population_baseline": {
+              "Better": 24.0,
+              "Same": 42.0,
+              "Worse": 34.0
+            },
+            "affluent_score": 132.0,
+            "baseline_score": 86.0
+          }
+        ],
+        "affluent_index_summary": {
+          "Rasmussen_Index": 129.0
+        },
+        "population_index_summary": {
+          "Rasmussen_Index": 82.0
+        },
+        "affluent_spread_gap": "+47.0 points"
+      }
+    },
+    "retail_divergence_implications": {
+      "summary": "Across all 4 survey batteries, affluent consumers register confidence readings 44 to 60 points higher than population-weighted headlines. Because top-quartile earners drive ~48% to 50%+ of retail consumer spending, this gap creates a profound distortion in equity pricing:",
+      "ticker_signals": {
+        "COST": {
+          "name": "Costco Wholesale Corp.",
+          "shopper_hhi_median": "$128,000",
+          "affluent_exposure": "Extreme (>70% of GMV)",
+          "signal": "Strong Buy / Outperform",
+          "rationale": "Captures resilient high-income bulk discretionary, grocery basket inflation pass-through, and 93%+ renewal rate."
+        },
+        "WMT": {
+          "name": "Walmart Inc.",
+          "shopper_hhi_median": "$58,000",
+          "affluent_exposure": "Low/Moderate (dominated by lower 50%)",
+          "signal": "Underperform / Sell (vs. COST)",
+          "rationale": "High exposure to SNAP cuts, subprime credit strain, and customer discretionary basket deferral."
+        },
+        "TGT": {
+          "name": "Target Corp.",
+          "shopper_hhi_median": "$82,000",
+          "affluent_exposure": "Middle Belly",
+          "signal": "Neutral / Hold",
+          "rationale": "Middle-income shoppers squeezed on discretionary home/apparel while maintaining steady grocery essentials."
+        }
+      }
+    }
+  }
+}
