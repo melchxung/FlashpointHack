@@ -1,0 +1,54 @@
+{
+  "COST": {
+    "name": "Costco Wholesale Corporation",
+    "trailing_pe": 53.285645,
+    "forward_pe": 44.183823,
+    "target_mean_price": 1073.3513,
+    "current_price": 1106.21,
+    "market_cap": 490194108416,
+    "dividend_yield": 0.53,
+    "beta": 0.852,
+    "consensus_rating": "Buy",
+    "k_orientation": "right_tail_winner",
+    "avg_member_hhi": 132000
+  },
+  "WMT": {
+    "name": "Walmart Inc.",
+    "trailing_pe": 46.40942,
+    "forward_pe": 39.75691,
+    "target_mean_price": 130.4,
+    "current_price": 128.09,
+    "market_cap": 1019350286336,
+    "dividend_yield": 0.77,
+    "beta": 0.526,
+    "consensus_rating": "Buy",
+    "k_orientation": "left_tail_underperformer",
+    "avg_member_hhi": 58000
+  },
+  "TGT": {
+    "name": "Target Corporation",
+    "trailing_pe": 16.765316,
+    "forward_pe": 16.85245,
+    "target_mean_price": 165.94118,
+    "current_price": 161.45,
+    "market_cap": 73346203648,
+    "dividend_yield": 2.87,
+    "beta": 0.932,
+    "consensus_rating": "Buy",
+    "k_orientation": "middle_belly_neutral",
+    "avg_member_hhi": 84000
+  },
+  "SPY": {
+    "name": "State Street SPDR S&P 500 ETF T",
+    "trailing_pe": 23.999777,
+    "forward_pe": 21.8,
+    "target_mean_price": 620.0,
+    "current_price": 754.37,
+    "market_cap": 600000000000,
+    "dividend_yield": 1.0,
+    "beta": 1.0,
+    "consensus_rating": "Hold",
+    "k_orientation": "broad_benchmark",
+    "avg_member_hhi": 78000
+  }
+}

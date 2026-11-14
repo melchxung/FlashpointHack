@@ -1,0 +1,317 @@
+{
+  "metadata": {
+    "title": "Flashpoint AI Affluent Consumer Survey Battery Replications",
+    "methodology": "Synthetic Persona Simulation via Flashpoint AI Persona Architecture",
+    "target_cohort": "Affluent Upper-Quartile Consumers (HHI >$120,000-$150,000+, Equities/Real Estate Owners)",
+    "sample_size": 250,
+    "fit_score": 0.942,
+    "source": "synthetic",
+    "comparison_baseline": "Official Population-Weighted Benchmark Releases (2024-2026)"
+  },
+  "surveys": {
+    "university_of_michigan": {
+      "survey_name": "University of Michigan Index of Consumer Sentiment (ICS/ICE)",
+      "questions": [
+        {
+          "code": "PAGO",
+          "question": "Are you and your family better off or worse off financially than a year ago?",
+          "affluent_distribution": {
+            "Better off": 74.0,
+            "Same / Uncertain": 16.0,
+            "Worse off": 10.0
+          },
+          "population_baseline": {
+            "Better off": 28.0,
+            "Same / Uncertain": 24.0,
+            "Worse off": 48.0
+          },
+          "affluent_relative_score": 164.0,
+          "baseline_relative_score": 80.0
+        },
+        {
+          "code": "PAGED",
+          "question": "Do you think a year from now you will be better off or worse off financially?",
+          "affluent_distribution": {
+            "Better off": 68.0,
+            "Same / Uncertain": 22.0,
+            "Worse off": 10.0
+          },
+          "population_baseline": {
+            "Better off": 31.0,
+            "Same / Uncertain": 36.0,
+            "Worse off": 33.0
+          },
+          "affluent_relative_score": 158.0,
+          "baseline_relative_score": 98.0
+        },
+        {
+          "code": "BUS12",
+          "question": "During the next 12 months, do you think we will have good times or bad times financially?",
+          "affluent_distribution": {
+            "Good times": 64.0,
+            "Uncertain": 20.0,
+            "Bad times": 16.0
+          },
+          "population_baseline": {
+            "Good times": 29.0,
+            "Uncertain": 22.0,
+            "Bad times": 49.0
+          },
+          "affluent_relative_score": 148.0,
+          "baseline_relative_score": 80.0
+        },
+        {
+          "code": "BUS5",
+          "question": "Looking ahead 5 years, will we have continuous good times or unemployment/depression?",
+          "affluent_distribution": {
+            "Continuous good times": 60.0,
+            "Uncertain": 24.0,
+            "Unemployment/Depression": 16.0
+          },
+          "population_baseline": {
+            "Continuous good times": 26.0,
+            "Uncertain": 28.0,
+            "Unemployment/Depression": 46.0
+          },
+          "affluent_relative_score": 144.0,
+          "baseline_relative_score": 80.0
+        },
+        {
+          "code": "DUR",
+          "question": "Is now a good or bad time to buy major household items (appliances, furniture)?",
+          "affluent_distribution": {
+            "Good time": 68.0,
+            "Neither / Uncertain": 16.0,
+            "Bad time": 16.0
+          },
+          "population_baseline": {
+            "Good time": 28.0,
+            "Neither / Uncertain": 18.0,
+            "Bad time": 54.0
+          },
+          "affluent_relative_score": 152.0,
+          "baseline_relative_score": 74.0
+        }
+      ],
+      "affluent_index_summary": {
+        "ICS_Index": 122.8,
+        "ICC_Current": 121.6,
+        "ICE_Expectations": 123.6
+      },
+      "population_index_summary": {
+        "ICS_Index": 63.0,
+        "ICC_Current": 60.3,
+        "ICE_Expectations": 64.7
+      },
+      "affluent_spread_gap": "+59.8 points"
+    },
+    "conference_board": {
+      "survey_name": "Conference Board Consumer Confidence Index (CCI)",
+      "questions": [
+        {
+          "code": "CB_BUS_CURR",
+          "question": "Current appraisal of general business conditions in your area",
+          "affluent_distribution": {
+            "Good": 58.0,
+            "Normal": 34.0,
+            "Bad": 8.0
+          },
+          "population_baseline": {
+            "Good": 20.0,
+            "Normal": 52.0,
+            "Bad": 28.0
+          },
+          "affluent_net_score": 150.0,
+          "baseline_net_score": 92.0
+        },
+        {
+          "code": "CB_JOBS_CURR",
+          "question": "Current appraisal of available jobs in your area",
+          "affluent_distribution": {
+            "Jobs Plentiful": 62.0,
+            "Not So Many": 32.0,
+            "Hard to Get": 6.0
+          },
+          "population_baseline": {
+            "Jobs Plentiful": 34.0,
+            "Not So Many": 48.0,
+            "Hard to Get": 18.0
+          },
+          "affluent_net_score": 156.0,
+          "baseline_net_score": 116.0
+        },
+        {
+          "code": "CB_BUS_EXP",
+          "question": "Expected business conditions in six months",
+          "affluent_distribution": {
+            "Better": 46.0,
+            "Same": 44.0,
+            "Worse": 10.0
+          },
+          "population_baseline": {
+            "Better": 16.0,
+            "Same": 60.0,
+            "Worse": 24.0
+          },
+          "affluent_net_score": 136.0,
+          "baseline_net_score": 92.0
+        },
+        {
+          "code": "CB_JOBS_EXP",
+          "question": "Expected employment availability in six months",
+          "affluent_distribution": {
+            "More jobs": 42.0,
+            "Same": 48.0,
+            "Fewer jobs": 10.0
+          },
+          "population_baseline": {
+            "More jobs": 14.0,
+            "Same": 62.0,
+            "Fewer jobs": 24.0
+          },
+          "affluent_net_score": 132.0,
+          "baseline_net_score": 90.0
+        },
+        {
+          "code": "CB_INC_EXP",
+          "question": "Expected total family income in six months",
+          "affluent_distribution": {
+            "Increase": 54.0,
+            "Same": 40.0,
+            "Decrease": 6.0
+          },
+          "population_baseline": {
+            "Increase": 18.0,
+            "Same": 68.0,
+            "Decrease": 14.0
+          },
+          "affluent_net_score": 148.0,
+          "baseline_net_score": 104.0
+        }
+      ],
+      "affluent_index_summary": {
+        "Headline_CCI": 144.4,
+        "Present_Situation": 153.0,
+        "Expectations_Index": 138.7
+      },
+      "population_index_summary": {
+        "Headline_CCI": 98.8,
+        "Present_Situation": 104.0,
+        "Expectations_Index": 95.3
+      },
+      "affluent_spread_gap": "+45.6 points"
+    },
+    "morning_consult": {
+      "survey_name": "Morning Consult Index of Consumer Sentiment (MC-ICS)",
+      "questions": [
+        {
+          "code": "MC_FIN_PAST",
+          "question": "Financial condition compared to one year ago",
+          "affluent_score": 128.5,
+          "population_baseline": 78.4
+        },
+        {
+          "code": "MC_FIN_FUTURE",
+          "question": "Financial condition expected one year from now",
+          "affluent_score": 124.0,
+          "population_baseline": 84.2
+        },
+        {
+          "code": "MC_BUS_12M",
+          "question": "General business conditions over the next 12 months",
+          "affluent_score": 118.2,
+          "population_baseline": 74.5
+        },
+        {
+          "code": "MC_BUS_5Y",
+          "question": "General business conditions over the next 5 years",
+          "affluent_score": 114.6,
+          "population_baseline": 72.8
+        },
+        {
+          "code": "MC_DUR_BUY",
+          "question": "Buying conditions for major household items",
+          "affluent_score": 120.4,
+          "population_baseline": 76.2
+        }
+      ],
+      "affluent_index_summary": {
+        "MC_ICS_Index": 121.1
+      },
+      "population_index_summary": {
+        "MC_ICS_Index": 77.2
+      },
+      "affluent_spread_gap": "+43.9 points"
+    },
+    "rasmussen": {
+      "survey_name": "Rasmussen Reports Economic Confidence Index",
+      "questions": [
+        {
+          "code": "RAS_ECON_RATING",
+          "question": "How would you rate the current health of the US economy?",
+          "affluent_distribution": {
+            "Excellent/Good": 62.0,
+            "Fair": 28.0,
+            "Poor": 10.0
+          },
+          "population_baseline": {
+            "Excellent/Good": 26.0,
+            "Fair": 38.0,
+            "Poor": 36.0
+          },
+          "affluent_score": 126.0,
+          "baseline_score": 78.0
+        },
+        {
+          "code": "RAS_PERS_TRAJ",
+          "question": "Is your personal financial situation getting better or worse?",
+          "affluent_distribution": {
+            "Better": 66.0,
+            "Same": 24.0,
+            "Worse": 10.0
+          },
+          "population_baseline": {
+            "Better": 24.0,
+            "Same": 42.0,
+            "Worse": 34.0
+          },
+          "affluent_score": 132.0,
+          "baseline_score": 86.0
+        }
+      ],
+      "affluent_index_summary": {
+        "Rasmussen_Index": 129.0
+      },
+      "population_index_summary": {
+        "Rasmussen_Index": 82.0
+      },
+      "affluent_spread_gap": "+47.0 points"
+    }
+  },
+  "retail_divergence_implications": {
+    "summary": "Across all 4 survey batteries, affluent consumers register confidence readings 44 to 60 points higher than population-weighted headlines. Because top-quartile earners drive ~48% to 50%+ of retail consumer spending, this gap creates a profound distortion in equity pricing:",
+    "ticker_signals": {
+      "COST": {
+        "name": "Costco Wholesale Corp.",
+        "shopper_hhi_median": "$128,000",
+        "affluent_exposure": "Extreme (>70% of GMV)",
+        "signal": "Strong Buy / Outperform",
+        "rationale": "Captures resilient high-income bulk discretionary, grocery basket inflation pass-through, and 93%+ renewal rate."
+      },
+      "WMT": {
+        "name": "Walmart Inc.",
+        "shopper_hhi_median": "$58,000",
+        "affluent_exposure": "Low/Moderate (dominated by lower 50%)",
+        "signal": "Underperform / Sell (vs. COST)",
+        "rationale": "High exposure to SNAP cuts, subprime credit strain, and customer discretionary basket deferral."
+      },
+      "TGT": {
+        "name": "Target Corp.",
+        "shopper_hhi_median": "$82,000",
+        "affluent_exposure": "Middle Belly",
+        "signal": "Neutral / Hold",
+        "rationale": "Middle-income shoppers squeezed on discretionary home/apparel while maintaining steady grocery essentials."
+      }
+    }
+  }
+}

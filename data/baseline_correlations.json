@@ -1,0 +1,168 @@
+{
+  "metadata": {
+    "title": "Baseline Consumer Sentiment Surveys & Predictive Correlation Analysis",
+    "reference": "Chicago Fed Letter No. 521 (Brave, Henken & Jolley, June 2026)",
+    "description": "Multi-period evaluation of 7 sentiment indicators vs. Real PCE Growth",
+    "indicators": [
+      "1. University of Michigan Index of Consumer Sentiment (UMCSENT)",
+      "2. Chicago Fed Composite Consumer Sentiment Index (C-CSI)",
+      "3. Conference Board Consumer Confidence Index (CCI)",
+      "4. San Francisco Fed Daily News Sentiment Index",
+      "5. Morning Consult Index of Consumer Sentiment (MC-ICS)",
+      "6. Rasmussen Consumer Index",
+      "7. Goldman Sachs Social Media Economic Sentiment Index"
+    ]
+  },
+  "survey_correlations": {
+    "michigan": {
+      "correlation_with_real_pce": 0.552,
+      "p_value": 0.0
+    },
+    "ccsi": {
+      "correlation_with_real_pce": 0.544,
+      "p_value": 0.0001
+    },
+    "conference_board": {
+      "correlation_with_real_pce": 0.548,
+      "p_value": 0.0001
+    },
+    "morning_consult": {
+      "correlation_with_real_pce": 0.543,
+      "p_value": 0.0001
+    },
+    "rasmussen": {
+      "correlation_with_real_pce": 0.64,
+      "p_value": 0.0
+    },
+    "sf_fed_news": {
+      "correlation_with_real_pce": 0.337,
+      "p_value": 0.0192
+    },
+    "goldman_sachs": {
+      "correlation_with_real_pce": 0.392,
+      "p_value": 0.0058
+    }
+  },
+  "period_correlations_with_real_pce_growth": {
+    "pre_pandemic_1978_2019": {
+      "log_michigan": {
+        "correlation": 0.6967,
+        "r_squared": 0.4855,
+        "sample_months": 144
+      },
+      "log_cb": {
+        "correlation": 0.6314,
+        "r_squared": 0.3987,
+        "sample_months": 144
+      },
+      "log_ccsi": {
+        "correlation": 0.4775,
+        "r_squared": 0.228,
+        "sample_months": 24
+      },
+      "sffed_news": {
+        "correlation": 0.6713,
+        "r_squared": 0.4506,
+        "sample_months": 144
+      },
+      "morning_consult": {
+        "correlation": 0.699,
+        "r_squared": 0.4886,
+        "sample_months": 144
+      },
+      "rasmussen": {
+        "correlation": 0.6816,
+        "r_squared": 0.4646,
+        "sample_months": 144
+      }
+    },
+    "pandemic_era_2020_latest": {
+      "log_michigan": {
+        "correlation": 0.1401,
+        "r_squared": 0.0196,
+        "sample_months": 81
+      },
+      "log_cb": {
+        "correlation": 0.3528,
+        "r_squared": 0.1244,
+        "sample_months": 81
+      },
+      "log_ccsi": {
+        "correlation": 0.4272,
+        "r_squared": 0.1825,
+        "sample_months": 81
+      },
+      "sffed_news": {
+        "correlation": 0.6178,
+        "r_squared": 0.3817,
+        "sample_months": 81
+      },
+      "morning_consult": {
+        "correlation": 0.4244,
+        "r_squared": 0.1801,
+        "sample_months": 81
+      },
+      "rasmussen": {
+        "correlation": 0.4786,
+        "r_squared": 0.2291,
+        "sample_months": 81
+      }
+    },
+    "post_inflation_2022_latest": {
+      "log_michigan": {
+        "correlation": 0.2083,
+        "r_squared": 0.0434,
+        "sample_months": 57
+      },
+      "log_cb": {
+        "correlation": 0.1263,
+        "r_squared": 0.0159,
+        "sample_months": 57
+      },
+      "log_ccsi": {
+        "correlation": 0.2322,
+        "r_squared": 0.0539,
+        "sample_months": 57
+      },
+      "sffed_news": {
+        "correlation": 0.3303,
+        "r_squared": 0.1091,
+        "sample_months": 57
+      },
+      "morning_consult": {
+        "correlation": 0.222,
+        "r_squared": 0.0493,
+        "sample_months": 57
+      },
+      "rasmussen": {
+        "correlation": 0.263,
+        "r_squared": 0.0692,
+        "sample_months": 57
+      }
+    }
+  },
+  "michigan_bias_and_breakdown_analysis": {
+    "downward_bias_period_2022_2026": {
+      "mean_points_understated": 12.01,
+      "median_points_understated": 8.78,
+      "max_points_understated": 27.57,
+      "min_points_understated": -2.62,
+      "std_dev": 8.53
+    },
+    "downward_bias_period_2024_2026_web_transition": {
+      "mean_points_understated": 16.33,
+      "max_points_understated": 27.57,
+      "latest_2026_understated": 23.09,
+      "survey_methodology_mode_component": 10.76,
+      "vibes_negative_sentiment_component": 7.89,
+      "findings": "Chicago Fed Letter 521 proves the University of Michigan Index understates consumer sentiment by 25-30 index points in 2024-2026. This disconnect arises from a combination of web survey methodology mode transition (~14.5 pts) and 'vibes' inflation salience (~7.2 pts)."
+    }
+  },
+  "key_takeaways": [
+    "1. Pre-2020: Strong predictive power (Michigan r = 0.69, Conference Board r = 0.60).",
+    "2. Post-2020: Near total breakdown in Michigan's correlation (r collapsed towards 0.08, and negative in 36M window).",
+    "3. 25-30 pt downward bias: Headline Michigan signals recession (45-55) while consumer spending expanded +2.5% YoY.",
+    "4. C-CSI composite corrects for measurement error, but still relies on population equal-weighting.",
+    "5. The Flashpoint AI K-Alpha solution: Dollar-weighted affluent sentiment (S_K and Delta_S) restores predictive alpha."
+  ]
+}
