@@ -71,12 +71,22 @@ def calculate_portfolio_metrics(
     excess_ret = clean_ret - rf_period
     mean_excess = float(excess_ret.mean())
 
-    sharpe = float((mean_excess * np.sqrt(periods_per_year)) / (clean_ret.std(ddof=1) if clean_ret.std(ddof=1) > 1e-6 else 1e-6))
+    sharpe = float(
+        (mean_excess * np.sqrt(periods_per_year))
+        / (clean_ret.std(ddof=1) if clean_ret.std(ddof=1) > 1e-6 else 1e-6)
+    )
 
     # Downside deviation for Sortino
     neg_ret = clean_ret[clean_ret < 0]
-    downside_std = float(neg_ret.std(ddof=1) * np.sqrt(periods_per_year)) if len(neg_ret) > 1 else vol_annual
-    sortino = float((annualized_return - (0.0 if is_long_short else rf_annual)) / (downside_std if downside_std > 1e-6 else 1e-6))
+    downside_std = (
+        float(neg_ret.std(ddof=1) * np.sqrt(periods_per_year))
+        if len(neg_ret) > 1
+        else vol_annual
+    )
+    sortino = float(
+        (annualized_return - (0.0 if is_long_short else rf_annual))
+        / (downside_std if downside_std > 1e-6 else 1e-6)
+    )
 
     # Drawdown
     peak = cum_wealth.cummax()
@@ -103,6 +113,61 @@ def calculate_portfolio_metrics(
         "p_value": round(p_val, 4),
         "win_rate": round(win_rate, 4),
         "total_return": round(total_return, 4),
+        "periods": int(n),
+    }
+
+
+def compute_jensen_alpha(
+    portfolio_returns: pd.Series,
+    benchmark_returns: pd.Series,
+    rf_annual: float = 0.02,
+    periods_per_year: int = 12,
+) -> Dict[str, float]:
+    """
+    Jensen's alpha: OLS of excess portfolio returns on excess benchmark returns.
+
+        R_p - rf = alpha + beta * (R_b - rf) + eps
+
+    The intercept is the signal's alpha above CAPM-expected return. Reported
+    with its t-statistic, p-value, beta, R^2, and annualized figure.
+    """
+    common = portfolio_returns.index.intersection(benchmark_returns.index)
+    p = portfolio_returns.reindex(common)
+    b = benchmark_returns.reindex(common)
+    mask = p.notna() & b.notna()
+    p, b = p[mask], b[mask]
+    n = len(p)
+    if n < 3:
+        return {
+            "alpha_period": 0.0,
+            "alpha_annualized": 0.0,
+            "alpha_t_stat": 0.0,
+            "alpha_p_value": 1.0,
+            "beta": 0.0,
+            "beta_t_stat": 0.0,
+            "beta_p_value": 1.0,
+            "r_squared": 0.0,
+            "periods": int(n),
+        }
+    rf_period = rf_annual / periods_per_year
+    y = (p - rf_period).to_numpy(dtype=float)
+    x = (b - rf_period).to_numpy(dtype=float)
+    lr = stats.linregress(x, y)
+    alpha_period = float(lr.intercept)
+    beta = float(lr.slope)
+    alpha_t = (
+        (alpha_period / lr.intercept_stderr) if lr.intercept_stderr > 1e-12 else 0.0
+    )
+    beta_t = float(lr.slope / lr.stderr) if lr.stderr > 1e-12 else 0.0
+    return {
+        "alpha_period": round(alpha_period, 6),
+        "alpha_annualized": round(alpha_period * periods_per_year, 4),
+        "alpha_t_stat": round(alpha_t, 3),
+        "alpha_p_value": round(float(2.0 * stats.t.sf(abs(alpha_t), n - 2)), 4),
+        "beta": round(beta, 4),
+        "beta_t_stat": round(beta_t, 3),
+        "beta_p_value": round(float(2.0 * stats.t.sf(abs(beta_t), n - 2)), 4),
+        "r_squared": round(float(lr.rvalue * lr.rvalue), 4),
         "periods": int(n),
     }
 
@@ -151,7 +216,7 @@ def run_factor_backtest(
     sentiment_df: Optional[pd.DataFrame] = None,
     prices_df: Optional[pd.DataFrame] = None,
     start_date: str = "2021-01-01",
-    end_date: str = "2024-12-31",
+    end_date: str = "2026-10-31",
 ) -> Dict[str, Any]:
     """
     Run full cross-sectional factor backtest pipeline.
@@ -203,11 +268,21 @@ def run_factor_backtest(
         q_df, ls_series = build_quintile_returns(quintiles, fwd_ret, num_quantiles=5)
 
         # SPY Benchmark comparison
-        spy_fwd = fwd_ret["SPY"].reindex(q_df.index).dropna() if "SPY" in fwd_ret.columns else pd.Series()
-        spy_metrics = calculate_portfolio_metrics(spy_fwd, periods_per_year=12 // h) if not spy_fwd.empty else {}
+        spy_fwd = (
+            fwd_ret["SPY"].reindex(q_df.index).dropna()
+            if "SPY" in fwd_ret.columns
+            else pd.Series()
+        )
+        spy_metrics = (
+            calculate_portfolio_metrics(spy_fwd, periods_per_year=12 // h)
+            if not spy_fwd.empty
+            else {}
+        )
 
         # Long/Short Metrics
-        ls_metrics = calculate_portfolio_metrics(ls_series, periods_per_year=12 // h, is_long_short=True)
+        ls_metrics = calculate_portfolio_metrics(
+            ls_series, periods_per_year=12 // h, is_long_short=True
+        )
 
         # Quintile Metrics
         quintile_metrics = {}
@@ -220,23 +295,59 @@ def run_factor_backtest(
         mean_ic = float(ic_df["IC"].mean()) if not ic_df.empty else 0.0
         std_ic = float(ic_df["IC"].std(ddof=1)) if not ic_df.empty else 1.0
         ir_ic = float(mean_ic / std_ic) if std_ic > 1e-4 else 0.0
-        t_ic = float(stats.ttest_1samp(ic_df["IC"].dropna(), 0.0).statistic) if not ic_df.empty else 0.0
-        p_ic = float(stats.ttest_1samp(ic_df["IC"].dropna(), 0.0).pvalue) if not ic_df.empty else 1.0
+        t_ic = (
+            float(stats.ttest_1samp(ic_df["IC"].dropna(), 0.0).statistic)
+            if not ic_df.empty
+            else 0.0
+        )
+        p_ic = (
+            float(stats.ttest_1samp(ic_df["IC"].dropna(), 0.0).pvalue)
+            if not ic_df.empty
+            else 1.0
+        )
 
         # Cumulative performance series
         cum_q = ((1.0 + q_df).cumprod() - 1.0).round(4).to_dict()
         cum_ls = ((1.0 + ls_series).cumprod() - 1.0).round(4).to_dict()
-        cum_spy = ((1.0 + spy_fwd).cumprod() - 1.0).round(4).to_dict() if not spy_fwd.empty else {}
+        cum_spy = (
+            ((1.0 + spy_fwd).cumprod() - 1.0).round(4).to_dict()
+            if not spy_fwd.empty
+            else {}
+        )
 
         # Monotonicity check
-        mean_q_rets = [quintile_metrics[f"Q{q}"]["annualized_return"] for q in range(1, 6)]
-        monotonic_pairs = sum(1 for i in range(len(mean_q_rets) - 1) if mean_q_rets[i + 1] >= mean_q_rets[i])
+        mean_q_rets = [
+            quintile_metrics[f"Q{q}"]["annualized_return"] for q in range(1, 6)
+        ]
+        monotonic_pairs = sum(
+            1
+            for i in range(len(mean_q_rets) - 1)
+            if mean_q_rets[i + 1] >= mean_q_rets[i]
+        )
         monotonicity_score = monotonic_pairs / (len(mean_q_rets) - 1)
+        # Jensen's alpha: L/S excess returns regressed on SPY excess returns
+        # (rf=0 for the dollar-neutral spread, matching is_long_short above)
+        jensen = (
+            compute_jensen_alpha(
+                ls_series,
+                spy_fwd,
+                rf_annual=0.0,
+                periods_per_year=12 // h,
+            )
+            if not spy_fwd.empty
+            else compute_jensen_alpha(
+                ls_series,
+                ls_series,
+                rf_annual=0.0,
+                periods_per_year=12 // h,
+            )
+        )
 
         results["horizons"][f"{h}M"] = {
             "long_short_metrics": ls_metrics,
             "benchmark_metrics": spy_metrics,
             "quintile_metrics": quintile_metrics,
+            "jensens_alpha": jensen,
             "information_coefficient": {
                 "mean_ic": round(mean_ic, 4),
                 "std_ic": round(std_ic, 4),
@@ -246,7 +357,10 @@ def run_factor_backtest(
             },
             "monotonicity_score": round(monotonicity_score, 2),
             "cumulative_returns": {
-                "quintiles": {k: {str(dt.date()): val for dt, val in v.items()} for k, v in cum_q.items()},
+                "quintiles": {
+                    k: {str(dt.date()): val for dt, val in v.items()}
+                    for k, v in cum_q.items()
+                },
                 "long_short": {str(dt.date()): val for dt, val in cum_ls.items()},
                 "benchmark": {str(dt.date()): val for dt, val in cum_spy.items()},
             },

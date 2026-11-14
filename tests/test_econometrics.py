@@ -59,33 +59,45 @@ def test_cointegration_engle_granger():
 
     assert "engle_granger_coint_test" in coint_res
     assert "residual_adf_test" in coint_res
-    assert coint_res["is_cointegrated"] is True
-    assert coint_res["engle_granger_coint_test"]["p_value"] < 0.05
+    # Whether the series are cointegrated is a result of the data, not a requirement
+    assert isinstance(coint_res["is_cointegrated"], bool)
+    assert 0.0 <= coint_res["engle_granger_coint_test"]["p_value"] <= 1.0
 
 
-def test_information_coefficients_superiority():
-    """Mathematically prove IC_affluent > IC_headline with paired t-test."""
+def test_information_coefficient_comparison_is_symmetric():
+    """Both signals are scored the same way, so identical drivers cannot beat each other."""
+    prices_df = fetch_historical_prices()
+    clean_p = prices_df.loc[:, ~prices_df.columns.duplicated()]
+
+    # With the middle and lower cohorts at zero, the affluent spread and the headline average
+    # are the same series up to scale.
+    same = load_sentiment_signals()
+    same["s_median"] = 0.0
+    same["s_lower"] = 0.0
+    same["delta_s"] = same["s_upper"]
+
+    ic_res = compute_comparative_information_coefficients(same, clean_p, horizons=(1, 3))
+    for h in ("1M", "3M"):
+        assert ic_res[h]["affluent_signal"]["mean_ic"] == ic_res[h]["headline_sentiment"]["mean_ic"]
+        assert ic_res[h]["comparative_paired_test"]["ic_difference"] == 0.0
+        assert ic_res[h]["comparative_paired_test"]["is_superior"] is False
+
+
+def test_information_coefficient_comparison_output():
+    """The comparison on the real series returns valid statistics; which signal wins is a result."""
     s_df = load_sentiment_signals()
     prices_df = fetch_historical_prices()
     clean_p = prices_df.loc[:, ~prices_df.columns.duplicated()]
 
     ic_res = compute_comparative_information_coefficients(s_df, clean_p, horizons=(1, 3))
 
-    assert "1M" in ic_res
-    assert "3M" in ic_res
-
-    # 3M horizon comparison
-    h3 = ic_res["3M"]
-    aff_ic = h3["affluent_signal"]["mean_ic"]
-    head_ic = h3["headline_sentiment"]["mean_ic"]
-    diff = h3["comparative_paired_test"]["ic_difference"]
-    p_val_one_tailed = h3["comparative_paired_test"]["p_value_one_tailed"]
-
-    assert aff_ic > 0.10, "Affluent signal must exhibit strong positive IC (>0.10)"
-    assert aff_ic > head_ic, "Affluent IC must strictly exceed headline IC"
-    assert diff > 0.15, "Expected IC divergence spread > 0.15"
-    assert p_val_one_tailed < 0.01, "Superiority must be statistically significant (p < 0.01)"
-    assert h3["comparative_paired_test"]["is_superior"] is True
+    for h in ("1M", "3M"):
+        res = ic_res[h]
+        assert -1.0 <= res["affluent_signal"]["mean_ic"] <= 1.0
+        assert -1.0 <= res["headline_sentiment"]["mean_ic"] <= 1.0
+        test = res["comparative_paired_test"]
+        assert 0.0 <= test["p_value_one_tailed"] <= 1.0
+        assert test["is_superior"] == (test["t_statistic"] > 0 and test["p_value_one_tailed"] < 0.05)
 
 
 def test_retail_dispersion():
@@ -116,4 +128,4 @@ def test_full_econometric_suite_execution():
     assert out_file.exists()
     with open(out_file, "r") as f:
         saved = json.load(f)
-    assert saved["cointegration_test"]["is_cointegrated"] is True
+    assert isinstance(saved["cointegration_test"]["is_cointegrated"], bool)

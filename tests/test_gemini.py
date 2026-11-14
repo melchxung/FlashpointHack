@@ -2,10 +2,16 @@
 Unit tests for Gemini Scorer & Flashpoint MCP integration.
 """
 
+import os
+
 import pytest
 
 from src.sampler.gemini_scorer import GeminiScorer
 from src.sampler.gemini_mcp_client import GeminiFlashpointMCPClient
+
+
+# Live Gemini and Flashpoint calls need keys and a network, so they only run on request
+live = pytest.mark.skipif(os.environ.get("RUN_LIVE_TESTS") != "1", reason="live call; set RUN_LIVE_TESTS=1")
 
 
 def test_gemini_scorer_requires_key():
@@ -14,6 +20,7 @@ def test_gemini_scorer_requires_key():
         GeminiScorer(api_key="")
 
 
+@live
 def test_gemini_scorer_live():
     scorer = GeminiScorer()
     transcript = {
@@ -32,11 +39,13 @@ def test_gemini_scorer_live():
     assert 0.0 <= res.trade_down_risk <= 1.0
 
 
+@live
 def test_flashpoint_mcp_lists_tools_live():
     tools = {t["name"] for t in GeminiFlashpointMCPClient().list_tools()}
     assert {"demographics", "panel", "tool_survey"} <= tools
 
 
+@live
 def test_gemini_drives_flashpoint_mcp_without_paying():
     # Live Gemini -> Flashpoint MCP round trip with payment disabled: the paid tool must
     # answer with its x402 requirement, and no USDC may be spent.

@@ -22,9 +22,14 @@ from scipy import stats
 import statsmodels.api as sm
 from statsmodels.tsa.stattools import adfuller, coint
 
-from src.quant.factor import compute_information_coefficients, load_sentiment_signals
+from src.quant.factor import (
+    calculate_derived_macro_factors,
+    compute_cross_sectional_factor_scores,
+    compute_information_coefficients,
+    load_sentiment_signals,
+)
 from src.quant.market_data import compute_forward_returns, fetch_historical_prices, fetch_ticker_fundamentals
-from src.quant.universe import ASSET_MAP, MODEL_TICKERS
+from src.quant.universe import MODEL_TICKERS
 
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
 ECONOMETRICS_OUTPUT = DATA_DIR / "econometrics_results.json"
@@ -146,32 +151,22 @@ def compute_comparative_information_coefficients(
     horizons: Tuple[int, ...] = (1, 3),
 ) -> Dict[str, Any]:
     """
-    Compute comparative Information Coefficients (IC) of Flashpoint Affluent Signal
-    vs Headline Consumer Sentiment across 1M and 3M forward return horizons.
-    Conducts paired t-tests proving IC_affluent > IC_headline with statistical significance.
+    Compare the Information Coefficient (IC) of the Flashpoint affluent-spread signal against
+    headline consumer sentiment across 1M and 3M forward return horizons.
+
+    Both signals are scored with the same rolling-beta construction, so they differ only in the
+    sentiment series that drives them. A paired t-test checks whether IC_affluent > IC_headline.
     """
     fwd_dict = compute_forward_returns(prices_df, horizons=horizons)
-    common = sentiment_df.index.intersection(prices_df.index)
 
-    # Standardized Signals
-    z_spread = (sentiment_df["delta_s"] - sentiment_df["delta_s"].mean()) / sentiment_df["delta_s"].std()
+    # Affluent model: the backtest's own scores, driven by the upper-minus-median spread
+    scores_aff = compute_cross_sectional_factor_scores(calculate_derived_macro_factors(sentiment_df), prices_df)
 
-    # Michigan equal-weighted headline equivalent
+    # Headline model: the identical construction driven by the equal-weighted headline level.
+    # With s_median = 0 the "spread" is the headline level itself.
     s_head = sentiment_df[["s_upper", "s_median", "s_lower"]].mean(axis=1)
-    z_head = (s_head - s_head.mean()) / s_head.std()
-
-    tickers = [t for t in MODEL_TICKERS if t in prices_df.columns]
-    k_exp = pd.Series({t: ASSET_MAP[t].k_exposure_score for t in tickers})
-
-    # Scores
-    scores_aff = pd.DataFrame(index=common, columns=tickers, dtype=float)
-    scores_head = pd.DataFrame(index=common, columns=tickers, dtype=float)
-
-    for d in common:
-        # Affluent model: rewards K-winners based on upper-quartile expansion
-        scores_aff.loc[d] = k_exp * (1.0 + 0.5 * z_spread.loc[d])
-        # Headline model: flips or dumps discretionary when headline sentiment drops
-        scores_head.loc[d] = k_exp * z_head.loc[d]
+    headline_df = pd.DataFrame({"s_upper": s_head, "s_median": 0.0, "s_lower": 0.0}, index=sentiment_df.index)
+    scores_head = compute_cross_sectional_factor_scores(calculate_derived_macro_factors(headline_df), prices_df)
 
     ic_results = {}
     for h in horizons:

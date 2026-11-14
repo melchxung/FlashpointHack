@@ -229,13 +229,14 @@ def build_signals(raw: Dict[str, Any], months: List[str]) -> Dict[str, Any]:
 def main():
     parser = argparse.ArgumentParser(description="Sample K-shaped sentiment from Flashpoint synthetic panels")
     parser.add_argument("--start", default="2021-01")
-    parser.add_argument("--end", default="2024-12")
-    parser.add_argument("--workers", type=int, default=8)
+    parser.add_argument("--end", default="2026-10")
+    parser.add_argument("--workers", type=int, default=4)
+    parser.add_argument("--max-spend", type=float, default=5.0, help="USDC cap for this run")
     args = parser.parse_args()
 
     months = month_range(args.start, args.end)
     raw = load_raw()
-    mcp = GeminiFlashpointMCPClient()
+    mcp = GeminiFlashpointMCPClient(session_cap_usdc=args.max_spend)
 
     for arch in COHORTS:
         if arch.value not in raw["panels"]:

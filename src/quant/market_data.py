@@ -24,7 +24,7 @@ CACHE_FILE = DATA_DIR / "market_prices.csv"
 def fetch_historical_prices(
     tickers: Optional[List[str]] = None,
     start_date: str = "2021-01-01",
-    end_date: str = "2024-12-31",
+    end_date: str = "2026-10-31",
     force_refresh: bool = False,
     cache_path: Optional[Path] = None,
 ) -> pd.DataFrame:

@@ -5,8 +5,8 @@ Constructs:
 1. Spread Factor: Delta_S = S_upper - S_median (and Delta_S_lower = S_upper - S_lower)
 2. Upper-Quartile Spending Acceleration: Acc_upper = d^2/dt^2 S_upper (and 1M/3M momentum)
 3. Dynamic Cross-Sectional Factor Scoring:
-   - Fundamental K-exposure conditioned on macroeconomic regime
-   - Rolling empirical return sensitivity (Beta) to sentiment spread
+   - Rolling empirical return sensitivity (Beta) to sentiment spread changes
+   - Signed spread regime signal (spread z-score and spending acceleration)
    - Cross-sectional ranking into Quintiles (Q1 to Q5) and deciles
 4. Information Coefficient (IC) time series and significance metrics
 """
@@ -19,7 +19,7 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
-from src.quant.universe import ASSET_MAP, MODEL_TICKERS
+from src.quant.universe import MODEL_TICKERS
 
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
 SENTIMENT_CACHE = DATA_DIR / "sentiment_signals.json"
@@ -129,12 +129,17 @@ def compute_cross_sectional_factor_scores(
     """
     Compute cross-sectional factor score for each asset at each date t.
 
-    The score combines:
-    1. Fundamental K-exposure score (k_i) multiplied by the prevailing K-spread regime
-    2. Dynamic empirical rolling beta of asset returns to delta_s changes
-    3. Upper-quartile spending acceleration amplifier
+    FactorScore_{i, t} = beta_{i, t} * signal_t, standardized across assets, where
 
-    FactorScore_{i, t} = k_i * [alpha * (1 + 0.5 * z_spread_t) + accel_weight * z_accel_t]
+    - beta_{i, t} is the trailing `lookback_window`-month beta of asset i's monthly return to
+      monthly changes in the sentiment spread delta_s. It uses data up to t only.
+    - signal_t = alpha * 0.3 * tanh(z_spread_t) + accel_weight * 0.2 * tanh(z_accel_t) is the
+      signed regime signal: positive when the spread is wide and accelerating against its own
+      trailing year, negative when it is narrow and decelerating.
+
+    A positive signal favours assets that have risen with a widening spread; a negative signal
+    favours the opposite. Dates without enough history for a beta, or with a zero signal, are
+    left unscored (NaN) and are skipped by the backtest.
     """
     if tickers is None:
         tickers = [t for t in MODEL_TICKERS if t in asset_prices.columns]
@@ -143,30 +148,22 @@ def compute_cross_sectional_factor_scores(
     common_dates = macro_factors_df.index.intersection(asset_prices.index)
     macro_sub = macro_factors_df.loc[common_dates]
 
-    scores = pd.DataFrame(index=common_dates, columns=tickers, dtype=float)
+    returns = asset_prices.loc[common_dates, tickers].pct_change()
+    spread_change = macro_sub["delta_s"].diff()
 
-    for date in common_dates:
-        z_s = float(macro_sub.loc[date, "z_spread"])
-        z_a = float(macro_sub.loc[date, "z_accel"])
-        d_s = float(macro_sub.loc[date, "delta_s"])
+    # Exposure: trailing beta of each asset's return to changes in the sentiment spread
+    min_obs = lookback_window // 2
+    cov = returns.rolling(lookback_window, min_periods=min_obs).cov(spread_change)
+    var = spread_change.rolling(lookback_window, min_periods=min_obs).var()
+    betas = cov.div(var.where(var > 1e-12), axis=0)
 
-        # Macro multiplier: positive and expanding spread rewards K-winners strongly
-        # Baseline spread level normalization (mean spread ~12-16 pts)
-        regime_multiplier = alpha_weight * (1.0 + 0.3 * np.tanh(z_s)) + accel_weight * (0.2 * np.tanh(z_a))
-
-        for ticker in tickers:
-            asset = ASSET_MAP.get(ticker)
-            k_exp = asset.k_exposure_score if asset else 0.0
-
-            # Composite score for stock i at date t
-            raw_score = k_exp * regime_multiplier
-            scores.loc[date, ticker] = raw_score
+    # Signed regime signal (a strictly positive multiplier would cancel in the standardization below)
+    signal = alpha_weight * 0.3 * np.tanh(macro_sub["z_spread"]) + accel_weight * 0.2 * np.tanh(macro_sub["z_accel"])
+    scores = betas.mul(signal.where(signal != 0), axis=0)
 
     # Cross-sectional standardization at each date t: z-score across assets
-    std_scores = scores.apply(
-        lambda row: (row - row.mean()) / (row.std() if row.std() > 1e-6 else 1.0),
-        axis=1,
-    )
+    row_std = scores.std(axis=1)
+    std_scores = scores.sub(scores.mean(axis=1), axis=0).div(row_std.where(row_std > 1e-6), axis=0)
     return std_scores
 
 

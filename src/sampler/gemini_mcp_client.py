@@ -56,10 +56,11 @@ class GeminiFlashpointMCPClient:
     TIMEOUT = 600  # panel and chat tools can run for minutes
 
     def __init__(self, flashpoint_token: Optional[str] = None, private_key: Optional[str] = None,
-                 auto_pay: bool = True):
+                 auto_pay: bool = True, session_cap_usdc: float = MAX_SPEND_PER_SESSION_USDC):
         self.flashpoint_token = flashpoint_token or os.environ.get("FLASHPOINT_BEARER_TOKEN")
         self.private_key = private_key or os.environ.get("FLASHPOINT_PRIVATE_KEY")
         self.auto_pay = auto_pay
+        self.session_cap_usdc = min(session_cap_usdc, MAX_SPEND_PER_SESSION_USDC)
         self.session_id: Optional[str] = None
         self.spent_usdc = 0.0
         self._spend_lock = threading.Lock()
@@ -204,9 +205,9 @@ class GeminiFlashpointMCPClient:
             raise RuntimeError(f"Per-call cap exceeded: call costs {amount_usdc} USDC, cap is {MAX_PAYMENT_PER_CALL_USDC}")
         # Reserve the spend under a lock so parallel calls cannot overrun the session cap.
         with self._spend_lock:
-            if self.spent_usdc + amount_usdc > MAX_SPEND_PER_SESSION_USDC:
+            if self.spent_usdc + amount_usdc > self.session_cap_usdc:
                 raise RuntimeError(
-                    f"Session cap exceeded: spent {self.spent_usdc:.2f} + {amount_usdc} > {MAX_SPEND_PER_SESSION_USDC} USDC"
+                    f"Session cap exceeded: spent {self.spent_usdc:.2f} + {amount_usdc} > {self.session_cap_usdc} USDC"
                 )
             self.spent_usdc += amount_usdc
 

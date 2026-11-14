@@ -7,151 +7,151 @@
   "stationarity_tests": {
     "primary_signal": {
       "signal_name": "Standardized Flashpoint Trade Signal Z(Delta_S)",
-      "adf_statistic": -3.6627,
-      "p_value": 0.004669,
-      "used_lags": 0,
-      "n_observations": 42,
+      "adf_statistic": -3.022,
+      "p_value": 0.032888,
+      "used_lags": 4,
+      "n_observations": 59,
       "critical_values": {
-        "1%": -3.597,
-        "5%": -2.933,
-        "10%": -2.605
+        "1%": -3.546,
+        "5%": -2.912,
+        "10%": -2.594
       },
       "is_stationary": true,
-      "conclusion": "Statistically stationary at the 5% level (p=0.0047 < 0.05). Rejects the unit root null hypothesis; suitable for high-conviction factor modeling."
+      "conclusion": "Statistically stationary at the 5% level (p=0.0329 < 0.05). Rejects the unit root null hypothesis; suitable for high-conviction factor modeling."
     },
     "momentum_signal": {
       "signal_name": "Flashpoint Momentum Signal d/dt(Delta_S)",
-      "adf_statistic": -4.5623,
-      "p_value": 0.000151,
-      "used_lags": 3,
-      "n_observations": 43,
+      "adf_statistic": -9.2206,
+      "p_value": 0.0,
+      "used_lags": 1,
+      "n_observations": 66,
       "critical_values": {
-        "1%": -3.593,
-        "5%": -2.932,
-        "10%": -2.604
+        "1%": -3.534,
+        "5%": -2.906,
+        "10%": -2.591
       },
       "is_stationary": true,
-      "conclusion": "Statistically stationary at the 5% level (p=0.0002 < 0.05). Rejects the unit root null hypothesis; suitable for high-conviction factor modeling."
+      "conclusion": "Statistically stationary at the 5% level (p=0.0000 < 0.05). Rejects the unit root null hypothesis; suitable for high-conviction factor modeling."
     }
   },
   "cointegration_test": {
-    "relationship": "ln(COST) ~ 1.062 * ln(WMT) + 0.821 * ln(S_upper) + (-1.866)",
+    "relationship": "ln(COST) ~ 0.799 * ln(WMT) + 0.618 * ln(S_upper) + (0.443)",
     "cointegrating_vector": {
-      "intercept": -1.8661,
-      "beta_wmt": 1.062,
-      "beta_affluent_sentiment": 0.8213
+      "intercept": 0.4434,
+      "beta_wmt": 0.7991,
+      "beta_affluent_sentiment": 0.6179
     },
     "engle_granger_coint_test": {
-      "test_statistic": -3.7019,
-      "p_value": 0.0182,
+      "test_statistic": -2.4735,
+      "p_value": 0.2909,
       "critical_values": {
-        "1%": -4.145,
-        "5%": -3.469,
-        "10%": -3.136
+        "1%": -4.065,
+        "5%": -3.427,
+        "10%": -3.107
       }
     },
     "residual_adf_test": {
-      "statistic": -3.9172,
-      "p_value": 0.0019,
-      "is_stationary": true
+      "statistic": -2.467,
+      "p_value": 0.1237,
+      "is_stationary": false
     },
-    "is_cointegrated": true,
-    "conclusion": "Cointegrated at the 5% level (Engle-Granger p=0.0182 < 0.05, Residual ADF p=0.0019 < 0.05). A mathematically rigorous long-run equilibrium binds Costco's valuation to Walmart's baseline augmented by the Flashpoint Affluent sentiment wedge."
+    "is_cointegrated": false,
+    "conclusion": "Cointegration not confirmed at 5% level (Engle-Granger p=0.2909, ADF p=0.1237)."
   },
   "information_coefficient_comparison": {
     "1M": {
       "affluent_signal": {
-        "mean_ic": 0.0884,
-        "std_ic": 0.2357,
-        "information_ratio": 0.375,
-        "t_stat": 2.57,
-        "p_value": 0.0135
+        "mean_ic": 0.0131,
+        "std_ic": 0.2732,
+        "information_ratio": 0.048,
+        "t_stat": 0.38,
+        "p_value": 0.7055
       },
       "headline_sentiment": {
-        "mean_ic": -0.0296,
-        "std_ic": 0.2503,
-        "information_ratio": -0.118,
-        "t_stat": -0.81,
-        "p_value": 0.4213
+        "mean_ic": 0.0514,
+        "std_ic": 0.2558,
+        "information_ratio": 0.201,
+        "t_stat": 1.6,
+        "p_value": 0.1155
       },
       "comparative_paired_test": {
-        "ic_difference": 0.118,
-        "t_statistic": 1.9,
-        "p_value_two_tailed": 0.0635,
-        "p_value_one_tailed": 0.0318,
-        "is_superior": true
+        "ic_difference": -0.0384,
+        "t_statistic": -0.82,
+        "p_value_two_tailed": 0.4126,
+        "p_value_one_tailed": 0.7937,
+        "is_superior": false
       }
     },
     "3M": {
       "affluent_signal": {
-        "mean_ic": 0.177,
-        "std_ic": 0.2264,
-        "information_ratio": 0.782,
-        "t_stat": 5.24,
-        "p_value": 0.0
+        "mean_ic": -0.0064,
+        "std_ic": 0.2342,
+        "information_ratio": -0.027,
+        "t_stat": -0.21,
+        "p_value": 0.8322
       },
       "headline_sentiment": {
-        "mean_ic": -0.0621,
-        "std_ic": 0.2816,
-        "information_ratio": -0.22,
-        "t_stat": -1.48,
-        "p_value": 0.1462
+        "mean_ic": 0.0052,
+        "std_ic": 0.2632,
+        "information_ratio": 0.02,
+        "t_stat": 0.15,
+        "p_value": 0.8779
       },
       "comparative_paired_test": {
-        "ic_difference": 0.2391,
-        "t_statistic": 3.59,
-        "p_value_two_tailed": 0.0008,
-        "p_value_one_tailed": 0.0004,
-        "is_superior": true
+        "ic_difference": -0.0116,
+        "t_statistic": -0.23,
+        "p_value_two_tailed": 0.8211,
+        "p_value_one_tailed": 0.5895,
+        "is_superior": false
       }
     }
   },
   "retail_dispersion_3year": {
     "window_months": 36,
-    "start_date": "2022-01-31",
-    "end_date": "2024-12-31",
+    "start_date": "2023-11-30",
+    "end_date": "2026-10-31",
     "asset_metrics": {
       "COST": {
-        "total_return": 0.905,
-        "annualized_return": 0.2396,
-        "annualized_volatility": 0.2507,
-        "sharpe_ratio": 0.88,
-        "max_drawdown": 0.2032
+        "total_return": 0.7764,
+        "annualized_return": 0.2111,
+        "annualized_volatility": 0.2087,
+        "sharpe_ratio": 0.92,
+        "max_drawdown": 0.1743
       },
       "WMT": {
-        "total_return": 1.0281,
-        "annualized_return": 0.2658,
-        "annualized_volatility": 0.205,
-        "sharpe_ratio": 1.2,
-        "max_drawdown": 0.2024
+        "total_return": 1.4561,
+        "annualized_return": 0.3492,
+        "annualized_volatility": 0.2243,
+        "sharpe_ratio": 1.47,
+        "max_drawdown": 0.2089
       },
       "TGT": {
-        "total_return": -0.335,
-        "annualized_return": -0.1271,
-        "annualized_volatility": 0.3579,
-        "sharpe_ratio": -0.41,
-        "max_drawdown": 0.4976
+        "total_return": 0.2745,
+        "annualized_return": 0.0842,
+        "annualized_volatility": 0.2471,
+        "sharpe_ratio": 0.26,
+        "max_drawdown": 0.4665
       },
       "SPY": {
-        "total_return": 0.3661,
-        "annualized_return": 0.1096,
-        "annualized_volatility": 0.1727,
-        "sharpe_ratio": 0.52,
-        "max_drawdown": 0.2025
+        "total_return": 0.7169,
+        "annualized_return": 0.1974,
+        "annualized_volatility": 0.1169,
+        "sharpe_ratio": 1.52,
+        "max_drawdown": 0.0758
       }
     },
-    "mean_cross_sectional_dispersion": 0.1782,
+    "mean_cross_sectional_dispersion": 0.1733,
     "max_cross_sectional_dispersion": 0.4663,
     "pair_trade": {
       "strategy": "Long COST / Short WMT (Dollar Neutral)",
-      "sample_window": "Trailing 36-Month Retail Dispersion Window (2022-01-31 to 2024-12-31)",
+      "sample_window": "Trailing 36-Month Retail Dispersion Window (2023-11-30 to 2026-10-31)",
       "window_type": "trailing_36m_dispersion",
-      "cumulative_return": -0.0813,
-      "annualized_return": -0.0117,
-      "annualized_volatility": 0.1906,
-      "sharpe_ratio": -0.06,
-      "t_statistic": -0.1,
-      "p_value": 0.917,
+      "cumulative_return": -0.3149,
+      "annualized_return": -0.1166,
+      "annualized_volatility": 0.1598,
+      "sharpe_ratio": -0.73,
+      "t_statistic": -1.25,
+      "p_value": 0.2212,
       "win_rate": 0.4857
     }
   }

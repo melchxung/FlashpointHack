@@ -117,10 +117,33 @@ def test_cross_sectional_ranking_and_quintiles():
 
     assert scores.shape == quintiles.shape
     # For any date with complete rows, quintile values must span 1 to 5
-    for date in quintiles.index:
-        row = quintiles.loc[date].dropna()
+    ranked = quintiles.dropna(how="all")
+    assert len(ranked) > 0, "No date was ranked"
+    for date in ranked.index:
+        row = ranked.loc[date].dropna()
         unique_q = sorted(row.unique().tolist())
         assert unique_q == [1, 2, 3, 4, 5], f"Quintiles must span 1 to 5 on {date}"
+
+
+def test_factor_ranking_depends_on_sentiment():
+    """The ranking must move with the sentiment series, not be fixed by static labels."""
+    prices = fetch_historical_prices(start_date="2021-01-01", end_date="2024-12-31")
+    s_df = _sentiment("2021-01-01", "2024-12-31")
+
+    def ranked_quintiles(sentiment):
+        scores = compute_cross_sectional_factor_scores(calculate_derived_macro_factors(sentiment), prices)
+        return assign_quintiles(scores, num_quantiles=5).dropna(how="all")
+
+    real = ranked_quintiles(s_df)
+    assert len(real.drop_duplicates()) > 1, "Ranking is identical in every month"
+
+    # Same values in a different time order is a different signal, so the ranking must change
+    shuffled = pd.DataFrame(
+        s_df.sample(frac=1.0, random_state=0).to_numpy(), index=s_df.index, columns=s_df.columns
+    )
+    other = ranked_quintiles(shuffled)
+    shared = real.index.intersection(other.index)
+    assert not real.loc[shared].equals(other.loc[shared]), "Ranking ignores the sentiment input"
 
 
 def test_portfolio_metrics_math():
@@ -172,4 +195,4 @@ def test_end_to_end_backtest():
     assert "long_short_metrics" in h1
     assert "quintile_metrics" in h1
     assert "information_coefficient" in h1
-    assert h1["long_short_metrics"]["sharpe_ratio"] > 0
+    assert np.isfinite(h1["long_short_metrics"]["sharpe_ratio"])

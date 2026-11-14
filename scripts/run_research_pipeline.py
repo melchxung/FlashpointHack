@@ -14,6 +14,7 @@ Orchestrates the complete K-Shaped Macro Research & Retail Alpha Workflow:
 Outputs all verified artifacts to data/ for Streamlit visualization and reporting.
 """
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -32,7 +33,7 @@ from src.quant.retail_alpha import (
     load_baseline_surveys,
     load_respondent_transcripts,
 )
-from src.sampler.gemini_mcp_agent import run_flashpoint_agent
+from src.forecast.cycle_forecaster import generate_current_cycle_forecast
 
 FLASHPOINT_TASK = (
     "Use the Flashpoint demographics tool once for location 'United States' and report the "
@@ -41,6 +42,14 @@ FLASHPOINT_TASK = (
 
 
 def main():
+    parser = argparse.ArgumentParser(description="K-shaped consumer macro research pipeline")
+    parser.add_argument(
+        "--live",
+        action="store_true",
+        help="Have Gemini call the Flashpoint MCP again (paid, about $0.05). Default: use the saved pull.",
+    )
+    args = parser.parse_args()
+
     print("=" * 82)
     print("  HACK THE UNREACHABLE: K-SHAPED CONSUMER MACRO RESEARCH PIPELINE")
     print("=" * 82)
@@ -48,16 +57,27 @@ def main():
     # -------------------------------------------------------------------------
     # STAGE 1: LIVE FLASHPOINT PULL (GEMINI DRIVES THE FLASHPOINT MCP, PAID VIA X402)
     # -------------------------------------------------------------------------
-    print("\n[STAGE 1/6] Gemini calling Flashpoint MCP for live household income distribution...")
-    live = run_flashpoint_agent(FLASHPOINT_TASK)
-    paid_calls = [c for c in live["tool_calls"] if c["ok"]]
-    if not paid_calls:
-        raise RuntimeError(f"Gemini made no successful Flashpoint MCP call: {live['tool_calls']}")
     live_out = PROJECT_ROOT / "data" / "flashpoint_live_demographics.json"
-    with open(live_out, "w") as f:
-        json.dump({"task": FLASHPOINT_TASK, **live}, f, indent=2)
-    print(f"  ✓ {live['model']} made {len(paid_calls)} live Flashpoint call(s): {[c['tool'] for c in paid_calls]}")
-    print(f"  ✓ Paid {live['spent_usdc']:.2f} USDC via x402; saved {live_out.name}")
+    if args.live:
+        from src.sampler.gemini_mcp_agent import run_flashpoint_agent
+
+        print("\n[STAGE 1/6] Gemini calling Flashpoint MCP for live household income distribution...")
+        live = run_flashpoint_agent(FLASHPOINT_TASK)
+        paid_calls = [c for c in live["tool_calls"] if c["ok"]]
+        if not paid_calls:
+            raise RuntimeError(f"Gemini made no successful Flashpoint MCP call: {live['tool_calls']}")
+        with open(live_out, "w") as f:
+            json.dump({"task": FLASHPOINT_TASK, **live}, f, indent=2)
+        print(f"  ✓ {live['model']} made {len(paid_calls)} live Flashpoint call(s): {[c['tool'] for c in paid_calls]}")
+        print(f"  ✓ Paid {live['spent_usdc']:.2f} USDC via x402; saved {live_out.name}")
+    else:
+        print("\n[STAGE 1/6] Loading saved Flashpoint MCP pull (pass --live to call Flashpoint again)...")
+        if not live_out.exists():
+            raise FileNotFoundError(f"{live_out} is missing; run this script once with --live")
+        with open(live_out, "r") as f:
+            saved = json.load(f)
+        paid_calls = [c for c in saved["tool_calls"] if c["ok"]]
+        print(f"  ✓ {saved['model']} made {len(paid_calls)} Flashpoint call(s): {[c['tool'] for c in paid_calls]}")
 
     # -------------------------------------------------------------------------
     # STAGE 2: INGESTION & DATA SYNC
@@ -137,24 +157,16 @@ def main():
     print(f"  ✓ TGT  ({tgt_sig['action']}): Target ${tgt_sig['k_alpha_target_price']:.2f} ({tgt_sig['k_alpha_upside_pct']:+.1f}% vs Current ${tgt_sig['current_price']:.2f})")
 
     # -------------------------------------------------------------------------
-    # STAGE 6: FORWARD-LOOKING CYCLE FORECAST (OPTIONAL SYNC)
+    # STAGE 6: FORWARD-LOOKING CYCLE FORECAST
     # -------------------------------------------------------------------------
-    print("\n[STAGE 6/6] Checking Forward News Cycle Forecast...")
-    forecast_path = PROJECT_ROOT / "data" / "forward_cycle_forecast.json"
-    if forecast_path.exists():
-        with open(forecast_path, "r") as f:
-            f_data = json.load(f)
-        event = f_data.get("next_major_catalyst") or f_data.get("upcoming_event", {})
-        event_name = event.get("event_name") or event.get("name", "Unknown Catalyst")
-        rel_date = event.get("release_date") or event.get("date", "TBD")
-        days_until = event.get("days_until_release", "N/A")
-
-        surprise_pts = f_data.get("predicted_surprise_points", 0.0)
-        consensus = f_data.get("consensus_headline_prediction", 0.0)
-        affluent = f_data.get("flashpoint_affluent_signal", 0.0)
-
-        print(f"  ✓ Next Catalyst: {event_name} ({rel_date}, T-{days_until} days)")
-        print(f"  ✓ Predicted Surprise Spread: {surprise_pts:+.1f} pts (Consensus: {consensus:.1f} vs Affluent Reality: {affluent:.1f})")
+    print("\n[STAGE 6/6] Generating Forward News Cycle Forecast...")
+    f_data = generate_current_cycle_forecast()
+    event = f_data["next_major_catalyst"]
+    print(f"  ✓ Next Catalyst: {event['event_name']} ({event['release_date']}, T-{event['days_until_release']} days)")
+    print(
+        f"  ✓ Predicted Surprise Spread: {f_data['predicted_surprise_points']:+.1f} pts "
+        f"(Consensus: {f_data['consensus_headline_prediction']:.1f} vs Affluent Reality: {f_data['flashpoint_affluent_signal']:.1f})"
+    )
 
     print("\n" + "=" * 82)
     print("  ✓ RESEARCH PIPELINE EXECUTION FULLY COMPLETED AND ARTIFACTS VERIFIED")

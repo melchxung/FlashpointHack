@@ -103,11 +103,11 @@
     }
   ],
   "consensus_headline_prediction": 70.5,
-  "flashpoint_affluent_signal": 129.9,
-  "predicted_surprise_points": 59.4,
-  "predicted_surprise_zscore": 2.48,
-  "surprise_regime": "MASSIVE_K_SHAPED_DIVERGENCE_BULLISH_UPPER",
-  "market_reaction_thesis": "Wall Street consensus expects headline Michigan Sentiment at 70.5, heavily weighted down by equal-sample lower-income inflation fatigue. However, Flashpoint's Affluent Revealed Reality sits at 129.9 (+59.4 pt spread). Because the top 20% drives ~50% of aggregate consumer spending, actual holiday/Q4 retail receipts and premium warehouse comps will crush gloomy street forecasts. Forward trading strategy: Exploit consensus gloom by accumulating high-income winner COST ahead of the print and shorting margin-squeezed mass retailer WMT.",
+  "flashpoint_affluent_signal": 82.4,
+  "predicted_surprise_points": 11.9,
+  "predicted_surprise_zscore": 0.5,
+  "surprise_regime": "CONVERGENT_NEUTRAL",
+  "market_reaction_thesis": "Wall Street consensus expects headline Michigan Sentiment at 70.5, heavily weighted down by equal-sample lower-income inflation fatigue. However, Flashpoint's Affluent Revealed Reality sits at 82.4 (+11.9 pt spread). Because the top 20% drives ~50% of aggregate consumer spending, actual holiday/Q4 retail receipts and premium warehouse comps will crush gloomy street forecasts. Forward trading strategy: Exploit consensus gloom by accumulating high-income winner COST ahead of the print and shorting margin-squeezed mass retailer WMT.",
   "ticker_signals": {
     "COST": {
       "ticker": "COST",

@@ -53,11 +53,16 @@ def load_respondent_transcripts(filepath: Optional[Path] = None) -> List[Dict]:
                 "retail_cohort": item["cohort"],
                 "primary_ticker": item["retailer"],
                 "hhi": float(profile["household_income"]),
-                "stated_macro_sentiment": round(float(scores["stated_macro_sentiment"]), 3),
-                "revealed_spend_conviction": round(float(scores["revealed_spend_conviction"]), 3),
+                "stated_macro_sentiment": round(
+                    float(scores["stated_macro_sentiment"]), 3
+                ),
+                "revealed_spend_conviction": round(
+                    float(scores["revealed_spend_conviction"]), 3
+                ),
                 "vibecession_gap": round(float(scores["vibecession_divergence"]), 3),
                 "trade_down_risk": round(float(scores["trade_down_risk"]), 3),
-                "membership_renewal_intent": renewal_intent is True or "renew" in str(renewal_intent).lower(),
+                "membership_renewal_intent": renewal_intent is True
+                or "renew" in str(renewal_intent).lower(),
                 "representative_quote": scores["revealed_quote"],
             }
         )
@@ -83,7 +88,9 @@ def load_baseline_surveys(
     json_path = filepath_json or BASELINES_CACHE_JSON
 
     if not csv_path.exists() or not json_path.exists():
-        raise FileNotFoundError(f"Chicago Fed baseline data missing: {csv_path} / {json_path}")
+        raise FileNotFoundError(
+            f"Chicago Fed baseline data missing: {csv_path} / {json_path}"
+        )
     df = pd.read_csv(csv_path, index_col=0, parse_dates=True)
     with open(json_path, "r") as f:
         stats_dict = json.load(f)
@@ -109,7 +116,11 @@ def compute_retail_k_alpha(
         revealed_m = float(grp["revealed_spend_conviction"].mean())
         gap_m = float(grp["vibecession_gap"].mean())
         trade_down_m = float(grp["trade_down_risk"].mean())
-        renewal_m = float(grp["membership_renewal_intent"].mean()) if "membership_renewal_intent" in grp else 0.0
+        renewal_m = (
+            float(grp["membership_renewal_intent"].mean())
+            if "membership_renewal_intent" in grp
+            else 0.0
+        )
 
         cohort_stats[cohort] = {
             "n_respondents": len(grp),
@@ -123,12 +134,22 @@ def compute_retail_k_alpha(
 
     # 2. Time Series Macro Divergence Alpha
     # Z-Score(Revealed High-Earner Spend) - Z-Score(Headline Sentiment)
-    z_upper = (sentiment_df["s_upper"] - sentiment_df["s_upper"].mean()) / sentiment_df["s_upper"].std()
-    z_median = (sentiment_df["s_median"] - sentiment_df["s_median"].mean()) / sentiment_df["s_median"].std()
-    z_lower = (sentiment_df["s_lower"] - sentiment_df["s_lower"].mean()) / sentiment_df["s_lower"].std()
+    z_upper = (sentiment_df["s_upper"] - sentiment_df["s_upper"].mean()) / sentiment_df[
+        "s_upper"
+    ].std()
+    z_median = (
+        sentiment_df["s_median"] - sentiment_df["s_median"].mean()
+    ) / sentiment_df["s_median"].std()
+    z_lower = (sentiment_df["s_lower"] - sentiment_df["s_lower"].mean()) / sentiment_df[
+        "s_lower"
+    ].std()
 
     # Michigan headline equivalent (~equal weighted)
-    s_headline = 0.33 * sentiment_df["s_upper"] + 0.33 * sentiment_df["s_median"] + 0.34 * sentiment_df["s_lower"]
+    s_headline = (
+        0.33 * sentiment_df["s_upper"]
+        + 0.33 * sentiment_df["s_median"]
+        + 0.34 * sentiment_df["s_lower"]
+    )
     z_headline = (s_headline - s_headline.mean()) / s_headline.std()
 
     divergence_alpha_ts = z_upper - z_headline
@@ -163,9 +184,15 @@ def compute_retail_k_alpha(
     tgt_curr = tgt_fund.get("current_price", 152.0)
 
     # Resolve cohort keys robustly
-    costco_key = next((k for k in cohort_stats if "costco" in k.lower()), "costco_affluent")
-    walmart_key = next((k for k in cohort_stats if "walmart" in k.lower()), "walmart_lower")
-    target_key = next((k for k in cohort_stats if "target" in k.lower()), "target_middle")
+    costco_key = next(
+        (k for k in cohort_stats if "costco" in k.lower()), "costco_affluent"
+    )
+    walmart_key = next(
+        (k for k in cohort_stats if "walmart" in k.lower()), "walmart_lower"
+    )
+    target_key = next(
+        (k for k in cohort_stats if "target" in k.lower()), "target_middle"
+    )
 
     # Costco: +18.5% upward revision due to 96% renewal and $350+ basket resilience
     # Walmart: -8.5% downward revision due to high grocery mix and margin pressure
@@ -183,9 +210,15 @@ def compute_retail_k_alpha(
             "k_alpha_target_price": round(cost_curr * 1.185, 2),
             "k_alpha_upside_pct": 18.5,
             "forward_pe": cost_fund.get("forward_pe", 44.2),
-            "revealed_conviction_score": cohort_stats.get(costco_key, {}).get("mean_revealed_spend_conviction", 0.84),
-            "trade_down_risk": cohort_stats.get(costco_key, {}).get("trade_down_risk", 0.10),
-            "renewal_intent_rate": cohort_stats.get(costco_key, {}).get("renewal_intent_rate", 0.96),
+            "revealed_conviction_score": cohort_stats.get(costco_key, {}).get(
+                "mean_revealed_spend_conviction", 0.84
+            ),
+            "trade_down_risk": cohort_stats.get(costco_key, {}).get(
+                "trade_down_risk", 0.10
+            ),
+            "renewal_intent_rate": cohort_stats.get(costco_key, {}).get(
+                "renewal_intent_rate", 0.96
+            ),
             "investment_thesis": (
                 "Affluent members view Costco as a luxury inflation hedge. Despite public macro gloom (stated sentiment -0.42), "
                 "revealed spending is booming (+0.84 conviction, $350+ basket). Extreme pricing power, 94%+ membership renewals, "
@@ -205,9 +238,15 @@ def compute_retail_k_alpha(
             "k_alpha_target_price": round(wmt_curr * 0.915, 2),
             "k_alpha_upside_pct": -8.5,
             "forward_pe": wmt_fund.get("forward_pe", 39.8),
-            "revealed_conviction_score": cohort_stats.get(walmart_key, {}).get("mean_revealed_spend_conviction", -0.46),
-            "trade_down_risk": cohort_stats.get(walmart_key, {}).get("trade_down_risk", 0.82),
-            "renewal_intent_rate": cohort_stats.get(walmart_key, {}).get("renewal_intent_rate", 0.50),
+            "revealed_conviction_score": cohort_stats.get(walmart_key, {}).get(
+                "mean_revealed_spend_conviction", -0.46
+            ),
+            "trade_down_risk": cohort_stats.get(walmart_key, {}).get(
+                "trade_down_risk", 0.82
+            ),
+            "renewal_intent_rate": cohort_stats.get(walmart_key, {}).get(
+                "renewal_intent_rate", 0.50
+            ),
             "investment_thesis": (
                 "Core lower-income shoppers face severe balance sheet distress (stated -0.78, revealed -0.46). While trade-down "
                 "drives grocery foot traffic (82% trade-down risk), high grocery revenue mix (~59%) dilutes operating margins. "
@@ -227,9 +266,15 @@ def compute_retail_k_alpha(
             "k_alpha_target_price": round(tgt_curr * 1.012, 2),
             "k_alpha_upside_pct": 1.2,
             "forward_pe": tgt_fund.get("forward_pe", 16.9),
-            "revealed_conviction_score": cohort_stats.get(target_key, {}).get("mean_revealed_spend_conviction", 0.05),
-            "trade_down_risk": cohort_stats.get(target_key, {}).get("trade_down_risk", 0.42),
-            "renewal_intent_rate": cohort_stats.get(target_key, {}).get("renewal_intent_rate", 0.78),
+            "revealed_conviction_score": cohort_stats.get(target_key, {}).get(
+                "mean_revealed_spend_conviction", 0.05
+            ),
+            "trade_down_risk": cohort_stats.get(target_key, {}).get(
+                "trade_down_risk", 0.42
+            ),
+            "renewal_intent_rate": cohort_stats.get(target_key, {}).get(
+                "renewal_intent_rate", 0.78
+            ),
             "investment_thesis": (
                 "Caught in the middle of the K. Middle-income shoppers defer discretionary home and apparel baskets (+0.05 conviction). "
                 "Valuation is already depressed (16.9x P/E), providing a valuation floor, but top-line growth remains constrained by "
@@ -253,14 +298,16 @@ def compute_retail_k_alpha(
         pair_trade_summary = {
             "strategy": "Long COST (Right Tail) / Short WMT (Left Tail)",
             "sample_window": f"Full 4-Year Sample Horizon ({prices_df.index[0].date()} to {prices_df.index[-1].date()})",
-            "window_type": "full_horizon_2021_2024",
+            "window_type": "full_horizon",
             "window_months": int(len(pair_rets)),
             "annualized_spread_return": round(pair_ann_ret, 4),
             "annualized_volatility": round(pair_vol, 4),
             "sharpe_ratio": round(pair_sharpe, 2),
             "t_stat": round(float(t_stat), 2),
             "p_value": round(float(p_val), 4),
-            "cumulative_spread_return": round(float(((1.0 + pair_rets).cumprod().iloc[-1]) - 1.0), 4),
+            "cumulative_spread_return": round(
+                float(((1.0 + pair_rets).cumprod().iloc[-1]) - 1.0), 4
+            ),
         }
     else:
         pair_trade_summary = {}
@@ -362,7 +409,9 @@ def compute_retail_k_alpha(
         ],
         "macro_divergence_time_series": {
             "dates": [str(d.date()) for d in divergence_alpha_ts.index],
-            "divergence_alpha": [round(float(v), 3) for v in divergence_alpha_ts.values],
+            "divergence_alpha": [
+                round(float(v), 3) for v in divergence_alpha_ts.values
+            ],
             "s_upper": [round(float(v), 2) for v in sentiment_df["s_upper"].values],
             "s_median": [round(float(v), 2) for v in sentiment_df["s_median"].values],
             "s_lower": [round(float(v), 2) for v in sentiment_df["s_lower"].values],

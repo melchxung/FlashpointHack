@@ -208,23 +208,13 @@ class EconomicNewsCycleForecaster:
         self._load_data()
 
     def _load_data(self):
-        """Load underlying sentiment signals if available."""
-        self.latest_s_upper = 132.8
-        self.latest_s_lower = 22.4
-        self.latest_s_equal = 74.2
-        self.latest_delta_s = 110.4
-
-        if self.signals_path.exists():
-            try:
-                with open(self.signals_path) as f:
-                    data = json.load(f)
-                if "S_upper" in data and len(data["S_upper"]) > 0:
-                    self.latest_s_upper = round(float(data["S_upper"][-1]), 1)
-                    self.latest_s_lower = round(float(data["S_lower"][-1]), 1)
-                    self.latest_s_equal = round(float(data["S_equal"][-1]), 1)
-                    self.latest_delta_s = round(float(data["Delta_S"][-1]), 1)
-            except Exception as e:
-                logger.warning(f"Error reading sentiment signals: {e}")
+        """Load the latest sentiment readings. Raises if the signals file is missing or empty."""
+        with open(self.signals_path) as f:
+            data = json.load(f)
+        self.latest_s_upper = round(float(data["S_upper"][-1]), 1)
+        self.latest_s_lower = round(float(data["S_lower"][-1]), 1)
+        self.latest_s_equal = round(float(data["S_equal"][-1]), 1)
+        self.latest_delta_s = round(float(data["Delta_S"][-1]), 1)
 
     def generate_cycle_forecast(
         self,
