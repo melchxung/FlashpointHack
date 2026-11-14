@@ -78,89 +78,130 @@
     },
     "pandemic_era_2020_latest": {
       "log_michigan": {
-        "correlation": 0.1401,
-        "r_squared": 0.0196,
-        "sample_months": 81
+        "correlation": 0.1383,
+        "r_squared": 0.0191,
+        "sample_months": 82
       },
       "log_cb": {
-        "correlation": 0.3528,
-        "r_squared": 0.1244,
-        "sample_months": 81
+        "correlation": 0.3406,
+        "r_squared": 0.116,
+        "sample_months": 82
       },
       "log_ccsi": {
-        "correlation": 0.4272,
-        "r_squared": 0.1825,
-        "sample_months": 81
+        "correlation": 0.4267,
+        "r_squared": 0.182,
+        "sample_months": 82
       },
       "sffed_news": {
-        "correlation": 0.6178,
-        "r_squared": 0.3817,
-        "sample_months": 81
+        "correlation": 0.6156,
+        "r_squared": 0.3789,
+        "sample_months": 82
       },
       "morning_consult": {
-        "correlation": 0.4244,
-        "r_squared": 0.1801,
-        "sample_months": 81
+        "correlation": 0.4238,
+        "r_squared": 0.1796,
+        "sample_months": 82
       },
       "rasmussen": {
-        "correlation": 0.4786,
-        "r_squared": 0.2291,
-        "sample_months": 81
+        "correlation": 0.4714,
+        "r_squared": 0.2222,
+        "sample_months": 82
       }
     },
     "post_inflation_2022_latest": {
       "log_michigan": {
-        "correlation": 0.2083,
-        "r_squared": 0.0434,
-        "sample_months": 57
+        "correlation": 0.2042,
+        "r_squared": 0.0417,
+        "sample_months": 58
       },
       "log_cb": {
-        "correlation": 0.1263,
-        "r_squared": 0.0159,
-        "sample_months": 57
+        "correlation": 0.1204,
+        "r_squared": 0.0145,
+        "sample_months": 58
       },
       "log_ccsi": {
         "correlation": 0.2322,
         "r_squared": 0.0539,
-        "sample_months": 57
+        "sample_months": 58
       },
       "sffed_news": {
-        "correlation": 0.3303,
-        "r_squared": 0.1091,
-        "sample_months": 57
+        "correlation": 0.3279,
+        "r_squared": 0.1075,
+        "sample_months": 58
       },
       "morning_consult": {
         "correlation": 0.222,
         "r_squared": 0.0493,
-        "sample_months": 57
+        "sample_months": 58
       },
       "rasmussen": {
-        "correlation": 0.263,
-        "r_squared": 0.0692,
-        "sample_months": 57
+        "correlation": 0.2548,
+        "r_squared": 0.0649,
+        "sample_months": 58
+      }
+    },
+    "three_year_window_nov2023_oct2026": {
+      "log_michigan": {
+        "correlation": 0.345,
+        "r_squared": 0.119,
+        "sample_months": 36
+      },
+      "log_cb": {
+        "correlation": 0.3324,
+        "r_squared": 0.1105,
+        "sample_months": 36
+      },
+      "log_ccsi": {
+        "correlation": 0.3457,
+        "r_squared": 0.1195,
+        "sample_months": 36
+      },
+      "sffed_news": {
+        "correlation": 0.4156,
+        "r_squared": 0.1727,
+        "sample_months": 36
+      },
+      "morning_consult": {
+        "correlation": 0.3641,
+        "r_squared": 0.1326,
+        "sample_months": 36
+      },
+      "rasmussen": {
+        "correlation": 0.3694,
+        "r_squared": 0.1364,
+        "sample_months": 36
       }
     }
   },
   "michigan_bias_and_breakdown_analysis": {
+    "three_year_window_nov2023_oct2026": {
+      "period": "2023-11-01 to 2026-10-01",
+      "monthly_cycles_count": 36,
+      "mean_points_understated": 16.0,
+      "max_points_understated": 27.57,
+      "latest_2026_understated": 23.22,
+      "survey_methodology_mode_component": 10.5,
+      "vibes_negative_sentiment_component": 7.95
+    },
     "downward_bias_period_2022_2026": {
-      "mean_points_understated": 12.01,
-      "median_points_understated": 8.78,
+      "mean_points_understated": 12.21,
+      "median_points_understated": 8.81,
       "max_points_understated": 27.57,
       "min_points_understated": -2.62,
-      "std_dev": 8.53
+      "std_dev": 8.58
     },
     "downward_bias_period_2024_2026_web_transition": {
-      "mean_points_understated": 16.33,
+      "mean_points_understated": 16.54,
       "max_points_understated": 27.57,
-      "latest_2026_understated": 23.09,
-      "survey_methodology_mode_component": 10.76,
+      "latest_2026_understated": 23.22,
+      "survey_methodology_mode_component": 10.9,
       "vibes_negative_sentiment_component": 7.89,
       "findings": "Chicago Fed Letter 521 proves the University of Michigan Index understates consumer sentiment by 25-30 index points in 2024-2026. This disconnect arises from a combination of web survey methodology mode transition (~14.5 pts) and 'vibes' inflation salience (~7.2 pts)."
     }
   },
   "key_takeaways": [
     "1. Pre-2020: Strong predictive power (Michigan r = 0.69, Conference Board r = 0.60).",
-    "2. Post-2020: Near total breakdown in Michigan's correlation (r collapsed towards 0.08, and negative in 36M window).",
+    "2. Post-2020: Severe degradation in Michigan's predictive power (correlation collapsed from r = 0.697 down to r = 0.138 in the post-2020 era, with R\u00b2 falling from 48.6% to under 2.0%).",
     "3. 25-30 pt downward bias: Headline Michigan signals recession (45-55) while consumer spending expanded +2.5% YoY.",
     "4. C-CSI composite corrects for measurement error, but still relies on population equal-weighting.",
     "5. The Flashpoint AI K-Alpha solution: Dollar-weighted affluent sentiment (S_K and Delta_S) restores predictive alpha."

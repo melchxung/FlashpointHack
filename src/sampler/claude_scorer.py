@@ -52,6 +52,11 @@ class ClaudeScorer:
         model: str = "claude-3-5-sonnet-20241022",
         seed: int = 42,
     ):
+        # Auto-load from .env if present (only ANTHROPIC_API_KEY, never clobbering existing env)
+        if not api_key and not os.environ.get("ANTHROPIC_API_KEY"):
+            from src.utils.dotenv import load_dotenv_keys
+            load_dotenv_keys(keys=["ANTHROPIC_API_KEY"])
+
         self.api_key = api_key or os.environ.get("ANTHROPIC_API_KEY")
         self.model = model
         self.seed = seed

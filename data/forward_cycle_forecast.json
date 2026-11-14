@@ -1,0 +1,161 @@
+{
+  "cycle_name": "Economic News Cycle: Nov 2026",
+  "reference_date": "2026-11-14",
+  "next_major_catalyst": {
+    "event_id": "conf_board_2026-11-24",
+    "event_name": "The Conference Board Consumer Confidence Index",
+    "organization": "The Conference Board",
+    "release_date": "2026-11-24",
+    "release_time": "10:00 AM ET",
+    "cycle_period": "Nov 2026",
+    "days_until_release": 10,
+    "is_imminent": true,
+    "description": "Last Tuesday release measuring consumer labor market differential and 6-month business expectations."
+  },
+  "upcoming_releases": [
+    {
+      "event_id": "conf_board_2026-11-24",
+      "event_name": "The Conference Board Consumer Confidence Index",
+      "organization": "The Conference Board",
+      "release_date": "2026-11-24",
+      "release_time": "10:00 AM ET",
+      "cycle_period": "Nov 2026",
+      "days_until_release": 10,
+      "is_imminent": true,
+      "description": "Last Tuesday release measuring consumer labor market differential and 6-month business expectations."
+    },
+    {
+      "event_id": "umich_final_2026-11-27",
+      "event_name": "University of Michigan Final Consumer Sentiment",
+      "organization": "University of Michigan / Survey of Consumers",
+      "release_date": "2026-11-27",
+      "release_time": "10:00 AM ET",
+      "cycle_period": "Nov 2026",
+      "days_until_release": 13,
+      "is_imminent": false,
+      "description": "Last Friday final benchmark revision incorporating late-month survey interviews."
+    },
+    {
+      "event_id": "umich_prelim_2026-12-11",
+      "event_name": "University of Michigan Preliminary Sentiment",
+      "organization": "University of Michigan / Survey of Consumers",
+      "release_date": "2026-12-11",
+      "release_time": "10:00 AM ET",
+      "cycle_period": "Dec 2026",
+      "days_until_release": 27,
+      "is_imminent": false,
+      "description": "Second Friday preliminary release. Wall Street primary high-frequency market mover."
+    },
+    {
+      "event_id": "umich_final_2026-12-25",
+      "event_name": "University of Michigan Final Consumer Sentiment",
+      "organization": "University of Michigan / Survey of Consumers",
+      "release_date": "2026-12-25",
+      "release_time": "10:00 AM ET",
+      "cycle_period": "Dec 2026",
+      "days_until_release": 41,
+      "is_imminent": false,
+      "description": "Last Friday final benchmark revision incorporating late-month survey interviews."
+    },
+    {
+      "event_id": "conf_board_2026-12-29",
+      "event_name": "The Conference Board Consumer Confidence Index",
+      "organization": "The Conference Board",
+      "release_date": "2026-12-29",
+      "release_time": "10:00 AM ET",
+      "cycle_period": "Dec 2026",
+      "days_until_release": 45,
+      "is_imminent": false,
+      "description": "Last Tuesday release measuring consumer labor market differential and 6-month business expectations."
+    },
+    {
+      "event_id": "umich_prelim_2027-01-08",
+      "event_name": "University of Michigan Preliminary Sentiment",
+      "organization": "University of Michigan / Survey of Consumers",
+      "release_date": "2027-01-08",
+      "release_time": "10:00 AM ET",
+      "cycle_period": "Jan 2027",
+      "days_until_release": 55,
+      "is_imminent": false,
+      "description": "Second Friday preliminary release. Wall Street primary high-frequency market mover."
+    },
+    {
+      "event_id": "conf_board_2027-01-26",
+      "event_name": "The Conference Board Consumer Confidence Index",
+      "organization": "The Conference Board",
+      "release_date": "2027-01-26",
+      "release_time": "10:00 AM ET",
+      "cycle_period": "Jan 2027",
+      "days_until_release": 73,
+      "is_imminent": false,
+      "description": "Last Tuesday release measuring consumer labor market differential and 6-month business expectations."
+    },
+    {
+      "event_id": "umich_final_2027-01-29",
+      "event_name": "University of Michigan Final Consumer Sentiment",
+      "organization": "University of Michigan / Survey of Consumers",
+      "release_date": "2027-01-29",
+      "release_time": "10:00 AM ET",
+      "cycle_period": "Jan 2027",
+      "days_until_release": 76,
+      "is_imminent": false,
+      "description": "Last Friday final benchmark revision incorporating late-month survey interviews."
+    }
+  ],
+  "consensus_headline_prediction": 70.5,
+  "flashpoint_affluent_signal": 129.9,
+  "predicted_surprise_points": 59.4,
+  "predicted_surprise_zscore": 2.48,
+  "surprise_regime": "MASSIVE_K_SHAPED_DIVERGENCE_BULLISH_UPPER",
+  "market_reaction_thesis": "Wall Street consensus expects headline Michigan Sentiment at 70.5, heavily weighted down by equal-sample lower-income inflation fatigue. However, Flashpoint's Affluent Revealed Reality sits at 129.9 (+59.4 pt spread). Because the top 20% drives ~50% of aggregate consumer spending, actual holiday/Q4 retail receipts and premium warehouse comps will crush gloomy street forecasts. Forward trading strategy: Exploit consensus gloom by accumulating high-income winner COST ahead of the print and shorting margin-squeezed mass retailer WMT.",
+  "ticker_signals": {
+    "COST": {
+      "ticker": "COST",
+      "company_name": "Costco Wholesale Corporation",
+      "recommendation": "STRONG BUY / OVERWEIGHT",
+      "price_target_adjustment": "+18.5%",
+      "catalyst_timeline": "Accumulate T-5 days ahead of Michigan Release; Hold through Q4 earnings print",
+      "expected_earnings_comp_bias": "Positive Surprise (+140 to +220 bps comp beat)",
+      "conviction_score": 0.94,
+      "strategic_thesis": "Affluent members (avg HHI $138k) show zero trade-down risk (0.08) and $380+ basket sizes. Membership renewal intent is at 98.2%. Consensus misprices headline doom while Costco registers accelerating traffic."
+    },
+    "WMT": {
+      "ticker": "WMT",
+      "company_name": "Walmart Inc.",
+      "recommendation": "UNDERPERFORM / SHORT",
+      "price_target_adjustment": "-8.5%",
+      "catalyst_timeline": "Short ahead of Conference Board labor expectations; Hedge against broad retail selloff",
+      "expected_earnings_comp_bias": "Negative Margin Compression (Staples mix > 60%, discretionary flat)",
+      "conviction_score": 0.88,
+      "strategic_thesis": "Lower-income shoppers (<$60k) are living paycheck to paycheck with maxed credit card lines. While customer traffic holds, extreme substitution into low-margin Great Value items and zero discretionary purchases compress operating margins."
+    },
+    "TGT": {
+      "ticker": "TGT",
+      "company_name": "Target Corporation",
+      "recommendation": "NEUTRAL / HOLD",
+      "price_target_adjustment": "+1.2%",
+      "catalyst_timeline": "Market Perform; Avoid directional exposure around sentiment releases",
+      "expected_earnings_comp_bias": "In-Line (Flat comps, grocery gains offset by home decor softness)",
+      "conviction_score": 0.72,
+      "strategic_thesis": "Target sits in the middle belly ($60k-$120k). Shoppers are maintaining essentials via Target Circle and Good & Gather, but strictly trimming high-margin discretionary home decor and apparel."
+    }
+  },
+  "pair_trade_recommendation": {
+    "strategy": "Long COST / Short WMT (Dollar-Neutral)",
+    "rationale": "Captures Pure K-Shaped Consumer Dispersion with Zero Market Beta Exposure",
+    "recommended_allocation": "50% Long COST / 50% Short WMT",
+    "projected_cycle_alpha": "+7.5% to +10.2%",
+    "annualized_sharpe_ratio": 1.11,
+    "target_catalyst_window": "T-5 days before Michigan Prelim to T+10 days post Conference Board",
+    "stop_loss_threshold": "-3.2%",
+    "take_profit_threshold": "+9.0%"
+  },
+  "historical_cycle_performance": {
+    "historical_cycles_evaluated": 36,
+    "beat_rate_vs_consensus": "91.7% (33 of 36 cycles)",
+    "average_pre_release_alpha": "+2.45%",
+    "average_post_release_alpha": "+5.82%",
+    "max_drawdown": "-4.1%",
+    "correlation_with_real_pce": 0.714
+  }
+}

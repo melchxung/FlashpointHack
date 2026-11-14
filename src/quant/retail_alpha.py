@@ -426,6 +426,9 @@ def compute_retail_k_alpha(
 
         pair_trade_summary = {
             "strategy": "Long COST (Right Tail) / Short WMT (Left Tail)",
+            "sample_window": f"Full 4-Year Sample Horizon ({prices_df.index[0].date()} to {prices_df.index[-1].date()})",
+            "window_type": "full_horizon_2021_2024",
+            "window_months": int(len(pair_rets)),
             "annualized_spread_return": round(pair_ann_ret, 4),
             "annualized_volatility": round(pair_vol, 4),
             "sharpe_ratio": round(pair_sharpe, 2),
@@ -547,6 +550,15 @@ def compute_retail_k_alpha(
         try:
             with open(affluent_repl_path, "r") as f:
                 results["affluent_survey_replications"] = json.load(f)
+        except Exception:
+            pass
+
+    # Load econometric results if available
+    econ_path = DATA_DIR / "econometrics_results.json"
+    if econ_path.exists():
+        try:
+            with open(econ_path, "r") as f:
+                results["econometrics"] = json.load(f)
         except Exception:
             pass
 

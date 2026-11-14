@@ -19,6 +19,8 @@ def test_dashboard_data_artifacts_exist():
         "baseline_sentiment_surveys.csv",
         "market_prices.csv",
         "ticker_fundamentals.json",
+        "forward_cycle_forecast.json",
+        "econometrics_results.json",
     ]
     for filename in required_files:
         path = DATA_DIR / filename
@@ -95,5 +97,20 @@ def test_app_load_all_data_callable():
     assert "replications" in loaded
     assert "baseline_corr" in loaded
     assert "fundamentals" in loaded
+    assert "forecast" in loaded
+    assert "econometrics" in loaded
     assert "surveys_df" in loaded
     assert "prices_df" in loaded
+
+    # Check forecast hero card fields
+    fc = loaded["forecast"]
+    assert "next_major_catalyst" in fc
+    assert fc["next_major_catalyst"]["days_until_release"] >= 0
+    assert fc["predicted_surprise_points"] > 0
+
+    # Check econometrics diagnostics
+    econ = loaded["econometrics"]
+    assert econ["stationarity_tests"]["primary_signal"]["p_value"] < 0.05
+    assert econ["cointegration_test"]["engle_granger_coint_test"]["p_value"] < 0.05
+    assert econ["information_coefficient_comparison"]["3M"]["comparative_paired_test"]["is_superior"] is True
+    assert "retail_dispersion_3year" in econ

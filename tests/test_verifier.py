@@ -342,3 +342,86 @@ class TestEndToEndPipelineAndReproducibility:
         assert ls_m["annualized_return"] > 0.10, "Expected Long/Short return > 10%"
         assert ls_m["sharpe_ratio"] > 0.5, "Expected Long/Short Sharpe > 0.5"
         assert h1["information_coefficient"]["mean_ic"] > 0.0, "Rank IC must be positive"
+
+
+# ==============================================================================
+# 6. ECONOMETRICS & FORWARD FORECASTING INVARIANTS
+# ==============================================================================
+
+class TestEconometricsAndForecastingInvariants:
+    """Validate statistical properties, stationarity proofs, and forecast schema."""
+
+    def test_econometrics_results_artifact_schema_and_pvalues(self):
+        """Verify data/econometrics_results.json has statistically significant proofs."""
+        econ_path = Path("data/econometrics_results.json")
+        assert econ_path.exists(), "data/econometrics_results.json missing!"
+
+        with open(econ_path, "r") as f:
+            econ = json.load(f)
+
+        assert "stationarity_tests" in econ
+        assert "cointegration_test" in econ
+        assert "information_coefficient_comparison" in econ
+        assert "retail_dispersion_3year" in econ
+
+        # ADF stationarity p < 0.05
+        primary_adf = econ["stationarity_tests"]["primary_signal"]
+        assert primary_adf["is_stationary"] is True
+        assert primary_adf["p_value"] < 0.05
+
+        # Cointegration p < 0.05
+        coint = econ["cointegration_test"]
+        assert coint["is_cointegrated"] is True
+        assert coint["engle_granger_coint_test"]["p_value"] < 0.05
+
+        # IC comparison 3M: affluent superior with p < 0.01
+        ic_comp = econ["information_coefficient_comparison"]["3M"]
+        assert ic_comp["comparative_paired_test"]["is_superior"] is True
+        assert ic_comp["comparative_paired_test"]["p_value_one_tailed"] < 0.01
+        assert ic_comp["comparative_paired_test"]["t_statistic"] > 2.0
+
+    def test_forward_cycle_forecast_artifact(self):
+        """Verify data/forward_cycle_forecast.json has upcoming catalysts and actionable signals."""
+        fc_path = Path("data/forward_cycle_forecast.json")
+        assert fc_path.exists(), "data/forward_cycle_forecast.json missing!"
+
+        with open(fc_path, "r") as f:
+            fc = json.load(f)
+
+        assert "cycle_name" in fc
+        assert "next_major_catalyst" in fc
+        assert "upcoming_releases" in fc
+        assert "ticker_signals" in fc
+        assert "pair_trade_recommendation" in fc
+
+        # Check ticker recommendations
+        assert fc["ticker_signals"]["COST"]["recommendation"] == "STRONG BUY / OVERWEIGHT"
+        assert fc["ticker_signals"]["WMT"]["recommendation"] == "UNDERPERFORM / SHORT"
+        assert fc["ticker_signals"]["TGT"]["recommendation"] == "NEUTRAL / HOLD"
+
+        # Check surprise points are positive
+        assert fc["predicted_surprise_points"] > 20.0
+
+    def test_baseline_sentiment_surveys_3year_window(self):
+        """Verify data/baseline_sentiment_surveys.csv has the required 7 surveys and zero nulls."""
+        csv_path = Path("data/baseline_sentiment_surveys.csv")
+        assert csv_path.exists(), "data/baseline_sentiment_surveys.csv missing!"
+
+        df = pd.read_csv(csv_path)
+        required_surveys = [
+            "michigan",
+            "ccsi",
+            "conference_board",
+            "morning_consult",
+            "rasmussen",
+            "sf_fed_news",
+            "goldman_sachs",
+        ]
+        for s in required_surveys:
+            assert s in df.columns, f"Survey {s} missing from baseline_sentiment_surveys.csv"
+
+        # Check 36-month window (Nov 2023 - Oct 2026) has zero NaNs in survey columns
+        recent_36 = df.tail(36)
+        for s in required_surveys:
+            assert not recent_36[s].isna().any(), f"Survey {s} has NaNs in recent 36-month window"
+

@@ -133,9 +133,10 @@ def pull_all():
         out["ccsi_daily"] = tidy_series(read_table(link), "ccsi", prefer=["c-csi", "ccsi", "csi"])
     else:
         print("   C-CSI file link not found. Download it from the Chicago Fed C-CSI page,"
-              " save it as ccsi.xlsx next to this script and run again.")
+              " save it as data/raw/ccsi.xlsx (or next to this script) and run again.")
         try:
-            out["ccsi_daily"] = tidy_series(pd.read_excel("ccsi.xlsx"), "ccsi",
+            ccsi_path = os.path.join("data", "raw", "ccsi.xlsx") if os.path.exists(os.path.join("data", "raw", "ccsi.xlsx")) else "ccsi.xlsx"
+            out["ccsi_daily"] = tidy_series(pd.read_excel(ccsi_path), "ccsi",
                                             prefer=["c-csi", "ccsi", "csi"])
         except FileNotFoundError:
             pass
