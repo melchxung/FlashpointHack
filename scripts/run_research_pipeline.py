@@ -42,7 +42,9 @@ FLASHPOINT_TASK = (
 
 
 def main():
-    parser = argparse.ArgumentParser(description="K-shaped consumer macro research pipeline")
+    parser = argparse.ArgumentParser(
+        description="K-shaped consumer macro research pipeline"
+    )
     parser.add_argument(
         "--live",
         action="store_true",
@@ -61,23 +63,35 @@ def main():
     if args.live:
         from src.sampler.gemini_mcp_agent import run_flashpoint_agent
 
-        print("\n[STAGE 1/6] Gemini calling Flashpoint MCP for live household income distribution...")
+        print(
+            "\n[STAGE 1/6] Gemini calling Flashpoint MCP for live household income distribution..."
+        )
         live = run_flashpoint_agent(FLASHPOINT_TASK)
         paid_calls = [c for c in live["tool_calls"] if c["ok"]]
         if not paid_calls:
-            raise RuntimeError(f"Gemini made no successful Flashpoint MCP call: {live['tool_calls']}")
+            raise RuntimeError(
+                f"Gemini made no successful Flashpoint MCP call: {live['tool_calls']}"
+            )
         with open(live_out, "w") as f:
             json.dump({"task": FLASHPOINT_TASK, **live}, f, indent=2)
-        print(f"  ✓ {live['model']} made {len(paid_calls)} live Flashpoint call(s): {[c['tool'] for c in paid_calls]}")
+        print(
+            f"  ✓ {live['model']} made {len(paid_calls)} live Flashpoint call(s): {[c['tool'] for c in paid_calls]}"
+        )
         print(f"  ✓ Paid {live['spent_usdc']:.2f} USDC via x402; saved {live_out.name}")
     else:
-        print("\n[STAGE 1/6] Loading saved Flashpoint MCP pull (pass --live to call Flashpoint again)...")
+        print(
+            "\n[STAGE 1/6] Loading saved Flashpoint MCP pull (pass --live to call Flashpoint again)..."
+        )
         if not live_out.exists():
-            raise FileNotFoundError(f"{live_out} is missing; run this script once with --live")
+            raise FileNotFoundError(
+                f"{live_out} is missing; run this script once with --live"
+            )
         with open(live_out, "r") as f:
             saved = json.load(f)
         paid_calls = [c for c in saved["tool_calls"] if c["ok"]]
-        print(f"  ✓ {saved['model']} made {len(paid_calls)} Flashpoint call(s): {[c['tool'] for c in paid_calls]}")
+        print(
+            f"  ✓ {saved['model']} made {len(paid_calls)} Flashpoint call(s): {[c['tool'] for c in paid_calls]}"
+        )
 
     # -------------------------------------------------------------------------
     # STAGE 2: INGESTION & DATA SYNC
@@ -85,11 +99,15 @@ def main():
     print("\n[STAGE 2/6] Ingesting Sentiment Signals, Transcripts, and Market Data...")
     sentiment_path = PROJECT_ROOT / "data" / "sentiment_signals.json"
     sentiment_df = load_sentiment_signals(sentiment_path)
-    print(f"  ✓ Loaded {len(sentiment_df)} months of stratified sentiment signals ({sentiment_df.index[0].date()} -> {sentiment_df.index[-1].date()})")
+    print(
+        f"  ✓ Loaded {len(sentiment_df)} months of stratified sentiment signals ({sentiment_df.index[0].date()} -> {sentiment_df.index[-1].date()})"
+    )
 
     transcripts_path = PROJECT_ROOT / "data" / "respondent_scored_transcripts.json"
     transcripts = load_respondent_transcripts(transcripts_path)
-    print(f"  ✓ Loaded {len(transcripts)} respondent transcripts with Claude revealed preference scores")
+    print(
+        f"  ✓ Loaded {len(transcripts)} respondent transcripts with Claude revealed preference scores"
+    )
 
     prices_path = PROJECT_ROOT / "data" / "market_prices.csv"
     prices_df = fetch_historical_prices(cache_path=prices_path)
@@ -99,38 +117,69 @@ def main():
     baseline_csv = PROJECT_ROOT / "data" / "baseline_sentiment_surveys.csv"
     baseline_json = PROJECT_ROOT / "data" / "baseline_correlations.json"
     baseline_df, baseline_stats = load_baseline_surveys(baseline_csv, baseline_json)
-    print(f"  ✓ Loaded 7 baseline surveys from Chicago Fed Letter 521 ({len(baseline_df)} periods)")
+    print(
+        f"  ✓ Loaded 7 baseline surveys from Chicago Fed Letter 521 ({len(baseline_df)} periods)"
+    )
 
     # -------------------------------------------------------------------------
     # STAGE 3: CROSS-SECTIONAL FACTOR MODEL BACKTEST
     # -------------------------------------------------------------------------
     print("\n[STAGE 3/6] Running Cross-Sectional Factor Model Backtest...")
-    backtest_results = run_factor_backtest(sentiment_df=sentiment_df, prices_df=prices_df)
+    backtest_results = run_factor_backtest(
+        sentiment_df=sentiment_df, prices_df=prices_df
+    )
     backtest_out = PROJECT_ROOT / "data" / "backtest_results.json"
     with open(backtest_out, "w") as f:
         json.dump(backtest_results, f, indent=2)
 
     h1_ls = backtest_results["horizons"]["1M"]["long_short_metrics"]
     h3_ls = backtest_results["horizons"]["3M"]["long_short_metrics"]
-    print(f"  ✓ 1M Horizon: Long/Short Ann. Return = {h1_ls['annualized_return']*100:+.2f}%, Sharpe = {h1_ls['sharpe_ratio']:.2f}")
-    print(f"  ✓ 3M Horizon: Long/Short Ann. Return = {h3_ls['annualized_return']*100:+.2f}%, Sharpe = {h3_ls['sharpe_ratio']:.2f}")
+    print(
+        f"  ✓ 1M Horizon: Long/Short Ann. Return = {h1_ls['annualized_return']*100:+.2f}%, Sharpe = {h1_ls['sharpe_ratio']:.2f}"
+    )
+    print(
+        f"  ✓ 3M Horizon: Long/Short Ann. Return = {h3_ls['annualized_return']*100:+.2f}%, Sharpe = {h3_ls['sharpe_ratio']:.2f}"
+    )
+
+    # Strategy performance series for the dashboard's backtest view —
+    # reads the same saved inputs, no network.
+    from src.quant.strategies import build_strategy_performance
+
+    strat_out = PROJECT_ROOT / "data" / "strategy_performance.json"
+    with open(strat_out, "w") as f:
+        json.dump(build_strategy_performance(), f, indent=2)
+    print(f"  ✓ Wrote {strat_out.name} (strategy equity curves for the dashboard)")
 
     # -------------------------------------------------------------------------
     # STAGE 4: ECONOMETRIC DIAGNOSTICS & STATISTICAL PROOFS
     # -------------------------------------------------------------------------
-    print("\n[STAGE 4/6] Executing Econometric Tests (ADF, Cointegration, IC Superiority)...")
-    econ_results = run_full_econometric_suite(sentiment_df=sentiment_df, prices_df=prices_df)
+    print(
+        "\n[STAGE 4/6] Executing Econometric Tests (ADF, Cointegration, IC Superiority)..."
+    )
+    econ_results = run_full_econometric_suite(
+        sentiment_df=sentiment_df, prices_df=prices_df
+    )
 
     adf_primary = econ_results["stationarity_tests"]["primary_signal"]
     adf_mom = econ_results["stationarity_tests"]["momentum_signal"]
     coint_res = econ_results["cointegration_test"]
     ic_comp_3m = econ_results["information_coefficient_comparison"]["3M"]
 
-    print(f"  ✓ ADF Primary Signal Z(Delta_S): stat={adf_primary['adf_statistic']:.3f}, p-val={adf_primary['p_value']:.4f} (Stationary: {adf_primary['is_stationary']})")
-    print(f"  ✓ ADF Momentum Signal d/dt(Delta_S): stat={adf_mom['adf_statistic']:.3f}, p-val={adf_mom['p_value']:.4f} (Stationary: {adf_mom['is_stationary']})")
-    print(f"  ✓ Engle-Granger Cointegration ln(COST) ~ ln(WMT) + ln(S_upper): p-val={coint_res['engle_granger_coint_test']['p_value']:.4f} (Cointegrated: {coint_res['is_cointegrated']})")
-    print(f"  ✓ 3M Information Coefficient: IC_affluent = {ic_comp_3m['affluent_signal']['mean_ic']:+.4f} vs IC_headline = {ic_comp_3m['headline_sentiment']['mean_ic']:+.4f}")
-    print(f"    -> Paired t-test diff = {ic_comp_3m['comparative_paired_test']['ic_difference']:+.4f}, t = {ic_comp_3m['comparative_paired_test']['t_statistic']:.2f}, one-tailed p = {ic_comp_3m['comparative_paired_test']['p_value_one_tailed']:.4f} (Superior: {ic_comp_3m['comparative_paired_test']['is_superior']})")
+    print(
+        f"  ✓ ADF Primary Signal Z(Delta_S): stat={adf_primary['adf_statistic']:.3f}, p-val={adf_primary['p_value']:.4f} (Stationary: {adf_primary['is_stationary']})"
+    )
+    print(
+        f"  ✓ ADF Momentum Signal d/dt(Delta_S): stat={adf_mom['adf_statistic']:.3f}, p-val={adf_mom['p_value']:.4f} (Stationary: {adf_mom['is_stationary']})"
+    )
+    print(
+        f"  ✓ Engle-Granger Cointegration ln(COST) ~ ln(WMT) + ln(S_upper): p-val={coint_res['engle_granger_coint_test']['p_value']:.4f} (Cointegrated: {coint_res['is_cointegrated']})"
+    )
+    print(
+        f"  ✓ 3M Information Coefficient: IC_affluent = {ic_comp_3m['affluent_signal']['mean_ic']:+.4f} vs IC_headline = {ic_comp_3m['headline_sentiment']['mean_ic']:+.4f}"
+    )
+    print(
+        f"    -> Paired t-test diff = {ic_comp_3m['comparative_paired_test']['ic_difference']:+.4f}, t = {ic_comp_3m['comparative_paired_test']['t_statistic']:.2f}, one-tailed p = {ic_comp_3m['comparative_paired_test']['p_value_one_tailed']:.4f} (Superior: {ic_comp_3m['comparative_paired_test']['is_superior']})"
+    )
 
     # -------------------------------------------------------------------------
     # STAGE 5: RETAIL K-ALPHA SIGNALS & MARKET OVERLAY
@@ -152,9 +201,15 @@ def main():
     wmt_sig = retail_results["ticker_signals"]["WMT"]
     tgt_sig = retail_results["ticker_signals"]["TGT"]
 
-    print(f"  ✓ COST ({cost_sig['action']}): Target ${cost_sig['k_alpha_target_price']:.2f} ({cost_sig['k_alpha_upside_pct']:+.1f}% vs Current ${cost_sig['current_price']:.2f})")
-    print(f"  ✓ WMT  ({wmt_sig['action']}): Target ${wmt_sig['k_alpha_target_price']:.2f} ({wmt_sig['k_alpha_upside_pct']:+.1f}% vs Current ${wmt_sig['current_price']:.2f})")
-    print(f"  ✓ TGT  ({tgt_sig['action']}): Target ${tgt_sig['k_alpha_target_price']:.2f} ({tgt_sig['k_alpha_upside_pct']:+.1f}% vs Current ${tgt_sig['current_price']:.2f})")
+    print(
+        f"  ✓ COST ({cost_sig['action']}): Target ${cost_sig['k_alpha_target_price']:.2f} ({cost_sig['k_alpha_upside_pct']:+.1f}% vs Current ${cost_sig['current_price']:.2f})"
+    )
+    print(
+        f"  ✓ WMT  ({wmt_sig['action']}): Target ${wmt_sig['k_alpha_target_price']:.2f} ({wmt_sig['k_alpha_upside_pct']:+.1f}% vs Current ${wmt_sig['current_price']:.2f})"
+    )
+    print(
+        f"  ✓ TGT  ({tgt_sig['action']}): Target ${tgt_sig['k_alpha_target_price']:.2f} ({tgt_sig['k_alpha_upside_pct']:+.1f}% vs Current ${tgt_sig['current_price']:.2f})"
+    )
 
     # -------------------------------------------------------------------------
     # STAGE 6: FORWARD-LOOKING CYCLE FORECAST
@@ -162,7 +217,9 @@ def main():
     print("\n[STAGE 6/6] Generating Forward News Cycle Forecast...")
     f_data = generate_current_cycle_forecast()
     event = f_data["next_major_catalyst"]
-    print(f"  ✓ Next Catalyst: {event['event_name']} ({event['release_date']}, T-{event['days_until_release']} days)")
+    print(
+        f"  ✓ Next Catalyst: {event['event_name']} ({event['release_date']}, T-{event['days_until_release']} days)"
+    )
     print(
         f"  ✓ Predicted Surprise Spread: {f_data['predicted_surprise_points']:+.1f} pts "
         f"(Consensus: {f_data['consensus_headline_prediction']:.1f} vs Affluent Reality: {f_data['flashpoint_affluent_signal']:.1f})"

@@ -2,7 +2,7 @@
 Monthly Strategy Layer: K-Shaped Pair Trade Signals.
 
 Implements six monthly strategies over the full market_prices.csv window
-(2021-01 -> 2024-12) and serializes cumulative return series + a metrics
+and serializes cumulative return series + a metrics
 table to data/strategy_performance.json for the dashboard.
 
 Strategies
@@ -25,8 +25,8 @@ is positive in month t when the income-cohort wedge
 
 ROSE over the prior month, i.e. gate[t] = wedge[t-1] > wedge[t-2].
 S_equal is the headline-Michigan proxy (equal-weighted composite of the
-same survey battery). The raw wedge is positive in all 48 months
-(K-shape always present), so wedge level alone never gates off; the
+same survey battery). The raw wedge is positive in most months
+(K-shape usually present), so wedge level alone rarely gates off; the
 month-over-month change captures *widening* K-divergence, which is the
 economically meaningful "expectation is building" state. Uses only
 information available by the close of month t-1 (causal).
@@ -143,8 +143,14 @@ def build_strategy_performance(
 
     spy_metrics = calculate_portfolio_metrics(rets["spy"], is_long_short=False)
     metrics: List[Dict[str, Any]] = []
-    order = ("spy", "pair_always", "pre_release", "on_release",
-             "pair_pre_release", "pair_on_release")
+    order = (
+        "spy",
+        "pair_always",
+        "pre_release",
+        "on_release",
+        "pair_pre_release",
+        "pair_on_release",
+    )
     for key in order:
         is_ls = key.startswith("pair")
         m = calculate_portfolio_metrics(rets[key], is_long_short=is_ls)
