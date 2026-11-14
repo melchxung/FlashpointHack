@@ -24,6 +24,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
+from src.forecast.cycle_forecaster import generate_current_cycle_forecast
 from src.quant.backtest import run_factor_backtest
 from src.quant.econometrics import run_full_econometric_suite
 from src.quant.factor import load_sentiment_signals
@@ -33,7 +34,6 @@ from src.quant.retail_alpha import (
     load_baseline_surveys,
     load_respondent_transcripts,
 )
-from src.forecast.cycle_forecaster import generate_current_cycle_forecast
 
 FLASHPOINT_TASK = (
     "Use the Flashpoint demographics tool once for location 'United States' and report the "

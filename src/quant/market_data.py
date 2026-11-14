@@ -7,15 +7,13 @@ missing data raises instead of being simulated.
 """
 
 import json
-import os
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-import numpy as np
 import pandas as pd
 import yfinance as yf
 
-from src.quant.universe import ALL_TICKERS, ASSET_MAP, MODEL_TICKERS
+from src.quant.universe import ALL_TICKERS
 
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
 CACHE_FILE = DATA_DIR / "market_prices.csv"

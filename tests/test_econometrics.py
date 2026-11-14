@@ -9,10 +9,6 @@ Unit tests for Econometric Testing Engine:
 import json
 from pathlib import Path
 
-import numpy as np
-import pandas as pd
-import pytest
-
 from src.quant.econometrics import (
     compute_comparative_information_coefficients,
     run_augmented_dickey_fuller,

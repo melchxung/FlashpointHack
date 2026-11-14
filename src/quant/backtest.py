@@ -9,7 +9,7 @@ Constructs:
 - Full JSON serialization for reporting
 """
 
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, Optional, Tuple
 
 import numpy as np
 import pandas as pd
@@ -23,7 +23,7 @@ from src.quant.factor import (
     load_sentiment_signals,
 )
 from src.quant.market_data import compute_forward_returns, fetch_historical_prices
-from src.quant.universe import ASSET_MAP, MODEL_TICKERS, WINNER_TICKERS, LOSER_TICKERS
+from src.quant.universe import LOSER_TICKERS, MODEL_TICKERS, WINNER_TICKERS
 
 
 def calculate_portfolio_metrics(

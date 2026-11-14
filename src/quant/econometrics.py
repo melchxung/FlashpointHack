@@ -14,12 +14,12 @@ Mathematically validates:
 
 import json
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, Optional, Tuple
 
 import numpy as np
 import pandas as pd
-from scipy import stats
 import statsmodels.api as sm
+from scipy import stats
 from statsmodels.tsa.stattools import adfuller, coint
 
 from src.quant.factor import (
@@ -28,7 +28,10 @@ from src.quant.factor import (
     compute_information_coefficients,
     load_sentiment_signals,
 )
-from src.quant.market_data import compute_forward_returns, fetch_historical_prices, fetch_ticker_fundamentals
+from src.quant.market_data import (
+    compute_forward_returns,
+    fetch_historical_prices,
+)
 from src.quant.universe import MODEL_TICKERS
 
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"

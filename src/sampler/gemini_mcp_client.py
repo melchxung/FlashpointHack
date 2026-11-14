@@ -13,7 +13,7 @@ import json
 import os
 import threading
 import time
-from typing import Dict, Optional, Any
+from typing import Any, Dict, Optional
 
 import requests
 from eth_account import Account
@@ -25,6 +25,7 @@ from x402.schemas import PaymentPayload, PaymentRequirements
 
 # Auto-load required keys from .env
 from src.utils.dotenv import load_dotenv_keys
+
 load_dotenv_keys(keys=["FLASHPOINT_BEARER_TOKEN", "FLASHPOINT_PRIVATE_KEY"])
 
 CHALLENGE_URL = "https://api.flashpoint.ai/auth/wallet/challenge"

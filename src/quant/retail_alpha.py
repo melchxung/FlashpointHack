@@ -20,9 +20,6 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
-from src.quant.factor import load_sentiment_signals
-from src.quant.market_data import fetch_historical_prices, fetch_ticker_fundamentals
-
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
 TRANSCRIPTS_CACHE = DATA_DIR / "respondent_scored_transcripts.json"
 BASELINES_CACHE_CSV = DATA_DIR / "baseline_sentiment_surveys.csv"

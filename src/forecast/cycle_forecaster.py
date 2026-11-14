@@ -20,12 +20,12 @@ Generates forward-looking predictions for the upcoming cycle:
 import calendar
 import json
 import logging
-from dataclasses import dataclass, asdict
-from datetime import datetime, date, timedelta
+from dataclasses import asdict, dataclass
+from datetime import date
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple
+from typing import Any, Dict, List, Optional
+
 import numpy as np
-import pandas as pd
 
 logger = logging.getLogger(__name__)
 

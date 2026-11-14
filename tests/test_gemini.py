@@ -6,9 +6,8 @@ import os
 
 import pytest
 
-from src.sampler.gemini_scorer import GeminiScorer
 from src.sampler.gemini_mcp_client import GeminiFlashpointMCPClient
-
+from src.sampler.gemini_scorer import GeminiScorer
 
 # Live Gemini and Flashpoint calls need keys and a network, so they only run on request
 live = pytest.mark.skipif(os.environ.get("RUN_LIVE_TESTS") != "1", reason="live call; set RUN_LIVE_TESTS=1")

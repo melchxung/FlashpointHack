@@ -20,25 +20,18 @@ import requests
 
 from src.quant.backtest import (
     build_quintile_returns,
-    calculate_portfolio_metrics,
     run_factor_backtest,
 )
 from src.quant.factor import (
     assign_quintiles,
     calculate_derived_macro_factors,
-    compute_cross_sectional_factor_scores,
-    compute_information_coefficients,
-    load_sentiment_signals,
 )
 from src.quant.market_data import (
     compute_forward_returns,
-    fetch_historical_prices,
 )
-from src.quant.universe import ALL_TICKERS, MODEL_TICKERS, WINNER_TICKERS, LOSER_TICKERS
 from src.sampler.client import FlashpointClient
 from src.sampler.engine import SentimentSamplingEngine
 from src.sampler.personas import PersonaArchetype
-
 
 # ==============================================================================
 # 1. MISSING API KEYS & CLIENT FALLBACKS

@@ -4,9 +4,6 @@ tests/test_frontend.py - Unit and Integration Tests for Streamlit app.py
 
 import json
 from pathlib import Path
-import numpy as np
-import pandas as pd
-import pytest
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 
@@ -31,22 +28,22 @@ def test_dashboard_data_artifacts_exist():
 def test_ticker_signals_structure():
     with open(DATA_DIR / "k_alpha_retail_signals.json", "r") as f:
         data = json.load(f)
-    
+
     ticker_signals = data.get("ticker_signals", {})
     assert "COST" in ticker_signals
     assert "WMT" in ticker_signals
     assert "TGT" in ticker_signals
-    
+
     # COST should be Strong Buy
     assert "Buy" in ticker_signals["COST"]["action"]
     assert ticker_signals["COST"]["k_alpha_upside_pct"] > 0
     assert ticker_signals["COST"]["revealed_conviction_score"] > 0.5
-    
+
     # WMT should be Underperform / Sell
     assert "Sell" in ticker_signals["WMT"]["action"] or "Underperform" in ticker_signals["WMT"]["action"]
     assert ticker_signals["WMT"]["k_alpha_upside_pct"] < 0
     assert ticker_signals["WMT"]["trade_down_risk"] > 0.7
-    
+
     # TGT should be Neutral / Hold
     assert "Hold" in ticker_signals["TGT"]["action"] or "Neutral" in ticker_signals["TGT"]["action"]
 
@@ -54,10 +51,10 @@ def test_ticker_signals_structure():
 def test_respondent_scatter_data_integrity():
     with open(DATA_DIR / "k_alpha_retail_signals.json", "r") as f:
         data = json.load(f)
-    
+
     scatter = data.get("respondent_scatter_data", [])
     assert len(scatter) >= 75
-    
+
     for item in scatter:
         assert "stated_macro_sentiment" in item
         assert "revealed_spend_conviction" in item
@@ -71,20 +68,20 @@ def test_respondent_scatter_data_integrity():
 def test_survey_comparison_table_and_baselines():
     with open(DATA_DIR / "k_alpha_retail_signals.json", "r") as f:
         data = json.load(f)
-    
+
     table = data.get("survey_comparison_table", [])
     assert len(table) >= 8  # Flashpoint + 7 Chicago Fed Letter 521 baselines
-    
+
     # Find Flashpoint K-Alpha
     k_alpha_entry = next((s for s in table if "Flashpoint" in s["survey"]), None)
     assert k_alpha_entry is not None
     assert k_alpha_entry["pce_correlation"] > 0.65
-    
+
     # Find Michigan UMCSENT
     michigan_entry = next((s for s in table if "Michigan" in s["survey"] or "UMCSENT" in s["survey"]), None)
     assert michigan_entry is not None
     assert michigan_entry["pce_correlation"] < 0.35
-    
+
     # K-Alpha must outperform Michigan significantly
     assert k_alpha_entry["pce_correlation"] > michigan_entry["pce_correlation"] * 2.0
 

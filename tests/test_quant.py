@@ -2,15 +2,11 @@
 Unit tests for the Quantitative Factor and Cross-Sectional Asset Pricing Model.
 """
 
-import json
-from pathlib import Path
 
 import numpy as np
 import pandas as pd
-import pytest
 
 from src.quant.backtest import (
-    build_quintile_returns,
     calculate_portfolio_metrics,
     run_factor_backtest,
 )
@@ -25,6 +21,8 @@ from src.quant.market_data import (
     compute_forward_returns,
     fetch_historical_prices,
 )
+
+
 def _sentiment(start_date: str, end_date: str) -> pd.DataFrame:
     """Real Flashpoint sentiment signals sliced to a date range (no simulated data)."""
     return load_sentiment_signals().loc[start_date:end_date]
@@ -33,10 +31,10 @@ def _sentiment(start_date: str, end_date: str) -> pd.DataFrame:
 from src.quant.universe import (
     ALL_TICKERS,
     ASSET_MAP,
-    MODEL_TICKERS,
-    WINNER_TICKERS,
     LOSER_TICKERS,
+    MODEL_TICKERS,
     UNIVERSE_ASSETS,
+    WINNER_TICKERS,
     get_universe_metadata,
 )
 

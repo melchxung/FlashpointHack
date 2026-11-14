@@ -3,14 +3,13 @@ Unit Tests for Forward-Looking Economic News Cycle Forecaster.
 """
 
 from datetime import date
-import pytest
+
 from src.forecast.cycle_forecaster import (
-    get_monthly_release_dates,
-    get_release_calendar,
+    CycleForecastResult,
     EconomicNewsCycleForecaster,
     generate_current_cycle_forecast,
-    EconomicReleaseEvent,
-    CycleForecastResult,
+    get_monthly_release_dates,
+    get_release_calendar,
 )
 
 
