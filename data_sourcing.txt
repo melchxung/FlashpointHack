@@ -1,0 +1,314 @@
+"""
+pull_sentiment_data.py
+Pulls the freely available consumer sentiment and spending series behind
+Chicago Fed Letter No. 521 (Brave, Henken and Jolley, June 2026), computes
+rolling correlations with real consumer spending growth, and saves one Excel
+workbook plus a chart.
+
+Sources pulled automatically:
+  1. Chicago Fed Composite Consumer Sentiment Index (C-CSI), daily   - chicagofed.org
+  2. University of Michigan Index of Consumer Sentiment, monthly     - FRED (UMCSENT)
+  3. Real personal consumption expenditures, monthly                 - FRED (PCEC96)
+  4. San Francisco Fed Daily News Sentiment Index, daily             - frbsf.org
+
+Not freely downloadable (subscription or proprietary data):
+  Conference Board Consumer Confidence Index, Morning Consult ICS,
+  Rasmussen Consumer Index, Goldman Sachs Social Media Sentiment Index.
+
+Setup (once):   pip install pandas requests openpyxl matplotlib
+Run:            python pull_sentiment_data.py
+Output:         sentiment_data.xlsx and sentiment_correlation.png in this folder
+"""
+
+import io
+import re
+import sys
+from urllib.parse import urljoin
+
+import numpy as np
+import pandas as pd
+import requests
+
+HEADERS = {"User-Agent": "Mozilla/5.0 (research data pull; contact: student)"}
+TIMEOUT = 60
+
+CCSI_PAGES = [
+    "https://www.chicagofed.org/research/data/c-csi/current-data",
+    "https://www.chicagofed.org/publications/chicago-fed-letter/2026/521",
+]
+SFFED_PAGES = [
+    "https://www.frbsf.org/research-and-insights/data-and-indicators/daily-news-sentiment-index/",
+    "https://www.frbsf.org/economic-research/indicators-data/daily-news-sentiment-index/",
+]
+FRED_CSV = "https://fred.stlouisfed.org/graph/fredgraph.csv?id={}"
+
+
+# ---------------------------------------------------------------- helpers
+def get(url):
+    r = requests.get(url, headers=HEADERS, timeout=TIMEOUT)
+    r.raise_for_status()
+    return r
+
+
+def find_file_link(pages, keywords, extensions=(".xlsx", ".xls", ".csv")):
+    """Open each landing page and return the first data-file link whose URL
+    contains one of the keywords. Avoids hard-coding file names that change."""
+    for page in pages:
+        try:
+            html = get(page).text
+        except Exception as e:
+            print(f"   could not open {page}: {e}")
+            continue
+        links = re.findall(r'href="([^"]+)"', html)
+        for link in links:
+            low = link.lower().split("?")[0]
+            if low.endswith(extensions) and any(k in low for k in keywords):
+                return urljoin(page, link)
+    return None
+
+
+def read_table(url):
+    content = get(url).content
+    if url.lower().split("?")[0].endswith(".csv"):
+        return pd.read_csv(io.BytesIO(content))
+    # Excel: try every sheet, keep the first one that has a date column
+    sheets = pd.read_excel(io.BytesIO(content), sheet_name=None)
+    for name, df in sheets.items():
+        if date_column(df) is not None:
+            return df
+    return next(iter(sheets.values()))
+
+
+def date_column(df):
+    for col in df.columns:
+        parsed = pd.to_datetime(df[col], errors="coerce")
+        if parsed.notna().mean() > 0.8:
+            return col
+    return None
+
+
+def tidy_series(df, name, prefer=None):
+    """Return a single date-indexed numeric series from a downloaded table."""
+    dcol = date_column(df)
+    if dcol is None:  # header rows above the data: find the header line
+        for i in range(min(15, len(df))):
+            trial = df.iloc[i + 1:].copy()
+            trial.columns = df.iloc[i]
+            if date_column(trial) is not None:
+                df, dcol = trial, date_column(trial)
+                break
+    if dcol is None:
+        raise ValueError(f"No date column found for {name}")
+    df = df.copy()
+    df.index = pd.to_datetime(df[dcol], errors="coerce")
+    df = df[df.index.notna()].drop(columns=[dcol])
+    df = df.apply(pd.to_numeric, errors="coerce").dropna(axis=1, how="all")
+    col = None
+    if prefer:
+        col = next((c for c in df.columns if any(p in str(c).lower() for p in prefer)), None)
+    col = col if col is not None else df.columns[0]
+    print(f"   using column '{col}' for {name}")
+    return df[col].dropna().sort_index().rename(name)
+
+
+def fred(series_id, name):
+    df = pd.read_csv(io.BytesIO(get(FRED_CSV.format(series_id)).content))
+    df.columns = ["date", name]
+    df["date"] = pd.to_datetime(df["date"])
+    return pd.to_numeric(df.set_index("date")[name], errors="coerce").dropna()
+
+
+# ---------------------------------------------------------------- pulls
+def pull_all():
+    out = {}
+
+    print("1. Real PCE and Michigan sentiment from FRED")
+    out["real_pce"] = fred("PCEC96", "real_pce")
+    out["michigan"] = fred("UMCSENT", "michigan")
+
+    print("2. Chicago Fed C-CSI")
+    link = find_file_link(CCSI_PAGES, ["c-csi", "ccsi", "csi"])
+    if link:
+        print(f"   found {link}")
+        out["ccsi_daily"] = tidy_series(read_table(link), "ccsi", prefer=["c-csi", "ccsi", "csi"])
+    else:
+        print("   C-CSI file link not found. Download it from the Chicago Fed C-CSI page,"
+              " save it as ccsi.xlsx next to this script and run again.")
+        try:
+            out["ccsi_daily"] = tidy_series(pd.read_excel("ccsi.xlsx"), "ccsi",
+                                            prefer=["c-csi", "ccsi", "csi"])
+        except FileNotFoundError:
+            pass
+
+    print("3. San Francisco Fed Daily News Sentiment Index")
+    link = find_file_link(SFFED_PAGES, ["sentiment", "news"])
+    if link:
+        print(f"   found {link}")
+        out["news_daily"] = tidy_series(read_table(link), "news_sentiment",
+                                        prefer=["sentiment", "news"])
+    else:
+        print("   SF Fed file link not found; skipping.")
+
+    return out
+
+
+# ---------------------------------------------------------------- analysis
+def build_monthly(data):
+    m = pd.DataFrame(index=data["real_pce"].index)
+    m["real_pce"] = data["real_pce"]
+    m["pce_yoy_growth_pct"] = data["real_pce"].pct_change(12) * 100
+    m["michigan"] = data["michigan"]
+    m["log_michigan"] = np.log(m["michigan"])
+    if "ccsi_daily" in data:
+        ccsi_m = data["ccsi_daily"].resample("MS").mean()
+        m["ccsi_monthly_avg"] = ccsi_m
+        m["log_ccsi"] = np.log(ccsi_m.where(ccsi_m > 0))
+    if "news_daily" in data:
+        m["news_sentiment_monthly_avg"] = data["news_daily"].resample("MS").mean()
+    return m
+
+
+def rolling_corr(m, window):
+    r = pd.DataFrame(index=m.index)
+    y = m["pce_yoy_growth_pct"]
+    for col, label in [("log_michigan", "michigan"), ("log_ccsi", "ccsi"),
+                       ("news_sentiment_monthly_avg", "news_sentiment")]:
+        if col in m:
+            r[f"{label}_corr_{window}m"] = y.rolling(window, min_periods=window).corr(m[col])
+    return r
+
+
+def summary_table(m):
+    y = m["pce_yoy_growth_pct"]
+    rows = []
+    periods = {"1978-2019 (pre-pandemic)": ("1978-01-01", "2019-12-31"),
+               "2020-latest": ("2020-01-01", None),
+               "2022-latest (excl. 2020-21 swings)": ("2022-01-01", None)}
+    for col in ["log_michigan", "log_ccsi", "news_sentiment_monthly_avg"]:
+        if col not in m:
+            continue
+        for label, (start, end) in periods.items():
+            sub = m.loc[start:end, [col]].join(y).dropna()
+            if len(sub) > 12:
+                r = sub[col].corr(sub["pce_yoy_growth_pct"])
+                rows.append({"indicator": col, "period": label, "months": len(sub),
+                             "correlation": round(r, 3), "r_squared": round(r * r, 3)})
+    return pd.DataFrame(rows)
+
+
+def chart(roll36, roll120, path):
+    try:
+        import matplotlib.pyplot as plt
+    except ImportError:
+        print("   matplotlib not installed; skipping chart")
+        return
+    fig, axes = plt.subplots(2, 1, figsize=(10, 7), sharex=True)
+    for ax, df, title in [(axes[0], roll120, "120-month rolling correlation with real PCE growth"),
+                          (axes[1], roll36, "36-month rolling correlation with real PCE growth")]:
+        for col in df.columns:
+            ax.plot(df.index, df[col], label=col.split("_corr")[0], linewidth=1.6)
+        ax.axhline(0, color="black", linewidth=0.8)
+        ax.set_title(title, color="black")
+        ax.set_ylim(-1, 1)
+        ax.legend(loc="lower left")
+        ax.tick_params(colors="black")
+    fig.tight_layout()
+    fig.savefig(path, dpi=200)
+    print(f"   chart saved to {path}")
+
+
+def main():
+    data = pull_all()
+    m = build_monthly(data)
+    roll120 = rolling_corr(m, 120)
+    roll36 = rolling_corr(m, 36)
+    summ = summary_table(m)
+
+    with pd.ExcelWriter("sentiment_data.xlsx") as xl:
+        summ.to_excel(xl, sheet_name="correlation_summary", index=False)
+        m.join(roll120).join(roll36).to_excel(xl, sheet_name="monthly")
+        for key in ["ccsi_daily", "news_daily"]:
+            if key in data:
+                data[key].to_frame().to_excel(xl, sheet_name=key)
+    print("\nSaved sentiment_data.xlsx")
+    print("\nCorrelation with year-over-year real PCE growth:")
+    print(summ.to_string(index=False))
+    chart(roll36, roll120, "sentiment_correlation.png")
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except requests.HTTPError as e:
+        sys.exit(f"Download failed: {e}")
+
+________________________________________________________________________
+
+
+Stocks to read:
+
+  Mid-cap consumer discretionary stocks move most on sentiment releases. The most reactive groups are travel and leisure, casinos, apparel and footwear, big-ticket recreation, experiential restaurants and housing-linked names. The big sector ETF (XLY) is a weak gauge because two mega-caps dominate it. Most 2026 reactions came alongside oil and gasoline moves from the Iran war, so a release rarely moves these stocks on its own.
+
+Stocks that moved on 2026 sentiment releases
+
+Travel, cruises and timeshares (most reactive)
+
+Norwegian Cruise Line, Hilton Grand Vacations, Marriott Vacations, Lindblad Expeditions and United Parks & Resorts fell sharply together after a weak release. Lindblad fell 7.8%. 
+barchart
+Travel + Leisure fell on the March Michigan release, when the final March reading fell to 55.3, driven by mounting unease over personal finances following the war with Iran. 
+barchart
+
+Casinos and entertainment
+
+Caesars Entertainment (NASDAQ:CZR) fell 3.8%, with MGM Resorts and Viking in the same sell-off. 
+barchart
+AMC Entertainment (NYSE:AMC) fell 4%. 
+barchart
+Dave & Buster’s is down 42.7% since the beginning of the year, as of that report. 
+barchart
+
+Big-ticket recreation
+
+Polaris (PII) is a clean read on discretionary spending. Polaris’s shares are very volatile and have had 27 moves greater than 5% over the last year. 
+barchart
+
+Apparel and footwear
+
+Genesco, Caleres, PVH and Kontoor Brands. Kontoor fell when the University of Michigan’s key sentiment index dropped to 48.2 in early May. 
+barchart
+
+Housing-linked discretionary
+
+eXp World, Zillow, Offerpad, Compass, RE/MAX and Somnigroup (mattresses). eXp World (NASDAQ:EXPI) fell 4%, and Somnigroup (NYSE:SGI) fell 3.7%. 
+barchart
+barchart
+
+Airlines. United, American and Frontier are classified as industrials, not consumer discretionary, but they trade with leisure demand and fuel costs.
+
+Use the discretionary-versus-staples spread as a sector gauge
+
+The cleaner signal is consumer discretionary (XLY) against consumer staples (XLP). On the June preliminary Michigan release, the Consumer Staples Select Sector SPDR Fund (XLP) rose about 0.1%, while the consumer discretionary ETF (XLY) slipped 0.7%. 
+stocktwits
+
+XLY on its own is weak for this because it is concentrated, with Amazon (NASDAQ:AMZN) at 22.22% and Tesla (NASDAQ:TSLA) at 19.64% of net assets as of June 30, 2026, which makes it a poor gauge of shoppers. The equal-weight retail ETF (XRT) or the individual names above track household mood more closely. 
+247wallst
+
+Oil confounds most 2026 reactions
+
+Almost every move above happened on a day with a large oil swing. As one market report put it, gas is the most direct variable: when filling the tank costs more, households have less left for everything else. 
+barchart
+
+Sell-offs can also fade quickly. After the September Conference Board reading fell to 81.9 in September from 88.6 in August, a 6.7-point drop, and it is the lowest reading since 2014, the same analysis noted the stocks that depend on American shoppers are barely flinching. This fits the Chicago Fed paper: if Michigan understates sentiment by 25 to 30 points, markets may already discount its weak headline readings. 
+247wallst
+
+Release calendar
+Michigan preliminary: the second Friday of each month, 10:00 a.m. ET
+Michigan final: the last Friday of each month, 10:00 a.m. ET
+Conference Board: the last Tuesday of each month, 10:00 a.m. ET
+
+Market reaction depends on the surprise against the consensus forecast more than on the level. A reading of 50 beats expectations if the consensus was 47.
+
+This is market information, not a buy or sell recommendation; I’m not a financial advisor.
+
+Next step: I can add an event study to your script. It would measure how XRT, XLY versus XLP, and five of the names above moved on each Michigan release date since 2018, with the oil move on the same day included so the sentiment effect is separated out. Shall I build it?
+  
