@@ -1,0 +1,806 @@
+{
+  "task": "Use the Flashpoint demographics tool once for location 'United States' and report the household income distribution: the share of households in each income band.",
+  "model": "gemini-3.5-flash-lite",
+  "answer": "Based on the demographic data for the United States (US Census Bureau, 2022 ACS 5-Year Estimates), the total number of households is **125,736,353**. \n\nHere is the household income distribution showing the number of households and the share in each income band:\n\n| Income Band | Number of Households | Share (%) |\n| :--- | ---: | ---: |\n| **Less than $10,000** | 6,192,080 | 4.92% |\n| **$10,000 to $15,000** | 4,743,710 | 3.77% |\n| **$15,000 to $25,000** | 8,823,088 | 7.02% |\n| **$25,000 to $35,000** | 9,309,426 | 7.40% |\n| **$35,000 to $50,000** | 13,463,922 | 10.71% |\n| **$50,000 to $75,000** | 20,228,418 | 16.09% |\n| **$75,000 to $100,000** | 16,085,302 | 12.80% |\n| **$100,000 to $150,000** | 21,466,924 | 17.07% |\n| **$150,000 to $200,000** | 11,075,396 | 8.81% |\n| **$200,000 or more** | 14,348,087 | 11.41% |\n| **Total** | **125,736,353** | **100.0%** |",
+  "tool_calls": [
+    {
+      "tool": "demographics",
+      "args": {
+        "location": "United States",
+        "question": "What is the household income distribution and share of households in each income band?"
+      },
+      "ok": true,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"task_id\": \"01a1db7b-fe32-7c00-9a3c-1e777f8e29b1\",\n  \"task_name\": \"get_demographics\",\n  \"status\": \"completed\",\n  \"result\": {\n    \"demographics\": {\n      \"location\": {\n        \"query\": \"us:1\"\n      },\n      \"age\": {\n        \"under18\": 73213705,\n        \"age18to24\": 31282896,\n        \"age25to34\": 45388153,\n        \"age35to44\": 42810359,\n        \"age45to54\": 41087357,\n        \"age55to64\": 42577475,\n        \"age65to74\": 32260679,\n        \"age75andOver\": 22476969,\n        \"medianAge\": 38.5,\n        \"totalPopulation\": 331097593\n      },\n      \"race\": {\n        \"totalPopulation\": 331097593,\n        \"white\": 194886464,\n        \"blackOrAfricanAmerican\": 40146392,\n        \"americanIndianAndAlaskaNative\": 1826286,\n        \"asian\": 18873442,\n        \"nativeHawaiianAndPacificIslander\": 561561,\n        \"otherRace\": 1418481,\n        \"twoOrMoreRaces\": 11629101,\n        \"hispanicOrLatino\": 61755866\n      },\n      \"gender\": {\n        \"totalPopulation\": 331097593,\n        \"male\": 164200298,\n        \"female\": 166897295\n      },\n      \"education\": {\n        \"totalPopulation25AndOver\": 226600992,\n        \"lessThanHighSchool\": 24599698,\n        \"highSchoolGraduate\": 59741825,\n        \"someCollege\": 44692390,\n        \"associateDegree\": 19815732,\n        \"bachelorsDegree\": 47391673,\n        \"graduateDegree\": 30359674\n      },\n      \"income\": {\n        \"totalHouseholds\": 125736353,\n        \"medianHouseholdIncome\": 75149,\n        \"meanHouseholdIncome\": 13307060156700,\n        \"lessThan10k\": 6192080,\n        \"_10kTo15k\": 4743710,\n        \"_15kTo25k\": 8823088,\n        \"_25kTo35k\": 9309426,\n        \"_35kTo50k\": 13463922,\n        \"_50kTo75k\": 20228418,\n        \"_75kTo100k\": 16085302,\n        \"_100kTo150k\": 21466924,\n        \"_150kTo200k\": 11075396,\n        \"_200kOrMore\": 14348087\n      },\n      \"metadata\": {\n        \"source\": \"US Census Bureau\",\n        \"year\": \"2022\",\n        \"surveyType\": \"ACS 5-Year Estimates\"\n      }\n    },\n    \"geographicDistribution\": {\n      \"level\": \"national\",\n      \"weights\": [\n        {\n          \"name\": \"Alabama\",\n          \"fips\": \"01\",\n          \"share\": 0.01518613274847939\n        },\n        {\n          \"name\": \"Alaska\",\n          \"fips\": \"02\",\n          \"share\": 0.0022193486619517646\n        },\n        {\n          \"name\": \"Arizona\",\n          \"fips\": \"04\",\n          \"share\": 0.02166213875194194\n        },\n        {\n          \"name\": \"Arkansas\",\n          \"fips\": \"05\",\n          \"share\": 0.009117157792204185\n        },\n        {\n          \"name\": \"California\",\n          \"fips\": \"06\",\n          \"share\": 0.11886556964489924\n        },\n        {\n          \"name\": \"Colorado\",\n          \"fips\": \"08\",\n          \"share\": 0.01742927197903248\n        },\n        {\n          \"name\": \"Connecticut\",\n          \"fips\": \"09\",\n          \"share\": 0.010907107379666152\n        },\n        {\n          \"name\": \"Delaware\",\n          \"fips\": \"10\",\n          \"share\": 0.003001033595553804\n        },\n        {\n          \"name\": \"District of Columbia\",\n          \"fips\": \"11\",\n          \"share\": 0.002025345439463826\n        },\n        {\n          \"name\": \"Florida\",\n          \"fips\": \"12\",\n          \"share\": 0.06534184922328928\n        },\n        {\n          \"name\": \"Georgia\",\n          \"fips\": \"13\",\n          \"share\": 0.03238418287142305\n        },\n        {\n          \"name\": \"Hawaii\",\n          \"fips\": \"15\",\n          \"share\": 0.0043811523570936985\n        },\n        {\n          \"name\": \"Idaho\",\n          \"fips\": \"16\",\n          \"share\": 0.00559988667752109\n        },\n        {\n          \"name\": \"Illinois\",\n          \"fips\": \"17\",\n          \"share\": 0.038531340214243114\n        },\n        {\n          \"name\": \"Indiana\",\n          \"fips\": \"18\",\n          \"share\": 0.02049064427961577\n        },\n        {\n          \"name\": \"Iowa\",\n          \"fips\": \"19\",\n          \"share\": 0.009631105956122127\n        },\n        {\n          \"name\": \"Kansas\",\n          \"fips\": \"20\",\n          \"share\": 0.008867240541975187\n        },\n        {\n          \"name\": \"Kentucky\",\n          \"fips\": \"21\",\n          \"share\": 0.013600023362296083\n        },\n        {\n          \"name\": \"Louisiana\",\n          \"fips\": \"22\",\n          \"share\": 0.014015644021912294\n        },\n        {\n          \"name\": \"Maine\",\n          \"fips\": \"23\",\n          \"share\": 0.004128538016886158\n        },\n        {\n          \"name\": \"Maryland\",\n          \"fips\": \"24\",\n          \"share\": 0.018609941993749258\n        },\n        {\n          \"name\": \"Massachusetts\",\n          \"fips\": \"25\",\n          \"share\": 0.0210940977755764\n        },\n        {\n          \"name\": \"Michigan\",\n          \"fips\": \"26\",\n          \"share\": 0.03037751168429666\n        },\n        {\n          \"name\": \"Minnesota\",\n          \"fips\": \"27\",\n          \"share\": 0.017201248575672973\n        },\n        {\n          \"name\": \"Mississippi\",\n          \"fips\": \"28\",\n          \"share\": 0.008936476925702085\n        },\n        {\n          \"name\": \"Missouri\",\n          \"fips\": \"29\",\n          \"share\": 0.01858793941760851\n        },\n        {\n          \"name\": \"Montana\",\n          \"fips\": \"30\",\n          \"share\": 0.003297637986755162\n        },\n        {\n          \"name\": \"Nebraska\",\n          \"fips\": \"31\",\n          \"share\": 0.005916500274890249\n        },\n        {\n          \"name\": \"Nevada\",\n          \"fips\": \"32\",\n          \"share\": 0.009377346938308911\n        },\n        {\n          \"name\": \"New Hampshire\",\n          \"fips\": \"33\",\n          \"share\": 0.004166777497533786\n        },\n        {\n          \"name\": \"New Jersey\",\n          \"fips\": \"34\",\n          \"share\": 0.02793455221524368\n        },\n        {\n          \"name\": \"New Mexico\",\n          \"fips\": \"35\",\n          \"share\": 0.006380182292657138\n        },\n        {\n          \"name\": \"New York\",\n          \"fips\": \"36\",\n          \"share\": 0.06038817382764845\n        },\n        {\n          \"name\": \"North Carolina\",\n          \"fips\": \"37\",\n          \"share\": 0.03162274272407652\n        },\n        {\n          \"name\": \"North Dakota\",\n          \"fips\": \"38\",\n          \"share\": 0.002346359552061135\n        },\n        {\n          \"name\": \"Ohio\",\n          \"fips\": \"39\",\n          \"share\": 0.03556257505019072\n        },\n        {\n          \"name\": \"Oklahoma\",\n          \"fips\": \"40\",\n          \"share\": 0.01199192348100217\n        },\n        {\n          \"name\": \"Oregon\",\n          \"fips\": \"41\",\n          \"share\": 0.0127737986908289\n        },\n        {\n          \"name\": \"Pennsylvania\",\n          \"fips\": \"42\",\n          \"share\": 0.03923075333259822\n        },\n        {\n          \"name\": \"Rhode Island\",\n          \"fips\": \"44\",\n          \"share\": 0.0033049168074139397\n        },\n        {\n          \"name\": \"South Carolina\",\n          \"fips\": \"45\",\n          \"share\": 0.015532429436900195\n        },\n        {\n          \"name\": \"South Dakota\",\n          \"fips\": \"46\",\n          \"share\": 0.002689062134015574\n        },\n        {\n          \"name\": \"Tennessee\",\n          \"fips\": \"47\",\n          \"share\": 0.020911574551978094\n        },\n        {\n          \"name\": \"Texas\",\n          \"fips\": \"48\",\n          \"share\": 0.08832242401713866\n        },\n        {\n          \"name\": \"Utah\",\n          \"fips\": \"49\",\n          \"share\": 0.009917948874971133\n        },\n        {\n          \"name\": \"Vermont\",\n          \"fips\": \"50\",\n          \"share\": 0.0019444901250006974\n        },\n        {\n          \"name\": \"Virginia\",\n          \"fips\": \"51\",\n          \"share\": 0.026048244331392648\n        },\n        {\n          \"name\": \"Washington\",\n          \"fips\": \"53\",\n          \"share\": 0.023221398048641206\n        },\n        {\n          \"name\": \"West Virginia\",\n          \"fips\": \"54\",\n          \"share\": 0.0054152220913306365\n        },\n        {\n          \"name\": \"Wisconsin\",\n          \"fips\": \"55\",\n          \"share\": 0.01776554141243787\n        },\n        {\n          \"name\": \"Wyoming\",\n          \"fips\": \"56\",\n          \"share\": 0.001745494416807796\n        }\n      ]\n    },\n    \"metadata\": {\n      \"location\": \"United States\",\n      \"country\": \"United States\",\n      \"source\": \"Census\",\n      \"confidence\": \"high\",\n      \"responseTime\": 13136\n    },\n    \"aiInsights\": {\n      \"summary\": \"Targeted analysis for \\\"What is the household income distribution and share of households in each income band?\\\" in United States: ## 1. KEY INSIGHTS:\\n\\n- The supplied income bands sum to **125,736,353 households**, matching the stated household total; therefore, the distribution can be analyzed directly without normalization.\\n- The largest income band is **$50,000\u00e2\u0080\u0093$74,999**, containing **20,228,418 households**, or **16.1%** of all households.\\n- Nearly half of households\u00e2\u0080\u0094**49.7%**\u00e2\u0080\u0094earn below **$75,000**, while **38.7%** earn \",\n      \"insights\": \"## 1. KEY INSIGHTS:\\n\\n- The supplied income bands sum to **125,736,353 households**, matching the stated household total; therefore, the distribution can be analyzed directly without normalization.\\n- The largest income band is **$50,000\u00e2\u0080\u0093$74,999**, containing **20,228,418 households**, or **16.1%** of all households.\\n- Nearly half of households\u00e2\u0080\u0094**49.7%**\u00e2\u0080\u0094earn below **$75,000**, while **38.7%** earn at least **$100,000**.\\n- Lower-income households remain substantial: **20.2%** earn below **$35,000**, including **4.9%** below $10,000.\\n- Educational attainment is strongly relevant: **36.2%** of adults age 25 and over have a bachelor\u00e2\u0080\u0099s or graduate degree, supporting a large professional and high-income segment, while **63.8%** do not hold a bachelor\u00e2\u0080\u0099s degree.\\n- The income profile should not be interpreted as evenly distributed across demographic groups; age, education, race and ethnicity, household composition, and labor-force participation likely influence access to higher-paying employment. The Census Bureau\u00e2\u0080\u0099s 2022 ACS reports a national median household income close to the supplied figure, at $74,755.[7]\\n\\n## 2. SPECIFIC DATA POINTS:\\n\\n- **Below $25,000:** 20,666,878 households, or **16.4%**.\\n- **$25,000\u00e2\u0080\u0093$49,999:** 22,057,348 households, or **17.5%**.\\n- **$50,000\u00e2\u0080\u0093$74,999:** 20,228,418 households, or **16.1%**.\\n- **$75,000\u00e2\u0080\u0093$99,999:** 16,085,302 households, or **12.8%**.\\n- **$100,000 or more:** 46,698,407 households, or **37.1%**; this includes **11.4%** earning $200,000 or more.\\n- The supplied median household income is **$75,149**, close to the Census Bureau\u00e2\u0080\u0099s 2022 ACS national estimate of $74,755.[7]\\n- Among adults 25 and over, **77,751,347** have at least a bachelor\u00e2\u0080\u0099s degree, while **24,599,698** have less than a high-school education; these differences are relevant because education is closely associated with occupational access and earnings.\\n\\n## 3. ACTIONABLE RECOMMENDATIONS:\\n\\n- Design mass-market products around the **$50,000\u00e2\u0080\u0093$99,999** segment, which represents **28.9%** of households and is large enough to support broad demand.\\n- Offer lower-cost, installment, or value-oriented options for the **20.2%** of households earning below $35,000.\\n- Segment marketing by education and life stage: college-educated working-age adults are more likely to support premium offerings, while younger adults and households without bachelor\u00e2\u0080\u0099s degrees may be more price-sensitive.\\n- Build regional and demographic subsegments before making decisions; national averages can conceal meaningful differences by race, ethnicity, age, and geography.\\n- Use the **$100,000-plus** segment for premium, financial-planning, investment, and discretionary products, but avoid treating all high-income households as alike because household size and age affect purchasing capacity.\\n- Track inflation-adjusted income over time because the ACS income tables use inflation-adjusted dollars, and nominal income growth may not represent improved purchasing power.[3][7]\\n\\n## 4. NOTABLE TRENDS:\\n\\n- The distribution is broad rather than concentrated: no single income band contains more than **16.1%** of households.\\n- There is a clear upper-income concentration above $100,000: **37.1%** of households fall into this category, compared with **33.9%** earning below $50,000.\\n- The distribution has a substantial lower-income tail, with **6.2%** earning below $15,000 and **13.4%** earning between $15,000 and $35,000.\\n- The population is demographically mature, with a median age of **38.5** and approximately **16.5%** age 65 or older; retirement, fixed-income, and reduced labor-force participation may affect household income patterns.\\n- Income opportunity is likely linked to education: adults with bachelor\u00e2\u0080\u0099s or graduate degrees comprise **34.3%** of the total population and **36.2%** of adults age 25 and over, creating a sizeable high-earning potential group.\\n- The mean household income field appears mis-scaled: **$13.307 trillion** is the aggregate household income, not a mean income per household. Dividing it by 125,736,353 households produces an approximate mean of **$105,840**.\\n\\n## 5. AGREES WITH  \\n*Positions supported by the demographic and income data:*\\n\\n- **The U.S. market requires tiered pricing:** households are distributed across every income band, so a single premium or low-cost offer will exclude significant portions of the population.\\n- **The middle-income market is commercially central:** the $50,000\u00e2\u0080\u0093$99,999 bands together contain approximately **28.9%** of households and should receive substantial product and service attention.\\n- **High-income households form a major addressable segment:** 37.1% earn at least $100,000, supporting targeted premium, investment, travel, housing, and professional-service offerings.\\n- **Affordability remains a national concern:** more than one in five households earns below $35,000, supporting discounts, basic plans, subsidies, and flexible payment options.\\n- **Education-based segmentation is justified:** the large population with bachelor\u00e2\u0080\u0099s or graduate degrees supports specialized professional, financial, and high-value product segments.\\n- **Life-stage segmentation is necessary:** younger adults, working-age households, and older adults are likely to have different income sources, expenses, and purchasing priorities.\\n- **National income statistics should be paired with subgroup analysis:** Census ACS reporting treats income, education, race, Hispanic origin, age, and other characteristics as distinct but complementary dimensions of demographic analysis.[8]\\n\\n## 6. DISAGREES WITH  \\n*Positions the demographic and income data do not support:*\\n\\n- **The claim that the typical household is adequately represented by the mean income:** the distribution is wide, and the aggregate-income figure must be divided by households before it can be interpreted as a mean.\\n- **The assumption that most households are either poor or affluent:** the data show a broad spread, with substantial populations below $50,000, in the middle, and above $100,000.\\n- **The assumption that a $75,149 median means most households earn around $75,000:** the median identifies the midpoint, while 49.7% earn below $75,000 and 38.7% earn at least $100,000.\\n- **The idea that income differences can be explained by age alone:** education, race and ethnicity, household composition, geography, and employment conditions also shape income.\\n- **The assumption that higher educational attainment guarantees high household income:** education increases access to higher-paying occupations but does not determine household income, especially when households include multiple earners or dependents.\\n- **The assumption that all households earning $100,000 or more have similar purchasing power:** household size, housing costs, debt, region, age, and number of earners can produce substantially different financial circumstances.\\n- **The use of race or ethnicity as a direct proxy for household income:** these characteristics may reveal disparities in outcomes, but they should not be used to infer an individual household\u00e2\u0080\u0099s income without direct income data.\",\n      \"insightsList\": [\n        {\n          \"category\": \"Income Distribution\",\n          \"insight\": \"The largest household income band is $50,000\u00e2\u0080\u0093$74,999, containing 16.1% of all households, but no single band dominates, indicating a broad distribution.\",\n          \"priority\": \"high\"\n        },\n        {\n          \"category\": \"Income Segmentation\",\n          \"insight\": \"Nearly half (49.7%) of households earn below $75,000, while 38.7% earn at least $100,000, showing significant populations at both lower and higher income levels.\",\n          \"priority\": \"high\"\n        },\n        {\n          \"category\": \"Lower-Income Prevalence\",\n          \"insight\": \"A substantial 20.2% of households earn below $35,000, including 4.9% below $10,000, highlighting the need for affordability and support for lower-income groups.\",\n          \"priority\": \"high\"\n        },\n        {\n          \"category\": \"Education and Income\",\n          \"insight\": \"Educational attainment is a strong factor: 36.2% of adults 25+ have a bachelor\u00e2\u0080\u0099s or graduate degree, supporting a large professional and high-income segment, but 63.8% do not, indicating varied access to higher earnings.\",\n          \"priority\": \"medium\"\n        },\n        {\n          \"category\": \"Demographic Complexity\",\n          \"insight\": \"Income distribution is not uniform across demographic groups; age, education, race, household composition, and labor-force participation all influence household income, so subgroup analysis is essential.\",\n          \"priority\": \"high\"\n        }\n      ],\n      \"agreesWithList\": [\n        \"The U.S. market requires tiered pricing: households are distributed across every income band, so a single premium or low-cost offer will exclude significant portions of the population.\",\n        \"The middle-income market is commercially central: the $50,000\u00e2\u0080\u0093$99,999 bands together contain approximately 28.9% of households and should receive substantial product and service attention.\",\n        \"High-income households form a major addressable segment: 37.1% earn at least $100,000, supporting targeted premium, investment, travel, housing, and professional-service offerings.\",\n        \"Affordability remains a national concern: more than one in five households earns below $35,000, supporting discounts, basic plans, subsidies, and flexible payment options.\",\n        \"Education-based segmentation is justified: the large population with bachelor\u00e2\u0080\u0099s or graduate degrees supports specialized professional, financial, and high-value product segments.\",\n        \"Life-stage segmentation is necessary: younger adults, working-age households, and older adults are likely to have different income sources, expenses, and purchasing priorities.\",\n        \"National income statistics should be paired with subgroup analysis: Census ACS reporting treats income, education, race, Hispanic origin, age, and other characteristics as distinct but complementary dimensions of demographic analysis.\"\n      ],\n      \"disagreesWithList\": [\n        \"The claim that the typical household is adequately represented by the mean income: the distribution is wide, and the aggregate-income figure must be divided by households before it can be interpreted as a mean.\",\n        \"The assumption that most households are either poor or affluent: the data show a broad spread, with substantial populations below $50,000, in the middle, and above $100,000.\",\n        \"The assumption that a $75,149 median means most households earn around $75,000: the median identifies the midpoint, while 49.7% earn below $75,000 and 38.7% earn at least $100,000.\",\n        \"The idea that income differences can be explained by age alone: education, race and ethnicity, household composition, geography, and employment conditions also shape income.\",\n        \"The assumption that higher educational attainment guarantees high household income: education increases access to higher-paying occupations but does not determine household income, especially when households include multiple earners or dependents.\",\n        \"The assumption that all households earning $100,000 or more have similar purchasing power: household size, housing costs, debt, region, age, and number of earners can produce substantially different financial circumstances.\",\n        \"The use of race or ethnicity as a direct proxy for household income: these characteristics may reveal disparities in outcomes, but they should not be used to infer an individual household\u00e2\u0080\u0099s income without direct income data.\"\n      ],\n      \"targetedFor\": {\n        \"question\": \"What is the household income distribution and share of households in each income band?\"\n      }\n    },\n    \"artifact\": {\n      \"type\": \"demographics\",\n      \"title\": \"United States Demographics\",\n      \"summary\": \"Population 331,097,593, source: Census\",\n      \"storage\": {\n        \"demographics\": {\n          \"location\": {\n            \"query\": \"us:1\"\n          },\n          \"age\": {\n            \"under18\": 73213705,\n            \"age18to24\": 31282896,\n            \"age25to34\": 45388153,\n            \"age35to44\": 42810359,\n            \"age45to54\": 41087357,\n            \"age55to64\": 42577475,\n            \"age65to74\": 32260679,\n            \"age75andOver\": 22476969,\n            \"medianAge\": 38.5,\n            \"totalPopulation\": 331097593\n          },\n          \"race\": {\n            \"totalPopulation\": 331097593,\n            \"white\": 194886464,\n            \"blackOrAfricanAmerican\": 40146392,\n            \"americanIndianAndAlaskaNative\": 1826286,\n            \"asian\": 18873442,\n            \"nativeHawaiianAndPacificIslander\": 561561,\n            \"otherRace\": 1418481,\n            \"twoOrMoreRaces\": 11629101,\n            \"hispanicOrLatino\": 61755866\n          },\n          \"gender\": {\n            \"totalPopulation\": 331097593,\n            \"male\": 164200298,\n            \"female\": 166897295\n          },\n          \"education\": {\n            \"totalPopulation25AndOver\": 226600992,\n            \"lessThanHighSchool\": 24599698,\n            \"highSchoolGraduate\": 59741825,\n            \"someCollege\": 44692390,\n            \"associateDegree\": 19815732,\n            \"bachelorsDegree\": 47391673,\n            \"graduateDegree\": 30359674\n          },\n          \"income\": {\n            \"totalHouseholds\": 125736353,\n            \"medianHouseholdIncome\": 75149,\n            \"meanHouseholdIncome\": 13307060156700,\n            \"lessThan10k\": 6192080,\n            \"_10kTo15k\": 4743710,\n            \"_15kTo25k\": 8823088,\n            \"_25kTo35k\": 9309426,\n            \"_35kTo50k\": 13463922,\n            \"_50kTo75k\": 20228418,\n            \"_75kTo100k\": 16085302,\n            \"_100kTo150k\": 21466924,\n            \"_150kTo200k\": 11075396,\n            \"_200kOrMore\": 14348087\n          },\n          \"metadata\": {\n            \"source\": \"US Census Bureau\",\n            \"year\": \"2022\",\n            \"surveyType\": \"ACS 5-Year Estimates\"\n          }\n        },\n        \"aiInsights\": {\n          \"summary\": \"Targeted analysis for \\\"What is the household income distribution and share of households in each income band?\\\" in United States: ## 1. KEY INSIGHTS:\\n\\n- The supplied income bands sum to **125,736,353 households**, matching the stated household total; therefore, the distribution can be analyzed directly without normalization.\\n- The largest income band is **$50,000\u00e2\u0080\u0093$74,999**, containing **20,228,418 households**, or **16.1%** of all households.\\n- Nearly half of households\u00e2\u0080\u0094**49.7%**\u00e2\u0080\u0094earn below **$75,000**, while **38.7%** earn \",\n          \"insights\": \"## 1. KEY INSIGHTS:\\n\\n- The supplied income bands sum to **125,736,353 households**, matching the stated household total; therefore, the distribution can be analyzed directly without normalization.\\n- The largest income band is **$50,000\u00e2\u0080\u0093$74,999**, containing **20,228,418 households**, or **16.1%** of all households.\\n- Nearly half of households\u00e2\u0080\u0094**49.7%**\u00e2\u0080\u0094earn below **$75,000**, while **38.7%** earn at least **$100,000**.\\n- Lower-income households remain substantial: **20.2%** earn below **$35,000**, including **4.9%** below $10,000.\\n- Educational attainment is strongly relevant: **36.2%** of adults age 25 and over have a bachelor\u00e2\u0080\u0099s or graduate degree, supporting a large professional and high-income segment, while **63.8%** do not hold a bachelor\u00e2\u0080\u0099s degree.\\n- The income profile should not be interpreted as evenly distributed across demographic groups; age, education, race and ethnicity, household composition, and labor-force participation likely influence access to higher-paying employment. The Census Bureau\u00e2\u0080\u0099s 2022 ACS reports a national median household income close to the supplied figure, at $74,755.[7]\\n\\n## 2. SPECIFIC DATA POINTS:\\n\\n- **Below $25,000:** 20,666,878 households, or **16.4%**.\\n- **$25,000\u00e2\u0080\u0093$49,999:** 22,057,348 households, or **17.5%**.\\n- **$50,000\u00e2\u0080\u0093$74,999:** 20,228,418 households, or **16.1%**.\\n- **$75,000\u00e2\u0080\u0093$99,999:** 16,085,302 households, or **12.8%**.\\n- **$100,000 or more:** 46,698,407 households, or **37.1%**; this includes **11.4%** earning $200,000 or more.\\n- The supplied median household income is **$75,149**, close to the Census Bureau\u00e2\u0080\u0099s 2022 ACS national estimate of $74,755.[7]\\n- Among adults 25 and over, **77,751,347** have at least a bachelor\u00e2\u0080\u0099s degree, while **24,599,698** have less than a high-school education; these differences are relevant because education is closely associated with occupational access and earnings.\\n\\n## 3. ACTIONABLE RECOMMENDATIONS:\\n\\n- Design mass-market products around the **$50,000\u00e2\u0080\u0093$99,999** segment, which represents **28.9%** of households and is large enough to support broad demand.\\n- Offer lower-cost, installment, or value-oriented options for the **20.2%** of households earning below $35,000.\\n- Segment marketing by education and life stage: college-educated working-age adults are more likely to support premium offerings, while younger adults and households without bachelor\u00e2\u0080\u0099s degrees may be more price-sensitive.\\n- Build regional and demographic subsegments before making decisions; national averages can conceal meaningful differences by race, ethnicity, age, and geography.\\n- Use the **$100,000-plus** segment for premium, financial-planning, investment, and discretionary products, but avoid treating all high-income households as alike because household size and age affect purchasing capacity.\\n- Track inflation-adjusted income over time because the ACS income tables use inflation-adjusted dollars, and nominal income growth may not represent improved purchasing power.[3][7]\\n\\n## 4. NOTABLE TRENDS:\\n\\n- The distribution is broad rather than concentrated: no single income band contains more than **16.1%** of households.\\n- There is a clear upper-income concentration above $100,000: **37.1%** of households fall into this category, compared with **33.9%** earning below $50,000.\\n- The distribution has a substantial lower-income tail, with **6.2%** earning below $15,000 and **13.4%** earning between $15,000 and $35,000.\\n- The population is demographically mature, with a median age of **38.5** and approximately **16.5%** age 65 or older; retirement, fixed-income, and reduced labor-force participation may affect household income patterns.\\n- Income opportunity is likely linked to education: adults with bachelor\u00e2\u0080\u0099s or graduate degrees comprise **34.3%** of the total population and **36.2%** of adults age 25 and over, creating a sizeable high-earning potential group.\\n- The mean household income field appears mis-scaled: **$13.307 trillion** is the aggregate household income, not a mean income per household. Dividing it by 125,736,353 households produces an approximate mean of **$105,840**.\\n\\n## 5. AGREES WITH  \\n*Positions supported by the demographic and income data:*\\n\\n- **The U.S. market requires tiered pricing:** households are distributed across every income band, so a single premium or low-cost offer will exclude significant portions of the population.\\n- **The middle-income market is commercially central:** the $50,000\u00e2\u0080\u0093$99,999 bands together contain approximately **28.9%** of households and should receive substantial product and service attention.\\n- **High-income households form a major addressable segment:** 37.1% earn at least $100,000, supporting targeted premium, investment, travel, housing, and professional-service offerings.\\n- **Affordability remains a national concern:** more than one in five households earns below $35,000, supporting discounts, basic plans, subsidies, and flexible payment options.\\n- **Education-based segmentation is justified:** the large population with bachelor\u00e2\u0080\u0099s or graduate degrees supports specialized professional, financial, and high-value product segments.\\n- **Life-stage segmentation is necessary:** younger adults, working-age households, and older adults are likely to have different income sources, expenses, and purchasing priorities.\\n- **National income statistics should be paired with subgroup analysis:** Census ACS reporting treats income, education, race, Hispanic origin, age, and other characteristics as distinct but complementary dimensions of demographic analysis.[8]\\n\\n## 6. DISAGREES WITH  \\n*Positions the demographic and income data do not support:*\\n\\n- **The claim that the typical household is adequately represented by the mean income:** the distribution is wide, and the aggregate-income figure must be divided by households before it can be interpreted as a mean.\\n- **The assumption that most households are either poor or affluent:** the data show a broad spread, with substantial populations below $50,000, in the middle, and above $100,000.\\n- **The assumption that a $75,149 median means most households earn around $75,000:** the median identifies the midpoint, while 49.7% earn below $75,000 and 38.7% earn at least $100,000.\\n- **The idea that income differences can be explained by age alone:** education, race and ethnicity, household composition, geography, and employment conditions also shape income.\\n- **The assumption that higher educational attainment guarantees high household income:** education increases access to higher-paying occupations but does not determine household income, especially when households include multiple earners or dependents.\\n- **The assumption that all households earning $100,000 or more have similar purchasing power:** household size, housing costs, debt, region, age, and number of earners can produce substantially different financial circumstances.\\n- **The use of race or ethnicity as a direct proxy for household income:** these characteristics may reveal disparities in outcomes, but they should not be used to infer an individual household\u00e2\u0080\u0099s income without direct income data.\",\n          \"insightsList\": [\n            {\n              \"category\": \"Income Distribution\",\n              \"insight\": \"The largest household income band is $50,000\u00e2\u0080\u0093$74,999, containing 16.1% of all households, but no single band dominates, indicating a broad distribution.\",\n              \"priority\": \"high\"\n            },\n            {\n              \"category\": \"Income Segmentation\",\n              \"insight\": \"Nearly half (49.7%) of households earn below $75,000, while 38.7% earn at least $100,000, showing significant populations at both lower and higher income levels.\",\n              \"priority\": \"high\"\n            },\n            {\n              \"category\": \"Lower-Income Prevalence\",\n              \"insight\": \"A substantial 20.2% of households earn below $35,000, including 4.9% below $10,000, highlighting the need for affordability and support for lower-income groups.\",\n              \"priority\": \"high\"\n            },\n            {\n              \"category\": \"Education and Income\",\n              \"insight\": \"Educational attainment is a strong factor: 36.2% of adults 25+ have a bachelor\u00e2\u0080\u0099s or graduate degree, supporting a large professional and high-income segment, but 63.8% do not, indicating varied access to higher earnings.\",\n              \"priority\": \"medium\"\n            },\n            {\n              \"category\": \"Demographic Complexity\",\n              \"insight\": \"Income distribution is not uniform across demographic groups; age, education, race, household composition, and labor-force participation all influence household income, so subgroup analysis is essential.\",\n              \"priority\": \"high\"\n            }\n          ],\n          \"agreesWithList\": [\n            \"The U.S. market requires tiered pricing: households are distributed across every income band, so a single premium or low-cost offer will exclude significant portions of the population.\",\n            \"The middle-income market is commercially central: the $50,000\u00e2\u0080\u0093$99,999 bands together contain approximately 28.9% of households and should receive substantial product and service attention.\",\n            \"High-income households form a major addressable segment: 37.1% earn at least $100,000, supporting targeted premium, investment, travel, housing, and professional-service offerings.\",\n            \"Affordability remains a national concern: more than one in five households earns below $35,000, supporting discounts, basic plans, subsidies, and flexible payment options.\",\n            \"Education-based segmentation is justified: the large population with bachelor\u00e2\u0080\u0099s or graduate degrees supports specialized professional, financial, and high-value product segments.\",\n            \"Life-stage segmentation is necessary: younger adults, working-age households, and older adults are likely to have different income sources, expenses, and purchasing priorities.\",\n            \"National income statistics should be paired with subgroup analysis: Census ACS reporting treats income, education, race, Hispanic origin, age, and other characteristics as distinct but complementary dimensions of demographic analysis.\"\n          ],\n          \"disagreesWithList\": [\n            \"The claim that the typical household is adequately represented by the mean income: the distribution is wide, and the aggregate-income figure must be divided by households before it can be interpreted as a mean.\",\n            \"The assumption that most households are either poor or affluent: the data show a broad spread, with substantial populations below $50,000, in the middle, and above $100,000.\",\n            \"The assumption that a $75,149 median means most households earn around $75,000: the median identifies the midpoint, while 49.7% earn below $75,000 and 38.7% earn at least $100,000.\",\n            \"The idea that income differences can be explained by age alone: education, race and ethnicity, household composition, geography, and employment conditions also shape income.\",\n            \"The assumption that higher educational attainment guarantees high household income: education increases access to higher-paying occupations but does not determine household income, especially when households include multiple earners or dependents.\",\n            \"The assumption that all households earning $100,000 or more have similar purchasing power: household size, housing costs, debt, region, age, and number of earners can produce substantially different financial circumstances.\",\n            \"The use of race or ethnicity as a direct proxy for household income: these characteristics may reveal disparities in outcomes, but they should not be used to infer an individual household\u00e2\u0080\u0099s income without direct income data.\"\n          ],\n          \"targetedFor\": {\n            \"question\": \"What is the household income distribution and share of households in each income band?\"\n          }\n        },\n        \"geographicDistribution\": {\n          \"level\": \"national\",\n          \"weights\": [\n            {\n              \"name\": \"Alabama\",\n              \"fips\": \"01\",\n              \"share\": 0.01518613274847939\n            },\n            {\n              \"name\": \"Alaska\",\n              \"fips\": \"02\",\n              \"share\": 0.0022193486619517646\n            },\n            {\n              \"name\": \"Arizona\",\n              \"fips\": \"04\",\n              \"share\": 0.02166213875194194\n            },\n            {\n              \"name\": \"Arkansas\",\n              \"fips\": \"05\",\n              \"share\": 0.009117157792204185\n            },\n            {\n              \"name\": \"California\",\n              \"fips\": \"06\",\n              \"share\": 0.11886556964489924\n            },\n            {\n              \"name\": \"Colorado\",\n              \"fips\": \"08\",\n              \"share\": 0.01742927197903248\n            },\n            {\n              \"name\": \"Connecticut\",\n              \"fips\": \"09\",\n              \"share\": 0.010907107379666152\n            },\n            {\n              \"name\": \"Delaware\",\n              \"fips\": \"10\",\n              \"share\": 0.003001033595553804\n            },\n            {\n              \"name\": \"District of Columbia\",\n              \"fips\": \"11\",\n              \"share\": 0.002025345439463826\n            },\n            {\n              \"name\": \"Florida\",\n              \"fips\": \"12\",\n              \"share\": 0.06534184922328928\n            },\n            {\n              \"name\": \"Georgia\",\n              \"fips\": \"13\",\n              \"share\": 0.03238418287142305\n            },\n            {\n              \"name\": \"Hawaii\",\n              \"fips\": \"15\",\n              \"share\": 0.0043811523570936985\n            },\n            {\n              \"name\": \"Idaho\",\n              \"fips\": \"16\",\n              \"share\": 0.00559988667752109\n            },\n            {\n              \"name\": \"Illinois\",\n              \"fips\": \"17\",\n              \"share\": 0.038531340214243114\n            },\n            {\n              \"name\": \"Indiana\",\n              \"fips\": \"18\",\n              \"share\": 0.02049064427961577\n            },\n            {\n              \"name\": \"Iowa\",\n              \"fips\": \"19\",\n              \"share\": 0.009631105956122127\n            },\n            {\n              \"name\": \"Kansas\",\n              \"fips\": \"20\",\n              \"share\": 0.008867240541975187\n            },\n            {\n              \"name\": \"Kentucky\",\n              \"fips\": \"21\",\n              \"share\": 0.013600023362296083\n            },\n            {\n              \"name\": \"Louisiana\",\n              \"fips\": \"22\",\n              \"share\": 0.014015644021912294\n            },\n            {\n              \"name\": \"Maine\",\n              \"fips\": \"23\",\n              \"share\": 0.004128538016886158\n            },\n            {\n              \"name\": \"Maryland\",\n              \"fips\": \"24\",\n              \"share\": 0.018609941993749258\n            },\n            {\n              \"name\": \"Massachusetts\",\n              \"fips\": \"25\",\n              \"share\": 0.0210940977755764\n            },\n            {\n              \"name\": \"Michigan\",\n              \"fips\": \"26\",\n              \"share\": 0.03037751168429666\n            },\n            {\n              \"name\": \"Minnesota\",\n              \"fips\": \"27\",\n              \"share\": 0.017201248575672973\n            },\n            {\n              \"name\": \"Mississippi\",\n              \"fips\": \"28\",\n              \"share\": 0.008936476925702085\n            },\n            {\n              \"name\": \"Missouri\",\n              \"fips\": \"29\",\n              \"share\": 0.01858793941760851\n            },\n            {\n              \"name\": \"Montana\",\n              \"fips\": \"30\",\n              \"share\": 0.003297637986755162\n            },\n            {\n              \"name\": \"Nebraska\",\n              \"fips\": \"31\",\n              \"share\": 0.005916500274890249\n            },\n            {\n              \"name\": \"Nevada\",\n              \"fips\": \"32\",\n              \"share\": 0.009377346938308911\n            },\n            {\n              \"name\": \"New Hampshire\",\n              \"fips\": \"33\",\n              \"share\": 0.004166777497533786\n            },\n            {\n              \"name\": \"New Jersey\",\n              \"fips\": \"34\",\n              \"share\": 0.02793455221524368\n            },\n            {\n              \"name\": \"New Mexico\",\n              \"fips\": \"35\",\n              \"share\": 0.006380182292657138\n            },\n            {\n              \"name\": \"New York\",\n              \"fips\": \"36\",\n              \"share\": 0.06038817382764845\n            },\n            {\n              \"name\": \"North Carolina\",\n              \"fips\": \"37\",\n              \"share\": 0.03162274272407652\n            },\n            {\n              \"name\": \"North Dakota\",\n              \"fips\": \"38\",\n              \"share\": 0.002346359552061135\n            },\n            {\n              \"name\": \"Ohio\",\n              \"fips\": \"39\",\n              \"share\": 0.03556257505019072\n            },\n            {\n              \"name\": \"Oklahoma\",\n              \"fips\": \"40\",\n              \"share\": 0.01199192348100217\n            },\n            {\n              \"name\": \"Oregon\",\n              \"fips\": \"41\",\n              \"share\": 0.0127737986908289\n            },\n            {\n              \"name\": \"Pennsylvania\",\n              \"fips\": \"42\",\n              \"share\": 0.03923075333259822\n            },\n            {\n              \"name\": \"Rhode Island\",\n              \"fips\": \"44\",\n              \"share\": 0.0033049168074139397\n            },\n            {\n              \"name\": \"South Carolina\",\n              \"fips\": \"45\",\n              \"share\": 0.015532429436900195\n            },\n            {\n              \"name\": \"South Dakota\",\n              \"fips\": \"46\",\n              \"share\": 0.002689062134015574\n            },\n            {\n              \"name\": \"Tennessee\",\n              \"fips\": \"47\",\n              \"share\": 0.020911574551978094\n            },\n            {\n              \"name\": \"Texas\",\n              \"fips\": \"48\",\n              \"share\": 0.08832242401713866\n            },\n            {\n              \"name\": \"Utah\",\n              \"fips\": \"49\",\n              \"share\": 0.009917948874971133\n            },\n            {\n              \"name\": \"Vermont\",\n              \"fips\": \"50\",\n              \"share\": 0.0019444901250006974\n            },\n            {\n              \"name\": \"Virginia\",\n              \"fips\": \"51\",\n              \"share\": 0.026048244331392648\n            },\n            {\n              \"name\": \"Washington\",\n              \"fips\": \"53\",\n              \"share\": 0.023221398048641206\n            },\n            {\n              \"name\": \"West Virginia\",\n              \"fips\": \"54\",\n              \"share\": 0.0054152220913306365\n            },\n            {\n              \"name\": \"Wisconsin\",\n              \"fips\": \"55\",\n              \"share\": 0.01776554141243787\n            },\n            {\n              \"name\": \"Wyoming\",\n              \"fips\": \"56\",\n              \"share\": 0.001745494416807796\n            }\n          ]\n        },\n        \"metadata\": {\n          \"location\": \"United States\",\n          \"country\": \"United States\",\n          \"source\": \"Census\",\n          \"confidence\": \"high\",\n          \"responseTime\": 13136\n        }\n      },\n      \"storage_kind\": \"inline\"\n    }\n  },\n  \"conversation_id\": null,\n  \"message_id\": null,\n  \"completed_at\": \"2026-11-14T19:15:24.827Z\",\n  \"duration_ms\": 26088\n}"
+          }
+        ],
+        "structuredContent": {
+          "task_id": "01a1db7b-fe32-7c00-9a3c-1e777f8e29b1",
+          "task_name": "get_demographics",
+          "status": "completed",
+          "result": {
+            "demographics": {
+              "location": {
+                "query": "us:1"
+              },
+              "age": {
+                "under18": 73213705,
+                "age18to24": 31282896,
+                "age25to34": 45388153,
+                "age35to44": 42810359,
+                "age45to54": 41087357,
+                "age55to64": 42577475,
+                "age65to74": 32260679,
+                "age75andOver": 22476969,
+                "medianAge": 38.5,
+                "totalPopulation": 331097593
+              },
+              "race": {
+                "totalPopulation": 331097593,
+                "white": 194886464,
+                "blackOrAfricanAmerican": 40146392,
+                "americanIndianAndAlaskaNative": 1826286,
+                "asian": 18873442,
+                "nativeHawaiianAndPacificIslander": 561561,
+                "otherRace": 1418481,
+                "twoOrMoreRaces": 11629101,
+                "hispanicOrLatino": 61755866
+              },
+              "gender": {
+                "totalPopulation": 331097593,
+                "male": 164200298,
+                "female": 166897295
+              },
+              "education": {
+                "totalPopulation25AndOver": 226600992,
+                "lessThanHighSchool": 24599698,
+                "highSchoolGraduate": 59741825,
+                "someCollege": 44692390,
+                "associateDegree": 19815732,
+                "bachelorsDegree": 47391673,
+                "graduateDegree": 30359674
+              },
+              "income": {
+                "totalHouseholds": 125736353,
+                "medianHouseholdIncome": 75149,
+                "meanHouseholdIncome": 13307060156700,
+                "lessThan10k": 6192080,
+                "_10kTo15k": 4743710,
+                "_15kTo25k": 8823088,
+                "_25kTo35k": 9309426,
+                "_35kTo50k": 13463922,
+                "_50kTo75k": 20228418,
+                "_75kTo100k": 16085302,
+                "_100kTo150k": 21466924,
+                "_150kTo200k": 11075396,
+                "_200kOrMore": 14348087
+              },
+              "metadata": {
+                "source": "US Census Bureau",
+                "year": "2022",
+                "surveyType": "ACS 5-Year Estimates"
+              }
+            },
+            "geographicDistribution": {
+              "level": "national",
+              "weights": [
+                {
+                  "name": "Alabama",
+                  "fips": "01",
+                  "share": 0.01518613274847939
+                },
+                {
+                  "name": "Alaska",
+                  "fips": "02",
+                  "share": 0.0022193486619517646
+                },
+                {
+                  "name": "Arizona",
+                  "fips": "04",
+                  "share": 0.02166213875194194
+                },
+                {
+                  "name": "Arkansas",
+                  "fips": "05",
+                  "share": 0.009117157792204185
+                },
+                {
+                  "name": "California",
+                  "fips": "06",
+                  "share": 0.11886556964489924
+                },
+                {
+                  "name": "Colorado",
+                  "fips": "08",
+                  "share": 0.01742927197903248
+                },
+                {
+                  "name": "Connecticut",
+                  "fips": "09",
+                  "share": 0.010907107379666152
+                },
+                {
+                  "name": "Delaware",
+                  "fips": "10",
+                  "share": 0.003001033595553804
+                },
+                {
+                  "name": "District of Columbia",
+                  "fips": "11",
+                  "share": 0.002025345439463826
+                },
+                {
+                  "name": "Florida",
+                  "fips": "12",
+                  "share": 0.06534184922328928
+                },
+                {
+                  "name": "Georgia",
+                  "fips": "13",
+                  "share": 0.03238418287142305
+                },
+                {
+                  "name": "Hawaii",
+                  "fips": "15",
+                  "share": 0.0043811523570936985
+                },
+                {
+                  "name": "Idaho",
+                  "fips": "16",
+                  "share": 0.00559988667752109
+                },
+                {
+                  "name": "Illinois",
+                  "fips": "17",
+                  "share": 0.038531340214243114
+                },
+                {
+                  "name": "Indiana",
+                  "fips": "18",
+                  "share": 0.02049064427961577
+                },
+                {
+                  "name": "Iowa",
+                  "fips": "19",
+                  "share": 0.009631105956122127
+                },
+                {
+                  "name": "Kansas",
+                  "fips": "20",
+                  "share": 0.008867240541975187
+                },
+                {
+                  "name": "Kentucky",
+                  "fips": "21",
+                  "share": 0.013600023362296083
+                },
+                {
+                  "name": "Louisiana",
+                  "fips": "22",
+                  "share": 0.014015644021912294
+                },
+                {
+                  "name": "Maine",
+                  "fips": "23",
+                  "share": 0.004128538016886158
+                },
+                {
+                  "name": "Maryland",
+                  "fips": "24",
+                  "share": 0.018609941993749258
+                },
+                {
+                  "name": "Massachusetts",
+                  "fips": "25",
+                  "share": 0.0210940977755764
+                },
+                {
+                  "name": "Michigan",
+                  "fips": "26",
+                  "share": 0.03037751168429666
+                },
+                {
+                  "name": "Minnesota",
+                  "fips": "27",
+                  "share": 0.017201248575672973
+                },
+                {
+                  "name": "Mississippi",
+                  "fips": "28",
+                  "share": 0.008936476925702085
+                },
+                {
+                  "name": "Missouri",
+                  "fips": "29",
+                  "share": 0.01858793941760851
+                },
+                {
+                  "name": "Montana",
+                  "fips": "30",
+                  "share": 0.003297637986755162
+                },
+                {
+                  "name": "Nebraska",
+                  "fips": "31",
+                  "share": 0.005916500274890249
+                },
+                {
+                  "name": "Nevada",
+                  "fips": "32",
+                  "share": 0.009377346938308911
+                },
+                {
+                  "name": "New Hampshire",
+                  "fips": "33",
+                  "share": 0.004166777497533786
+                },
+                {
+                  "name": "New Jersey",
+                  "fips": "34",
+                  "share": 0.02793455221524368
+                },
+                {
+                  "name": "New Mexico",
+                  "fips": "35",
+                  "share": 0.006380182292657138
+                },
+                {
+                  "name": "New York",
+                  "fips": "36",
+                  "share": 0.06038817382764845
+                },
+                {
+                  "name": "North Carolina",
+                  "fips": "37",
+                  "share": 0.03162274272407652
+                },
+                {
+                  "name": "North Dakota",
+                  "fips": "38",
+                  "share": 0.002346359552061135
+                },
+                {
+                  "name": "Ohio",
+                  "fips": "39",
+                  "share": 0.03556257505019072
+                },
+                {
+                  "name": "Oklahoma",
+                  "fips": "40",
+                  "share": 0.01199192348100217
+                },
+                {
+                  "name": "Oregon",
+                  "fips": "41",
+                  "share": 0.0127737986908289
+                },
+                {
+                  "name": "Pennsylvania",
+                  "fips": "42",
+                  "share": 0.03923075333259822
+                },
+                {
+                  "name": "Rhode Island",
+                  "fips": "44",
+                  "share": 0.0033049168074139397
+                },
+                {
+                  "name": "South Carolina",
+                  "fips": "45",
+                  "share": 0.015532429436900195
+                },
+                {
+                  "name": "South Dakota",
+                  "fips": "46",
+                  "share": 0.002689062134015574
+                },
+                {
+                  "name": "Tennessee",
+                  "fips": "47",
+                  "share": 0.020911574551978094
+                },
+                {
+                  "name": "Texas",
+                  "fips": "48",
+                  "share": 0.08832242401713866
+                },
+                {
+                  "name": "Utah",
+                  "fips": "49",
+                  "share": 0.009917948874971133
+                },
+                {
+                  "name": "Vermont",
+                  "fips": "50",
+                  "share": 0.0019444901250006974
+                },
+                {
+                  "name": "Virginia",
+                  "fips": "51",
+                  "share": 0.026048244331392648
+                },
+                {
+                  "name": "Washington",
+                  "fips": "53",
+                  "share": 0.023221398048641206
+                },
+                {
+                  "name": "West Virginia",
+                  "fips": "54",
+                  "share": 0.0054152220913306365
+                },
+                {
+                  "name": "Wisconsin",
+                  "fips": "55",
+                  "share": 0.01776554141243787
+                },
+                {
+                  "name": "Wyoming",
+                  "fips": "56",
+                  "share": 0.001745494416807796
+                }
+              ]
+            },
+            "metadata": {
+              "location": "United States",
+              "country": "United States",
+              "source": "Census",
+              "confidence": "high",
+              "responseTime": 13136
+            },
+            "aiInsights": {
+              "summary": "Targeted analysis for \"What is the household income distribution and share of households in each income band?\" in United States: ## 1. KEY INSIGHTS:\n\n- The supplied income bands sum to **125,736,353 households**, matching the stated household total; therefore, the distribution can be analyzed directly without normalization.\n- The largest income band is **$50,000\u00e2\u0080\u0093$74,999**, containing **20,228,418 households**, or **16.1%** of all households.\n- Nearly half of households\u00e2\u0080\u0094**49.7%**\u00e2\u0080\u0094earn below **$75,000**, while **38.7%** earn ",
+              "insights": "## 1. KEY INSIGHTS:\n\n- The supplied income bands sum to **125,736,353 households**, matching the stated household total; therefore, the distribution can be analyzed directly without normalization.\n- The largest income band is **$50,000\u00e2\u0080\u0093$74,999**, containing **20,228,418 households**, or **16.1%** of all households.\n- Nearly half of households\u00e2\u0080\u0094**49.7%**\u00e2\u0080\u0094earn below **$75,000**, while **38.7%** earn at least **$100,000**.\n- Lower-income households remain substantial: **20.2%** earn below **$35,000**, including **4.9%** below $10,000.\n- Educational attainment is strongly relevant: **36.2%** of adults age 25 and over have a bachelor\u00e2\u0080\u0099s or graduate degree, supporting a large professional and high-income segment, while **63.8%** do not hold a bachelor\u00e2\u0080\u0099s degree.\n- The income profile should not be interpreted as evenly distributed across demographic groups; age, education, race and ethnicity, household composition, and labor-force participation likely influence access to higher-paying employment. The Census Bureau\u00e2\u0080\u0099s 2022 ACS reports a national median household income close to the supplied figure, at $74,755.[7]\n\n## 2. SPECIFIC DATA POINTS:\n\n- **Below $25,000:** 20,666,878 households, or **16.4%**.\n- **$25,000\u00e2\u0080\u0093$49,999:** 22,057,348 households, or **17.5%**.\n- **$50,000\u00e2\u0080\u0093$74,999:** 20,228,418 households, or **16.1%**.\n- **$75,000\u00e2\u0080\u0093$99,999:** 16,085,302 households, or **12.8%**.\n- **$100,000 or more:** 46,698,407 households, or **37.1%**; this includes **11.4%** earning $200,000 or more.\n- The supplied median household income is **$75,149**, close to the Census Bureau\u00e2\u0080\u0099s 2022 ACS national estimate of $74,755.[7]\n- Among adults 25 and over, **77,751,347** have at least a bachelor\u00e2\u0080\u0099s degree, while **24,599,698** have less than a high-school education; these differences are relevant because education is closely associated with occupational access and earnings.\n\n## 3. ACTIONABLE RECOMMENDATIONS:\n\n- Design mass-market products around the **$50,000\u00e2\u0080\u0093$99,999** segment, which represents **28.9%** of households and is large enough to support broad demand.\n- Offer lower-cost, installment, or value-oriented options for the **20.2%** of households earning below $35,000.\n- Segment marketing by education and life stage: college-educated working-age adults are more likely to support premium offerings, while younger adults and households without bachelor\u00e2\u0080\u0099s degrees may be more price-sensitive.\n- Build regional and demographic subsegments before making decisions; national averages can conceal meaningful differences by race, ethnicity, age, and geography.\n- Use the **$100,000-plus** segment for premium, financial-planning, investment, and discretionary products, but avoid treating all high-income households as alike because household size and age affect purchasing capacity.\n- Track inflation-adjusted income over time because the ACS income tables use inflation-adjusted dollars, and nominal income growth may not represent improved purchasing power.[3][7]\n\n## 4. NOTABLE TRENDS:\n\n- The distribution is broad rather than concentrated: no single income band contains more than **16.1%** of households.\n- There is a clear upper-income concentration above $100,000: **37.1%** of households fall into this category, compared with **33.9%** earning below $50,000.\n- The distribution has a substantial lower-income tail, with **6.2%** earning below $15,000 and **13.4%** earning between $15,000 and $35,000.\n- The population is demographically mature, with a median age of **38.5** and approximately **16.5%** age 65 or older; retirement, fixed-income, and reduced labor-force participation may affect household income patterns.\n- Income opportunity is likely linked to education: adults with bachelor\u00e2\u0080\u0099s or graduate degrees comprise **34.3%** of the total population and **36.2%** of adults age 25 and over, creating a sizeable high-earning potential group.\n- The mean household income field appears mis-scaled: **$13.307 trillion** is the aggregate household income, not a mean income per household. Dividing it by 125,736,353 households produces an approximate mean of **$105,840**.\n\n## 5. AGREES WITH  \n*Positions supported by the demographic and income data:*\n\n- **The U.S. market requires tiered pricing:** households are distributed across every income band, so a single premium or low-cost offer will exclude significant portions of the population.\n- **The middle-income market is commercially central:** the $50,000\u00e2\u0080\u0093$99,999 bands together contain approximately **28.9%** of households and should receive substantial product and service attention.\n- **High-income households form a major addressable segment:** 37.1% earn at least $100,000, supporting targeted premium, investment, travel, housing, and professional-service offerings.\n- **Affordability remains a national concern:** more than one in five households earns below $35,000, supporting discounts, basic plans, subsidies, and flexible payment options.\n- **Education-based segmentation is justified:** the large population with bachelor\u00e2\u0080\u0099s or graduate degrees supports specialized professional, financial, and high-value product segments.\n- **Life-stage segmentation is necessary:** younger adults, working-age households, and older adults are likely to have different income sources, expenses, and purchasing priorities.\n- **National income statistics should be paired with subgroup analysis:** Census ACS reporting treats income, education, race, Hispanic origin, age, and other characteristics as distinct but complementary dimensions of demographic analysis.[8]\n\n## 6. DISAGREES WITH  \n*Positions the demographic and income data do not support:*\n\n- **The claim that the typical household is adequately represented by the mean income:** the distribution is wide, and the aggregate-income figure must be divided by households before it can be interpreted as a mean.\n- **The assumption that most households are either poor or affluent:** the data show a broad spread, with substantial populations below $50,000, in the middle, and above $100,000.\n- **The assumption that a $75,149 median means most households earn around $75,000:** the median identifies the midpoint, while 49.7% earn below $75,000 and 38.7% earn at least $100,000.\n- **The idea that income differences can be explained by age alone:** education, race and ethnicity, household composition, geography, and employment conditions also shape income.\n- **The assumption that higher educational attainment guarantees high household income:** education increases access to higher-paying occupations but does not determine household income, especially when households include multiple earners or dependents.\n- **The assumption that all households earning $100,000 or more have similar purchasing power:** household size, housing costs, debt, region, age, and number of earners can produce substantially different financial circumstances.\n- **The use of race or ethnicity as a direct proxy for household income:** these characteristics may reveal disparities in outcomes, but they should not be used to infer an individual household\u00e2\u0080\u0099s income without direct income data.",
+              "insightsList": [
+                {
+                  "category": "Income Distribution",
+                  "insight": "The largest household income band is $50,000\u00e2\u0080\u0093$74,999, containing 16.1% of all households, but no single band dominates, indicating a broad distribution.",
+                  "priority": "high"
+                },
+                {
+                  "category": "Income Segmentation",
+                  "insight": "Nearly half (49.7%) of households earn below $75,000, while 38.7% earn at least $100,000, showing significant populations at both lower and higher income levels.",
+                  "priority": "high"
+                },
+                {
+                  "category": "Lower-Income Prevalence",
+                  "insight": "A substantial 20.2% of households earn below $35,000, including 4.9% below $10,000, highlighting the need for affordability and support for lower-income groups.",
+                  "priority": "high"
+                },
+                {
+                  "category": "Education and Income",
+                  "insight": "Educational attainment is a strong factor: 36.2% of adults 25+ have a bachelor\u00e2\u0080\u0099s or graduate degree, supporting a large professional and high-income segment, but 63.8% do not, indicating varied access to higher earnings.",
+                  "priority": "medium"
+                },
+                {
+                  "category": "Demographic Complexity",
+                  "insight": "Income distribution is not uniform across demographic groups; age, education, race, household composition, and labor-force participation all influence household income, so subgroup analysis is essential.",
+                  "priority": "high"
+                }
+              ],
+              "agreesWithList": [
+                "The U.S. market requires tiered pricing: households are distributed across every income band, so a single premium or low-cost offer will exclude significant portions of the population.",
+                "The middle-income market is commercially central: the $50,000\u00e2\u0080\u0093$99,999 bands together contain approximately 28.9% of households and should receive substantial product and service attention.",
+                "High-income households form a major addressable segment: 37.1% earn at least $100,000, supporting targeted premium, investment, travel, housing, and professional-service offerings.",
+                "Affordability remains a national concern: more than one in five households earns below $35,000, supporting discounts, basic plans, subsidies, and flexible payment options.",
+                "Education-based segmentation is justified: the large population with bachelor\u00e2\u0080\u0099s or graduate degrees supports specialized professional, financial, and high-value product segments.",
+                "Life-stage segmentation is necessary: younger adults, working-age households, and older adults are likely to have different income sources, expenses, and purchasing priorities.",
+                "National income statistics should be paired with subgroup analysis: Census ACS reporting treats income, education, race, Hispanic origin, age, and other characteristics as distinct but complementary dimensions of demographic analysis."
+              ],
+              "disagreesWithList": [
+                "The claim that the typical household is adequately represented by the mean income: the distribution is wide, and the aggregate-income figure must be divided by households before it can be interpreted as a mean.",
+                "The assumption that most households are either poor or affluent: the data show a broad spread, with substantial populations below $50,000, in the middle, and above $100,000.",
+                "The assumption that a $75,149 median means most households earn around $75,000: the median identifies the midpoint, while 49.7% earn below $75,000 and 38.7% earn at least $100,000.",
+                "The idea that income differences can be explained by age alone: education, race and ethnicity, household composition, geography, and employment conditions also shape income.",
+                "The assumption that higher educational attainment guarantees high household income: education increases access to higher-paying occupations but does not determine household income, especially when households include multiple earners or dependents.",
+                "The assumption that all households earning $100,000 or more have similar purchasing power: household size, housing costs, debt, region, age, and number of earners can produce substantially different financial circumstances.",
+                "The use of race or ethnicity as a direct proxy for household income: these characteristics may reveal disparities in outcomes, but they should not be used to infer an individual household\u00e2\u0080\u0099s income without direct income data."
+              ],
+              "targetedFor": {
+                "question": "What is the household income distribution and share of households in each income band?"
+              }
+            },
+            "artifact": {
+              "type": "demographics",
+              "title": "United States Demographics",
+              "summary": "Population 331,097,593, source: Census",
+              "storage": {
+                "demographics": {
+                  "location": {
+                    "query": "us:1"
+                  },
+                  "age": {
+                    "under18": 73213705,
+                    "age18to24": 31282896,
+                    "age25to34": 45388153,
+                    "age35to44": 42810359,
+                    "age45to54": 41087357,
+                    "age55to64": 42577475,
+                    "age65to74": 32260679,
+                    "age75andOver": 22476969,
+                    "medianAge": 38.5,
+                    "totalPopulation": 331097593
+                  },
+                  "race": {
+                    "totalPopulation": 331097593,
+                    "white": 194886464,
+                    "blackOrAfricanAmerican": 40146392,
+                    "americanIndianAndAlaskaNative": 1826286,
+                    "asian": 18873442,
+                    "nativeHawaiianAndPacificIslander": 561561,
+                    "otherRace": 1418481,
+                    "twoOrMoreRaces": 11629101,
+                    "hispanicOrLatino": 61755866
+                  },
+                  "gender": {
+                    "totalPopulation": 331097593,
+                    "male": 164200298,
+                    "female": 166897295
+                  },
+                  "education": {
+                    "totalPopulation25AndOver": 226600992,
+                    "lessThanHighSchool": 24599698,
+                    "highSchoolGraduate": 59741825,
+                    "someCollege": 44692390,
+                    "associateDegree": 19815732,
+                    "bachelorsDegree": 47391673,
+                    "graduateDegree": 30359674
+                  },
+                  "income": {
+                    "totalHouseholds": 125736353,
+                    "medianHouseholdIncome": 75149,
+                    "meanHouseholdIncome": 13307060156700,
+                    "lessThan10k": 6192080,
+                    "_10kTo15k": 4743710,
+                    "_15kTo25k": 8823088,
+                    "_25kTo35k": 9309426,
+                    "_35kTo50k": 13463922,
+                    "_50kTo75k": 20228418,
+                    "_75kTo100k": 16085302,
+                    "_100kTo150k": 21466924,
+                    "_150kTo200k": 11075396,
+                    "_200kOrMore": 14348087
+                  },
+                  "metadata": {
+                    "source": "US Census Bureau",
+                    "year": "2022",
+                    "surveyType": "ACS 5-Year Estimates"
+                  }
+                },
+                "aiInsights": {
+                  "summary": "Targeted analysis for \"What is the household income distribution and share of households in each income band?\" in United States: ## 1. KEY INSIGHTS:\n\n- The supplied income bands sum to **125,736,353 households**, matching the stated household total; therefore, the distribution can be analyzed directly without normalization.\n- The largest income band is **$50,000\u00e2\u0080\u0093$74,999**, containing **20,228,418 households**, or **16.1%** of all households.\n- Nearly half of households\u00e2\u0080\u0094**49.7%**\u00e2\u0080\u0094earn below **$75,000**, while **38.7%** earn ",
+                  "insights": "## 1. KEY INSIGHTS:\n\n- The supplied income bands sum to **125,736,353 households**, matching the stated household total; therefore, the distribution can be analyzed directly without normalization.\n- The largest income band is **$50,000\u00e2\u0080\u0093$74,999**, containing **20,228,418 households**, or **16.1%** of all households.\n- Nearly half of households\u00e2\u0080\u0094**49.7%**\u00e2\u0080\u0094earn below **$75,000**, while **38.7%** earn at least **$100,000**.\n- Lower-income households remain substantial: **20.2%** earn below **$35,000**, including **4.9%** below $10,000.\n- Educational attainment is strongly relevant: **36.2%** of adults age 25 and over have a bachelor\u00e2\u0080\u0099s or graduate degree, supporting a large professional and high-income segment, while **63.8%** do not hold a bachelor\u00e2\u0080\u0099s degree.\n- The income profile should not be interpreted as evenly distributed across demographic groups; age, education, race and ethnicity, household composition, and labor-force participation likely influence access to higher-paying employment. The Census Bureau\u00e2\u0080\u0099s 2022 ACS reports a national median household income close to the supplied figure, at $74,755.[7]\n\n## 2. SPECIFIC DATA POINTS:\n\n- **Below $25,000:** 20,666,878 households, or **16.4%**.\n- **$25,000\u00e2\u0080\u0093$49,999:** 22,057,348 households, or **17.5%**.\n- **$50,000\u00e2\u0080\u0093$74,999:** 20,228,418 households, or **16.1%**.\n- **$75,000\u00e2\u0080\u0093$99,999:** 16,085,302 households, or **12.8%**.\n- **$100,000 or more:** 46,698,407 households, or **37.1%**; this includes **11.4%** earning $200,000 or more.\n- The supplied median household income is **$75,149**, close to the Census Bureau\u00e2\u0080\u0099s 2022 ACS national estimate of $74,755.[7]\n- Among adults 25 and over, **77,751,347** have at least a bachelor\u00e2\u0080\u0099s degree, while **24,599,698** have less than a high-school education; these differences are relevant because education is closely associated with occupational access and earnings.\n\n## 3. ACTIONABLE RECOMMENDATIONS:\n\n- Design mass-market products around the **$50,000\u00e2\u0080\u0093$99,999** segment, which represents **28.9%** of households and is large enough to support broad demand.\n- Offer lower-cost, installment, or value-oriented options for the **20.2%** of households earning below $35,000.\n- Segment marketing by education and life stage: college-educated working-age adults are more likely to support premium offerings, while younger adults and households without bachelor\u00e2\u0080\u0099s degrees may be more price-sensitive.\n- Build regional and demographic subsegments before making decisions; national averages can conceal meaningful differences by race, ethnicity, age, and geography.\n- Use the **$100,000-plus** segment for premium, financial-planning, investment, and discretionary products, but avoid treating all high-income households as alike because household size and age affect purchasing capacity.\n- Track inflation-adjusted income over time because the ACS income tables use inflation-adjusted dollars, and nominal income growth may not represent improved purchasing power.[3][7]\n\n## 4. NOTABLE TRENDS:\n\n- The distribution is broad rather than concentrated: no single income band contains more than **16.1%** of households.\n- There is a clear upper-income concentration above $100,000: **37.1%** of households fall into this category, compared with **33.9%** earning below $50,000.\n- The distribution has a substantial lower-income tail, with **6.2%** earning below $15,000 and **13.4%** earning between $15,000 and $35,000.\n- The population is demographically mature, with a median age of **38.5** and approximately **16.5%** age 65 or older; retirement, fixed-income, and reduced labor-force participation may affect household income patterns.\n- Income opportunity is likely linked to education: adults with bachelor\u00e2\u0080\u0099s or graduate degrees comprise **34.3%** of the total population and **36.2%** of adults age 25 and over, creating a sizeable high-earning potential group.\n- The mean household income field appears mis-scaled: **$13.307 trillion** is the aggregate household income, not a mean income per household. Dividing it by 125,736,353 households produces an approximate mean of **$105,840**.\n\n## 5. AGREES WITH  \n*Positions supported by the demographic and income data:*\n\n- **The U.S. market requires tiered pricing:** households are distributed across every income band, so a single premium or low-cost offer will exclude significant portions of the population.\n- **The middle-income market is commercially central:** the $50,000\u00e2\u0080\u0093$99,999 bands together contain approximately **28.9%** of households and should receive substantial product and service attention.\n- **High-income households form a major addressable segment:** 37.1% earn at least $100,000, supporting targeted premium, investment, travel, housing, and professional-service offerings.\n- **Affordability remains a national concern:** more than one in five households earns below $35,000, supporting discounts, basic plans, subsidies, and flexible payment options.\n- **Education-based segmentation is justified:** the large population with bachelor\u00e2\u0080\u0099s or graduate degrees supports specialized professional, financial, and high-value product segments.\n- **Life-stage segmentation is necessary:** younger adults, working-age households, and older adults are likely to have different income sources, expenses, and purchasing priorities.\n- **National income statistics should be paired with subgroup analysis:** Census ACS reporting treats income, education, race, Hispanic origin, age, and other characteristics as distinct but complementary dimensions of demographic analysis.[8]\n\n## 6. DISAGREES WITH  \n*Positions the demographic and income data do not support:*\n\n- **The claim that the typical household is adequately represented by the mean income:** the distribution is wide, and the aggregate-income figure must be divided by households before it can be interpreted as a mean.\n- **The assumption that most households are either poor or affluent:** the data show a broad spread, with substantial populations below $50,000, in the middle, and above $100,000.\n- **The assumption that a $75,149 median means most households earn around $75,000:** the median identifies the midpoint, while 49.7% earn below $75,000 and 38.7% earn at least $100,000.\n- **The idea that income differences can be explained by age alone:** education, race and ethnicity, household composition, geography, and employment conditions also shape income.\n- **The assumption that higher educational attainment guarantees high household income:** education increases access to higher-paying occupations but does not determine household income, especially when households include multiple earners or dependents.\n- **The assumption that all households earning $100,000 or more have similar purchasing power:** household size, housing costs, debt, region, age, and number of earners can produce substantially different financial circumstances.\n- **The use of race or ethnicity as a direct proxy for household income:** these characteristics may reveal disparities in outcomes, but they should not be used to infer an individual household\u00e2\u0080\u0099s income without direct income data.",
+                  "insightsList": [
+                    {
+                      "category": "Income Distribution",
+                      "insight": "The largest household income band is $50,000\u00e2\u0080\u0093$74,999, containing 16.1% of all households, but no single band dominates, indicating a broad distribution.",
+                      "priority": "high"
+                    },
+                    {
+                      "category": "Income Segmentation",
+                      "insight": "Nearly half (49.7%) of households earn below $75,000, while 38.7% earn at least $100,000, showing significant populations at both lower and higher income levels.",
+                      "priority": "high"
+                    },
+                    {
+                      "category": "Lower-Income Prevalence",
+                      "insight": "A substantial 20.2% of households earn below $35,000, including 4.9% below $10,000, highlighting the need for affordability and support for lower-income groups.",
+                      "priority": "high"
+                    },
+                    {
+                      "category": "Education and Income",
+                      "insight": "Educational attainment is a strong factor: 36.2% of adults 25+ have a bachelor\u00e2\u0080\u0099s or graduate degree, supporting a large professional and high-income segment, but 63.8% do not, indicating varied access to higher earnings.",
+                      "priority": "medium"
+                    },
+                    {
+                      "category": "Demographic Complexity",
+                      "insight": "Income distribution is not uniform across demographic groups; age, education, race, household composition, and labor-force participation all influence household income, so subgroup analysis is essential.",
+                      "priority": "high"
+                    }
+                  ],
+                  "agreesWithList": [
+                    "The U.S. market requires tiered pricing: households are distributed across every income band, so a single premium or low-cost offer will exclude significant portions of the population.",
+                    "The middle-income market is commercially central: the $50,000\u00e2\u0080\u0093$99,999 bands together contain approximately 28.9% of households and should receive substantial product and service attention.",
+                    "High-income households form a major addressable segment: 37.1% earn at least $100,000, supporting targeted premium, investment, travel, housing, and professional-service offerings.",
+                    "Affordability remains a national concern: more than one in five households earns below $35,000, supporting discounts, basic plans, subsidies, and flexible payment options.",
+                    "Education-based segmentation is justified: the large population with bachelor\u00e2\u0080\u0099s or graduate degrees supports specialized professional, financial, and high-value product segments.",
+                    "Life-stage segmentation is necessary: younger adults, working-age households, and older adults are likely to have different income sources, expenses, and purchasing priorities.",
+                    "National income statistics should be paired with subgroup analysis: Census ACS reporting treats income, education, race, Hispanic origin, age, and other characteristics as distinct but complementary dimensions of demographic analysis."
+                  ],
+                  "disagreesWithList": [
+                    "The claim that the typical household is adequately represented by the mean income: the distribution is wide, and the aggregate-income figure must be divided by households before it can be interpreted as a mean.",
+                    "The assumption that most households are either poor or affluent: the data show a broad spread, with substantial populations below $50,000, in the middle, and above $100,000.",
+                    "The assumption that a $75,149 median means most households earn around $75,000: the median identifies the midpoint, while 49.7% earn below $75,000 and 38.7% earn at least $100,000.",
+                    "The idea that income differences can be explained by age alone: education, race and ethnicity, household composition, geography, and employment conditions also shape income.",
+                    "The assumption that higher educational attainment guarantees high household income: education increases access to higher-paying occupations but does not determine household income, especially when households include multiple earners or dependents.",
+                    "The assumption that all households earning $100,000 or more have similar purchasing power: household size, housing costs, debt, region, age, and number of earners can produce substantially different financial circumstances.",
+                    "The use of race or ethnicity as a direct proxy for household income: these characteristics may reveal disparities in outcomes, but they should not be used to infer an individual household\u00e2\u0080\u0099s income without direct income data."
+                  ],
+                  "targetedFor": {
+                    "question": "What is the household income distribution and share of households in each income band?"
+                  }
+                },
+                "geographicDistribution": {
+                  "level": "national",
+                  "weights": [
+                    {
+                      "name": "Alabama",
+                      "fips": "01",
+                      "share": 0.01518613274847939
+                    },
+                    {
+                      "name": "Alaska",
+                      "fips": "02",
+                      "share": 0.0022193486619517646
+                    },
+                    {
+                      "name": "Arizona",
+                      "fips": "04",
+                      "share": 0.02166213875194194
+                    },
+                    {
+                      "name": "Arkansas",
+                      "fips": "05",
+                      "share": 0.009117157792204185
+                    },
+                    {
+                      "name": "California",
+                      "fips": "06",
+                      "share": 0.11886556964489924
+                    },
+                    {
+                      "name": "Colorado",
+                      "fips": "08",
+                      "share": 0.01742927197903248
+                    },
+                    {
+                      "name": "Connecticut",
+                      "fips": "09",
+                      "share": 0.010907107379666152
+                    },
+                    {
+                      "name": "Delaware",
+                      "fips": "10",
+                      "share": 0.003001033595553804
+                    },
+                    {
+                      "name": "District of Columbia",
+                      "fips": "11",
+                      "share": 0.002025345439463826
+                    },
+                    {
+                      "name": "Florida",
+                      "fips": "12",
+                      "share": 0.06534184922328928
+                    },
+                    {
+                      "name": "Georgia",
+                      "fips": "13",
+                      "share": 0.03238418287142305
+                    },
+                    {
+                      "name": "Hawaii",
+                      "fips": "15",
+                      "share": 0.0043811523570936985
+                    },
+                    {
+                      "name": "Idaho",
+                      "fips": "16",
+                      "share": 0.00559988667752109
+                    },
+                    {
+                      "name": "Illinois",
+                      "fips": "17",
+                      "share": 0.038531340214243114
+                    },
+                    {
+                      "name": "Indiana",
+                      "fips": "18",
+                      "share": 0.02049064427961577
+                    },
+                    {
+                      "name": "Iowa",
+                      "fips": "19",
+                      "share": 0.009631105956122127
+                    },
+                    {
+                      "name": "Kansas",
+                      "fips": "20",
+                      "share": 0.008867240541975187
+                    },
+                    {
+                      "name": "Kentucky",
+                      "fips": "21",
+                      "share": 0.013600023362296083
+                    },
+                    {
+                      "name": "Louisiana",
+                      "fips": "22",
+                      "share": 0.014015644021912294
+                    },
+                    {
+                      "name": "Maine",
+                      "fips": "23",
+                      "share": 0.004128538016886158
+                    },
+                    {
+                      "name": "Maryland",
+                      "fips": "24",
+                      "share": 0.018609941993749258
+                    },
+                    {
+                      "name": "Massachusetts",
+                      "fips": "25",
+                      "share": 0.0210940977755764
+                    },
+                    {
+                      "name": "Michigan",
+                      "fips": "26",
+                      "share": 0.03037751168429666
+                    },
+                    {
+                      "name": "Minnesota",
+                      "fips": "27",
+                      "share": 0.017201248575672973
+                    },
+                    {
+                      "name": "Mississippi",
+                      "fips": "28",
+                      "share": 0.008936476925702085
+                    },
+                    {
+                      "name": "Missouri",
+                      "fips": "29",
+                      "share": 0.01858793941760851
+                    },
+                    {
+                      "name": "Montana",
+                      "fips": "30",
+                      "share": 0.003297637986755162
+                    },
+                    {
+                      "name": "Nebraska",
+                      "fips": "31",
+                      "share": 0.005916500274890249
+                    },
+                    {
+                      "name": "Nevada",
+                      "fips": "32",
+                      "share": 0.009377346938308911
+                    },
+                    {
+                      "name": "New Hampshire",
+                      "fips": "33",
+                      "share": 0.004166777497533786
+                    },
+                    {
+                      "name": "New Jersey",
+                      "fips": "34",
+                      "share": 0.02793455221524368
+                    },
+                    {
+                      "name": "New Mexico",
+                      "fips": "35",
+                      "share": 0.006380182292657138
+                    },
+                    {
+                      "name": "New York",
+                      "fips": "36",
+                      "share": 0.06038817382764845
+                    },
+                    {
+                      "name": "North Carolina",
+                      "fips": "37",
+                      "share": 0.03162274272407652
+                    },
+                    {
+                      "name": "North Dakota",
+                      "fips": "38",
+                      "share": 0.002346359552061135
+                    },
+                    {
+                      "name": "Ohio",
+                      "fips": "39",
+                      "share": 0.03556257505019072
+                    },
+                    {
+                      "name": "Oklahoma",
+                      "fips": "40",
+                      "share": 0.01199192348100217
+                    },
+                    {
+                      "name": "Oregon",
+                      "fips": "41",
+                      "share": 0.0127737986908289
+                    },
+                    {
+                      "name": "Pennsylvania",
+                      "fips": "42",
+                      "share": 0.03923075333259822
+                    },
+                    {
+                      "name": "Rhode Island",
+                      "fips": "44",
+                      "share": 0.0033049168074139397
+                    },
+                    {
+                      "name": "South Carolina",
+                      "fips": "45",
+                      "share": 0.015532429436900195
+                    },
+                    {
+                      "name": "South Dakota",
+                      "fips": "46",
+                      "share": 0.002689062134015574
+                    },
+                    {
+                      "name": "Tennessee",
+                      "fips": "47",
+                      "share": 0.020911574551978094
+                    },
+                    {
+                      "name": "Texas",
+                      "fips": "48",
+                      "share": 0.08832242401713866
+                    },
+                    {
+                      "name": "Utah",
+                      "fips": "49",
+                      "share": 0.009917948874971133
+                    },
+                    {
+                      "name": "Vermont",
+                      "fips": "50",
+                      "share": 0.0019444901250006974
+                    },
+                    {
+                      "name": "Virginia",
+                      "fips": "51",
+                      "share": 0.026048244331392648
+                    },
+                    {
+                      "name": "Washington",
+                      "fips": "53",
+                      "share": 0.023221398048641206
+                    },
+                    {
+                      "name": "West Virginia",
+                      "fips": "54",
+                      "share": 0.0054152220913306365
+                    },
+                    {
+                      "name": "Wisconsin",
+                      "fips": "55",
+                      "share": 0.01776554141243787
+                    },
+                    {
+                      "name": "Wyoming",
+                      "fips": "56",
+                      "share": 0.001745494416807796
+                    }
+                  ]
+                },
+                "metadata": {
+                  "location": "United States",
+                  "country": "United States",
+                  "source": "Census",
+                  "confidence": "high",
+                  "responseTime": 13136
+                }
+              },
+              "storage_kind": "inline"
+            }
+          },
+          "conversation_id": null,
+          "message_id": null,
+          "completed_at": "2026-11-14T19:15:24.827Z",
+          "duration_ms": 26088
+        },
+        "isError": false
+      }
+    }
+  ],
+  "spent_usdc": 0.05
+}

@@ -3,6 +3,7 @@
 Consolidated Research Pipeline Execution Script.
 
 Orchestrates the complete K-Shaped Macro Research & Retail Alpha Workflow:
+0. Live Flashpoint demographics pull, driven by Gemini over the Flashpoint MCP (paid, x402)
 1. Macro Sentiment Stratification (Flashpoint AI 5 Michigan Questions)
 2. Chicago Fed Letter 521 Baseline Survey Benchmarks
 3. Factor Model & 20-Asset Cross-Sectional Backtest
@@ -31,6 +32,12 @@ from src.quant.retail_alpha import (
     load_baseline_surveys,
     load_respondent_transcripts,
 )
+from src.sampler.gemini_mcp_agent import run_flashpoint_agent
+
+FLASHPOINT_TASK = (
+    "Use the Flashpoint demographics tool once for location 'United States' and report the "
+    "household income distribution: the share of households in each income band."
+)
 
 
 def main():
@@ -39,9 +46,23 @@ def main():
     print("=" * 82)
 
     # -------------------------------------------------------------------------
-    # STAGE 1: INGESTION & DATA SYNC
+    # STAGE 1: LIVE FLASHPOINT PULL (GEMINI DRIVES THE FLASHPOINT MCP, PAID VIA X402)
     # -------------------------------------------------------------------------
-    print("\n[STAGE 1/5] Ingesting Sentiment Signals, Transcripts, and Market Data...")
+    print("\n[STAGE 1/6] Gemini calling Flashpoint MCP for live household income distribution...")
+    live = run_flashpoint_agent(FLASHPOINT_TASK)
+    paid_calls = [c for c in live["tool_calls"] if c["ok"]]
+    if not paid_calls:
+        raise RuntimeError(f"Gemini made no successful Flashpoint MCP call: {live['tool_calls']}")
+    live_out = PROJECT_ROOT / "data" / "flashpoint_live_demographics.json"
+    with open(live_out, "w") as f:
+        json.dump({"task": FLASHPOINT_TASK, **live}, f, indent=2)
+    print(f"  ✓ {live['model']} made {len(paid_calls)} live Flashpoint call(s): {[c['tool'] for c in paid_calls]}")
+    print(f"  ✓ Paid {live['spent_usdc']:.2f} USDC via x402; saved {live_out.name}")
+
+    # -------------------------------------------------------------------------
+    # STAGE 2: INGESTION & DATA SYNC
+    # -------------------------------------------------------------------------
+    print("\n[STAGE 2/6] Ingesting Sentiment Signals, Transcripts, and Market Data...")
     sentiment_path = PROJECT_ROOT / "data" / "sentiment_signals.json"
     sentiment_df = load_sentiment_signals(sentiment_path)
     print(f"  ✓ Loaded {len(sentiment_df)} months of stratified sentiment signals ({sentiment_df.index[0].date()} -> {sentiment_df.index[-1].date()})")
@@ -61,9 +82,9 @@ def main():
     print(f"  ✓ Loaded 7 baseline surveys from Chicago Fed Letter 521 ({len(baseline_df)} periods)")
 
     # -------------------------------------------------------------------------
-    # STAGE 2: CROSS-SECTIONAL FACTOR MODEL BACKTEST
+    # STAGE 3: CROSS-SECTIONAL FACTOR MODEL BACKTEST
     # -------------------------------------------------------------------------
-    print("\n[STAGE 2/5] Running Cross-Sectional Factor Model Backtest...")
+    print("\n[STAGE 3/6] Running Cross-Sectional Factor Model Backtest...")
     backtest_results = run_factor_backtest(sentiment_df=sentiment_df, prices_df=prices_df)
     backtest_out = PROJECT_ROOT / "data" / "backtest_results.json"
     with open(backtest_out, "w") as f:
@@ -75,9 +96,9 @@ def main():
     print(f"  ✓ 3M Horizon: Long/Short Ann. Return = {h3_ls['annualized_return']*100:+.2f}%, Sharpe = {h3_ls['sharpe_ratio']:.2f}")
 
     # -------------------------------------------------------------------------
-    # STAGE 3: ECONOMETRIC DIAGNOSTICS & STATISTICAL PROOFS
+    # STAGE 4: ECONOMETRIC DIAGNOSTICS & STATISTICAL PROOFS
     # -------------------------------------------------------------------------
-    print("\n[STAGE 3/5] Executing Econometric Tests (ADF, Cointegration, IC Superiority)...")
+    print("\n[STAGE 4/6] Executing Econometric Tests (ADF, Cointegration, IC Superiority)...")
     econ_results = run_full_econometric_suite(sentiment_df=sentiment_df, prices_df=prices_df)
 
     adf_primary = econ_results["stationarity_tests"]["primary_signal"]
@@ -92,9 +113,9 @@ def main():
     print(f"    -> Paired t-test diff = {ic_comp_3m['comparative_paired_test']['ic_difference']:+.4f}, t = {ic_comp_3m['comparative_paired_test']['t_statistic']:.2f}, one-tailed p = {ic_comp_3m['comparative_paired_test']['p_value_one_tailed']:.4f} (Superior: {ic_comp_3m['comparative_paired_test']['is_superior']})")
 
     # -------------------------------------------------------------------------
-    # STAGE 4: RETAIL K-ALPHA SIGNALS & MARKET OVERLAY
+    # STAGE 5: RETAIL K-ALPHA SIGNALS & MARKET OVERLAY
     # -------------------------------------------------------------------------
-    print("\n[STAGE 4/5] Computing Retail K-Alpha Signals & Pricing Adjustments...")
+    print("\n[STAGE 5/6] Computing Retail K-Alpha Signals & Pricing Adjustments...")
     fundamentals = fetch_ticker_fundamentals(tickers=["COST", "WMT", "TGT", "SPY"])
     retail_results = compute_retail_k_alpha(
         transcripts=transcripts,
@@ -116,9 +137,9 @@ def main():
     print(f"  ✓ TGT  ({tgt_sig['action']}): Target ${tgt_sig['k_alpha_target_price']:.2f} ({tgt_sig['k_alpha_upside_pct']:+.1f}% vs Current ${tgt_sig['current_price']:.2f})")
 
     # -------------------------------------------------------------------------
-    # STAGE 5: FORWARD-LOOKING CYCLE FORECAST (OPTIONAL SYNC)
+    # STAGE 6: FORWARD-LOOKING CYCLE FORECAST (OPTIONAL SYNC)
     # -------------------------------------------------------------------------
-    print("\n[STAGE 5/5] Checking Forward News Cycle Forecast...")
+    print("\n[STAGE 6/6] Checking Forward News Cycle Forecast...")
     forecast_path = PROJECT_ROOT / "data" / "forward_cycle_forecast.json"
     if forecast_path.exists():
         with open(forecast_path, "r") as f:

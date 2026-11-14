@@ -19,14 +19,17 @@ from src.quant.factor import (
     calculate_derived_macro_factors,
     compute_cross_sectional_factor_scores,
     compute_information_coefficients,
-    generate_calibrated_sentiment,
     load_sentiment_signals,
 )
 from src.quant.market_data import (
     compute_forward_returns,
     fetch_historical_prices,
-    generate_synthetic_prices,
 )
+def _sentiment(start_date: str, end_date: str) -> pd.DataFrame:
+    """Real Flashpoint sentiment signals sliced to a date range (no simulated data)."""
+    return load_sentiment_signals().loc[start_date:end_date]
+
+
 from src.quant.universe import (
     ALL_TICKERS,
     ASSET_MAP,
@@ -57,20 +60,20 @@ def test_universe_definitions():
     assert len(metadata) == len(UNIVERSE_ASSETS)
 
 
-def test_market_data_generator_and_forward_returns():
-    """Verify synthetic price generator and forward return alignment without lookahead bias."""
-    synth_prices = generate_synthetic_prices(["AAPL", "DLTR", "SPY"], start_date="2023-01-01", end_date="2023-12-31")
-    assert not synth_prices.empty
-    assert (synth_prices > 0).all().all()
+def test_market_data_forward_returns():
+    """Verify forward return alignment without lookahead bias on cached real prices."""
+    prices = fetch_historical_prices(tickers=["AAPL", "DLTR", "SPY"])
+    assert not prices.empty
+    assert (prices > 0).all().all()
 
     # Forward return test
-    fwd = compute_forward_returns(synth_prices, horizons=(1, 3))
+    fwd = compute_forward_returns(prices, horizons=(1, 3))
     assert 1 in fwd
     assert 3 in fwd
 
     # At row t, 1M forward return should equal (Price_{t+1} / Price_t) - 1
-    p0 = synth_prices.iloc[0]["AAPL"]
-    p1 = synth_prices.iloc[1]["AAPL"]
+    p0 = prices.iloc[0]["AAPL"]
+    p1 = prices.iloc[1]["AAPL"]
     expected_fwd_1m = (p1 / p0) - 1.0
     actual_fwd_1m = fwd[1].iloc[0]["AAPL"]
     assert np.isclose(expected_fwd_1m, actual_fwd_1m, atol=1e-6)
@@ -83,7 +86,7 @@ def test_market_data_generator_and_forward_returns():
 
 def test_factor_spread_and_acceleration():
     """Verify delta_s spread factor and acceleration mathematics."""
-    s_df = generate_calibrated_sentiment(start_date="2022-01-01", end_date="2023-12-31")
+    s_df = _sentiment("2022-01-01", "2023-12-31")
     assert "s_upper" in s_df.columns
     assert "s_median" in s_df.columns
     assert "s_lower" in s_df.columns
@@ -106,7 +109,7 @@ def test_factor_spread_and_acceleration():
 def test_cross_sectional_ranking_and_quintiles():
     """Verify cross-sectional ranking assigns exactly 5 balanced quintiles."""
     prices = fetch_historical_prices(start_date="2023-01-01", end_date="2023-12-31")
-    s_df = generate_calibrated_sentiment(start_date="2023-01-01", end_date="2023-12-31")
+    s_df = _sentiment("2023-01-01", "2023-12-31")
     macro = calculate_derived_macro_factors(s_df)
 
     scores = compute_cross_sectional_factor_scores(macro, prices)

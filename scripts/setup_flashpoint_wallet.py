@@ -145,7 +145,10 @@ def test_mcp_connection(token: str):
         timeout=10,
     )
     if r_tools.status_code == 200:
-        print(" [✓] Live Tools Discovered on Flashpoint MCP: chat, tool_survey, panel, demographics, presentation")
+        data_lines = [ln[len("data:"):].strip() for ln in r_tools.text.splitlines() if ln.startswith("data:")]
+        body = json.loads(data_lines[-1]) if data_lines else r_tools.json()
+        names = [t["name"] for t in body.get("result", {}).get("tools", [])]
+        print(f" [✓] Live Tools Discovered on Flashpoint MCP: {', '.join(names)}")
     else:
         print(f" [!] Tools list returned: {r_tools.status_code}")
 

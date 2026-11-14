@@ -27,118 +27,53 @@ SENTIMENT_CACHE = DATA_DIR / "sentiment_signals.json"
 
 def load_sentiment_signals(filepath: Optional[Path] = None) -> pd.DataFrame:
     """
-    Load sentiment signals from JSON or generate calibrated synthetic Michigan-style signals.
-    Standardizes column names: ['s_upper', 's_median', 's_lower', 's_k', 'delta_s'].
-    Supports both list-of-dicts and dict-of-arrays formats from @sampler.
+    Load sentiment signals from the Flashpoint JSON export (list-of-dicts, nested, or columnar dict).
+    Standardizes column names to ['s_upper', 's_median', 's_lower', 's_k', 'delta_s'].
+    Raises if the file is missing or a required series is absent; nothing is derived or simulated.
     """
     path = filepath or SENTIMENT_CACHE
-    if path.exists():
-        try:
-            with open(path, "r") as f:
-                raw_data = json.load(f)
+    with open(path, "r") as f:
+        raw_data = json.load(f)
 
-            if isinstance(raw_data, list):
-                df = pd.DataFrame(raw_data)
-            elif isinstance(raw_data, dict):
-                # Check for columnar dict or nested under 'signals'/'data'
-                if "signals" in raw_data and isinstance(raw_data["signals"], list):
-                    df = pd.DataFrame(raw_data["signals"])
-                elif "data" in raw_data and isinstance(raw_data["data"], list):
-                    df = pd.DataFrame(raw_data["data"])
-                elif "dates" in raw_data and isinstance(raw_data["dates"], list):
-                    # Columnar dict format e.g. {"dates": [...], "S_upper": [...], ...}
-                    col_dict = {k: v for k, v in raw_data.items() if isinstance(v, list) and len(v) == len(raw_data["dates"])}
-                    df = pd.DataFrame(col_dict)
-                else:
-                    df = pd.DataFrame(raw_data)
+    if isinstance(raw_data, list):
+        df = pd.DataFrame(raw_data)
+    elif "signals" in raw_data and isinstance(raw_data["signals"], list):
+        df = pd.DataFrame(raw_data["signals"])
+    elif "data" in raw_data and isinstance(raw_data["data"], list):
+        df = pd.DataFrame(raw_data["data"])
+    elif "dates" in raw_data and isinstance(raw_data["dates"], list):
+        # Columnar dict format e.g. {"dates": [...], "S_upper": [...], ...}
+        col_dict = {k: v for k, v in raw_data.items() if isinstance(v, list) and len(v) == len(raw_data["dates"])}
+        df = pd.DataFrame(col_dict)
+    else:
+        df = pd.DataFrame(raw_data)
 
-            # Standardize date column
-            date_col = next((c for c in df.columns if c.lower() in ("date", "dates", "timestamp", "period", "month")), None)
-            if date_col:
-                df["Date"] = pd.to_datetime(df[date_col])
-                df = df.set_index("Date").sort_index()
+    date_col = next((c for c in df.columns if c.lower() in ("date", "dates", "timestamp", "period", "month")), None)
+    if date_col:
+        df["Date"] = pd.to_datetime(df[date_col])
+        df = df.set_index("Date").sort_index()
 
-            # Normalize column names to standard lowercase
-            col_map = {}
-            for col in df.columns:
-                cl = col.lower()
-                if "upper" in cl or "top" in cl or "affluent" in cl:
-                    col_map[col] = "s_upper"
-                elif "median" in cl or "middle" in cl or "mid" in cl:
-                    col_map[col] = "s_median"
-                elif "lower" in cl or "bottom" in cl or "vulnerable" in cl:
-                    col_map[col] = "s_lower"
-                elif "s_k" in cl or "spending_weighted" in cl or "weighted" in cl or "composite" in cl:
-                    col_map[col] = "s_k"
-                elif "delta_s" in cl or "spread" in cl or "divergence" in cl:
-                    col_map[col] = "delta_s"
+    col_map = {}
+    for col in df.columns:
+        cl = col.lower()
+        if "upper" in cl or "top" in cl or "affluent" in cl:
+            col_map[col] = "s_upper"
+        elif "median" in cl or "middle" in cl or "mid" in cl:
+            col_map[col] = "s_median"
+        elif "lower" in cl or "bottom" in cl or "vulnerable" in cl:
+            col_map[col] = "s_lower"
+        elif "s_k" in cl or "spending_weighted" in cl or "weighted" in cl or "composite" in cl:
+            col_map[col] = "s_k"
+        elif "delta_s" in cl or "spread" in cl or "divergence" in cl:
+            col_map[col] = "delta_s"
+    df = df.rename(columns=col_map)
 
-            df = df.rename(columns=col_map)
+    required = ["s_upper", "s_median", "s_lower", "s_k", "delta_s"]
+    missing = [c for c in required if c not in df.columns]
+    if missing:
+        raise ValueError(f"Sentiment file {path} is missing required series: {missing}")
 
-            # Ensure all required columns exist with economic fallbacks
-            if "s_upper" in df.columns:
-                if "s_median" not in df.columns:
-                    df["s_median"] = df["s_upper"] - 15.0
-                if "s_lower" not in df.columns:
-                    df["s_lower"] = df["s_median"] - 12.0
-                if "s_k" not in df.columns:
-                    # BEA/SCF empirical spending shares: 48% upper, 36% middle, 16% lower
-                    df["s_k"] = 0.48 * df["s_upper"] + 0.36 * df["s_median"] + 0.16 * df["s_lower"]
-                if "delta_s" not in df.columns:
-                    df["delta_s"] = df["s_upper"] - df["s_lower"]
-
-                resampled = df[["s_upper", "s_median", "s_lower", "s_k", "delta_s"]].resample("ME").last().ffill()
-                return resampled
-
-        except Exception:
-            pass  # Fall through to synthetic generator
-
-    # Calibrated historical Michigan-style series 2021-01 to 2024-12
-    return generate_calibrated_sentiment()
-
-
-def generate_calibrated_sentiment(
-    start_date: str = "2021-01-01",
-    end_date: str = "2024-12-31",
-    seed: int = 101,
-) -> pd.DataFrame:
-    """
-    Generate calibrated University of Michigan style sentiment indices reflecting K-divergence:
-    - 2021: Post-stimulus baseline (Upper: 88, Median: 78, Lower: 72)
-    - 2022: Inflation spike (Lower/Median collapse to 50-55, Upper remains resilient at 75-80)
-    - 2023-2024: K-shaped widening (Upper rebounds to 85-92 on stock/housing wealth; Median stalls at 62-68)
-    """
-    rng = np.random.default_rng(seed)
-    date_range = pd.date_range(start=start_date, end=end_date, freq="ME")
-    n = len(date_range)
-
-    # Base trajectories
-    t = np.linspace(0, 1, n)
-    # Inflation shock trough around mid-2022 (index ~16-18)
-    inflation_drag = np.exp(-0.5 * ((np.arange(n) - 17) / 6.0) ** 2)
-
-    # Upper quartile: buffered by asset wealth (S&P ATHs, home equity)
-    s_upper = 86.0 - 12.0 * inflation_drag + 10.0 * (t**1.5) + rng.normal(0, 1.2, n)
-    # Median: compressed by real wages and interest rate payments
-    s_median = 76.0 - 24.0 * inflation_drag + 4.0 * (t**1.2) + rng.normal(0, 1.4, n)
-    # Lower quartile: drained savings and credit card delinquency strain
-    s_lower = 68.0 - 28.0 * inflation_drag + 2.0 * (t**1.0) + rng.normal(0, 1.6, n)
-
-    # Spending-weighted aggregate (SCF distribution: 45% top 20%, 35% middle, 20% bottom)
-    s_k = 0.45 * s_upper + 0.35 * s_median + 0.20 * s_lower
-
-    df = pd.DataFrame(
-        {
-            "s_upper": s_upper,
-            "s_median": s_median,
-            "s_lower": s_lower,
-            "s_k": s_k,
-        },
-        index=date_range,
-    )
-    df.index.name = "Date"
-    return df
-
+    return df[required].resample("ME").last().ffill()
 
 def calculate_derived_macro_factors(sentiment_df: pd.DataFrame) -> pd.DataFrame:
     """

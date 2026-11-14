@@ -32,146 +32,36 @@ RETAIL_SIGNALS_OUTPUT = DATA_DIR / "k_alpha_retail_signals.json"
 
 def load_respondent_transcripts(filepath: Optional[Path] = None) -> List[Dict]:
     """
-    Load scored respondent transcripts from @sampler or generate calibrated cohort simulation.
-    Handles both direct list or dict with 'respondents' key from Claude scorer.
+    Load scored respondent transcripts from the @sampler export (direct list or dict with 'respondents').
+    Raises if a required field is missing; nothing is simulated.
     """
     path = filepath or TRANSCRIPTS_CACHE
-    if path.exists():
-        try:
-            with open(path, "r") as f:
-                data = json.load(f)
+    with open(path, "r") as f:
+        data = json.load(f)
+    raw_list = data if isinstance(data, list) else data["respondents"]
+    if not raw_list:
+        raise ValueError(f"No respondents found in {path}")
 
-            raw_list = []
-            if isinstance(data, list):
-                raw_list = data
-            elif isinstance(data, dict):
-                raw_list = data.get("respondents") or data.get("transcripts") or []
-
-            if raw_list:
-                cleaned = []
-                for item in raw_list:
-                    # Check if already flattened or nested under profile/scores
-                    scores = item.get("scores", {})
-                    profile = item.get("profile", {})
-
-                    resp_id = item.get("respondent_id", "resp_000")
-                    ticker = item.get("retailer") or item.get("primary_ticker", "COST")
-                    cohort = item.get("cohort") or item.get("retail_cohort", "costco_affluent")
-
-                    stated = float(scores.get("stated_macro_sentiment", item.get("stated_macro_sentiment", -0.5)))
-                    revealed = float(scores.get("revealed_spend_conviction", item.get("revealed_spend_conviction", 0.5)))
-                    trade_down = float(scores.get("trade_down_risk", item.get("trade_down_risk", 0.2)))
-                    gap = float(scores.get("vibecession_divergence", item.get("vibecession_gap", revealed - stated)))
-
-                    hhi = float(profile.get("household_income", item.get("hhi", 100000)))
-                    renewal_intent = profile.get("renewal_intent", item.get("membership_renewal_intent", True))
-                    is_renewal = True if (renewal_intent is True or "renew" in str(renewal_intent).lower()) else False
-
-                    quote = scores.get("revealed_quote") or item.get("representative_quote", "")
-
-                    cleaned.append(
-                        {
-                            "respondent_id": resp_id,
-                            "retail_cohort": cohort,
-                            "primary_ticker": ticker,
-                            "hhi": hhi,
-                            "stated_macro_sentiment": round(stated, 3),
-                            "revealed_spend_conviction": round(revealed, 3),
-                            "vibecession_gap": round(gap, 3),
-                            "trade_down_risk": round(trade_down, 3),
-                            "membership_renewal_intent": is_renewal,
-                            "representative_quote": quote,
-                        }
-                    )
-                return cleaned
-        except Exception:
-            pass
-
-    # Calibrated synthetic transcripts (75 respondents: 25 per cohort)
-    rng = np.random.default_rng(2026)
-    transcripts = []
-
-    cohort_configs = [
-        {
-            "cohort": "costco_affluent",
-            "primary_ticker": "COST",
-            "n": 25,
-            "hhi_range": (125000, 380000),
-            "stated_mean": -0.42,  # Complains about gas/inflation in news
-            "stated_std": 0.20,
-            "revealed_mean": 0.84,  # But buys organic, fills cart, $350 avg ticket
-            "revealed_std": 0.12,
-            "trade_down_mean": 0.10,
-            "renewal_prob": 0.96,
-            "quotes": [
-                "Everything in the economy feels chaotic on TV, but honestly we still spend $350 every weekend at Costco on prime beef and wine.",
-                "Inflation is annoying, but our mortgage is locked at 2.8% and my 401k is near all-time highs. We upgraded to Executive membership.",
-                "We complain about restaurant prices, so we just buy king crab and Kirkland steaks to host dinner at our place.",
-            ],
-        },
-        {
-            "cohort": "target_middle",
-            "primary_ticker": "TGT",
-            "n": 25,
-            "hhi_range": (62000, 115000),
-            "stated_mean": -0.62,
-            "stated_std": 0.18,
-            "revealed_mean": 0.05,  # Selective: skips discretionary apparel/home decor
-            "revealed_std": 0.18,
-            "trade_down_mean": 0.42,
-            "renewal_prob": 0.78,
-            "quotes": [
-                "Target runs used to be fun for impulse home decor and clothes, now we stick strictly to essentials and baby formula.",
-                "Money is tighter this year with car insurance up 20%. I browse Target but put things back before checkout.",
-                "We love the store experience, but discretionary spending is on pause until credit card debt is cleared.",
-            ],
-        },
-        {
-            "cohort": "walmart_lower",
-            "primary_ticker": "WMT",
-            "n": 25,
-            "hhi_range": (28000, 58000),
-            "stated_mean": -0.78,
-            "stated_std": 0.15,
-            "revealed_mean": -0.46,  # Strained: shrinking basket size, private label only
-            "revealed_std": 0.20,
-            "trade_down_mean": 0.82,
-            "renewal_prob": 0.50,
-            "quotes": [
-                "I have to shop at Walmart because grocery store prices are impossible. We only buy Great Value brand now.",
-                "Our rent went up $250. When we go to Walmart we can only afford basic food; no electronics or clothes.",
-                "I am using Buy-Now-Pay-Later just to get through back-to-school essentials. We're cutting trips to save gas.",
-            ],
-        },
-    ]
-
-    resp_id = 1
-    for cfg in cohort_configs:
-        for _ in range(cfg["n"]):
-            stated = float(np.clip(rng.normal(cfg["stated_mean"], cfg["stated_std"]), -1.0, 1.0))
-            revealed = float(np.clip(rng.normal(cfg["revealed_mean"], cfg["revealed_std"]), -1.0, 1.0))
-            trade_down = float(np.clip(rng.normal(cfg["trade_down_mean"], 0.08), 0.0, 1.0))
-            hhi = int(rng.uniform(cfg["hhi_range"][0], cfg["hhi_range"][1]))
-            quote = str(rng.choice(cfg["quotes"]))
-            renewal = bool(rng.random() < cfg["renewal_prob"])
-
-            transcripts.append(
-                {
-                    "respondent_id": f"resp_{resp_id:03d}",
-                    "retail_cohort": cfg["cohort"],
-                    "primary_ticker": cfg["primary_ticker"],
-                    "hhi": hhi,
-                    "stated_macro_sentiment": round(stated, 3),
-                    "revealed_spend_conviction": round(revealed, 3),
-                    "vibecession_gap": round(revealed - stated, 3),
-                    "trade_down_risk": round(trade_down, 3),
-                    "membership_renewal_intent": renewal,
-                    "representative_quote": quote,
-                }
-            )
-            resp_id += 1
-
-    return transcripts
+    cleaned = []
+    for item in raw_list:
+        scores = item["scores"]
+        profile = item["profile"]
+        renewal_intent = profile["renewal_intent"]
+        cleaned.append(
+            {
+                "respondent_id": item["respondent_id"],
+                "retail_cohort": item["cohort"],
+                "primary_ticker": item["retailer"],
+                "hhi": float(profile["household_income"]),
+                "stated_macro_sentiment": round(float(scores["stated_macro_sentiment"]), 3),
+                "revealed_spend_conviction": round(float(scores["revealed_spend_conviction"]), 3),
+                "vibecession_gap": round(float(scores["vibecession_divergence"]), 3),
+                "trade_down_risk": round(float(scores["trade_down_risk"]), 3),
+                "membership_renewal_intent": renewal_intent is True or "renew" in str(renewal_intent).lower(),
+                "representative_quote": scores["revealed_quote"],
+            }
+        )
+    return cleaned
 
 
 def load_baseline_surveys(
@@ -192,76 +82,12 @@ def load_baseline_surveys(
     csv_path = filepath_csv or BASELINES_CACHE_CSV
     json_path = filepath_json or BASELINES_CACHE_JSON
 
-    if csv_path.exists():
-        try:
-            df = pd.read_csv(csv_path, index_col=0, parse_dates=True)
-            stats_dict = {}
-            if json_path.exists():
-                with open(json_path, "r") as f:
-                    stats_dict = json.load(f)
-            return df, stats_dict
-        except Exception:
-            pass
-
-    # Calibrated monthly baseline series 2021-01 to 2024-12
-    dates = pd.date_range("2021-01-01", "2024-12-31", freq="ME")
-    n = len(dates)
-    rng = np.random.default_rng(521)
-
-    # Real PCE growth: steady 2.2% - 2.8% annualized (resilient consumer)
-    real_pce_growth = 0.024 + 0.006 * np.sin(np.linspace(0, 3 * np.pi, n)) + rng.normal(0, 0.002, n)
-
-    # 1. Michigan UMCSENT: severely depressed 2022-2024 (equal-weighted headline gloom ~55-75)
-    michigan = 78.0 - 20.0 * np.exp(-0.5 * ((np.arange(n) - 18) / 8.0) ** 2) + rng.normal(0, 1.8, n)
-
-    # 2. Chicago Fed C-CSI: composite index (~0 mean)
-    ccsi = 0.2 - 0.9 * np.exp(-0.5 * ((np.arange(n) - 18) / 9.0) ** 2) + rng.normal(0, 0.15, n)
-
-    # 3. Conference Board: heavily labor-weighted (~90-115)
-    conf_board = 110.0 - 15.0 * np.exp(-0.5 * ((np.arange(n) - 20) / 10.0) ** 2) + rng.normal(0, 2.5, n)
-
-    # 4. Morning Consult: high frequency daily/monthly (~80-92)
-    morning_consult = 88.0 - 10.0 * np.exp(-0.5 * ((np.arange(n) - 18) / 8.0) ** 2) + rng.normal(0, 1.2, n)
-
-    # 5. Rasmussen Consumer Index: (~95-115)
-    rasmussen = 105.0 - 14.0 * np.exp(-0.5 * ((np.arange(n) - 18) / 8.0) ** 2) + rng.normal(0, 2.0, n)
-
-    # 6. SF Fed News Sentiment: news headline tone
-    sf_fed_news = 0.05 - 0.45 * np.exp(-0.5 * ((np.arange(n) - 18) / 7.0) ** 2) + rng.normal(0, 0.08, n)
-
-    # 7. Goldman Sachs Social Media Sentiment: retail chatter
-    gs_social = 52.0 - 12.0 * np.exp(-0.5 * ((np.arange(n) - 18) / 6.0) ** 2) + rng.normal(0, 1.5, n)
-
-    baseline_df = pd.DataFrame(
-        {
-            "real_pce_growth": real_pce_growth,
-            "michigan": michigan,
-            "ccsi": ccsi,
-            "conference_board": conf_board,
-            "morning_consult": morning_consult,
-            "rasmussen": rasmussen,
-            "sf_fed_news": sf_fed_news,
-            "goldman_sachs": gs_social,
-        },
-        index=dates,
-    )
-    baseline_df.index.name = "Date"
-
-    # Compute correlation with Real PCE Growth
-    correlations = {}
-    for col in baseline_df.columns:
-        if col != "real_pce_growth":
-            r, p = stats.pearsonr(baseline_df[col], baseline_df["real_pce_growth"])
-            correlations[col] = {"correlation_with_real_pce": round(float(r), 3), "p_value": round(float(p), 4)}
-
-    stats_summary = {
-        "description": "Chicago Fed Letter 521 Baseline Consumer Sentiment Benchmarks vs Real PCE Growth",
-        "michigan_understatement_bias_pts": "25 to 30 points downward bias during post-2021 inflation",
-        "predictive_breakdown": "Headline equal-weighted surveys collapsed while top 20% spending held up real consumption",
-        "survey_correlations": correlations,
-    }
-
-    return baseline_df, stats_summary
+    if not csv_path.exists() or not json_path.exists():
+        raise FileNotFoundError(f"Chicago Fed baseline data missing: {csv_path} / {json_path}")
+    df = pd.read_csv(csv_path, index_col=0, parse_dates=True)
+    with open(json_path, "r") as f:
+        stats_dict = json.load(f)
+    return df, stats_dict
 
 
 def compute_retail_k_alpha(

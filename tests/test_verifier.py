@@ -33,7 +33,6 @@ from src.quant.factor import (
 from src.quant.market_data import (
     compute_forward_returns,
     fetch_historical_prices,
-    generate_synthetic_prices,
 )
 from src.quant.universe import ALL_TICKERS, MODEL_TICKERS, WINNER_TICKERS, LOSER_TICKERS
 from src.sampler.client import FlashpointClient

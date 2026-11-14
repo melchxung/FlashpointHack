@@ -1,0 +1,455 @@
+{
+  "panels": {
+    "upper_quartile": {
+      "panel_id": "01a1db81-5be5-7b2f-b575-432835850fdd",
+      "name": "K-Alpha Affluent Upper-Quartile (Top 20-25%)",
+      "num_respondents": 30
+    },
+    "middle_income": {
+      "panel_id": "01a1db85-8951-71da-9d83-9c4536f102b3",
+      "name": "K-Alpha Middle-Income Baseline (40th-70th Percentile)",
+      "num_respondents": 30
+    },
+    "lower_quartile": {
+      "panel_id": "01a1db86-5f74-7985-ad64-7de9144f0eb3",
+      "name": "K-Alpha Lower/Median Vulnerable (Bottom 35-40%)",
+      "num_respondents": 30
+    }
+  },
+  "answers": {
+    "2021-01|upper_quartile": {
+      "counts": {
+        "PAGO": {
+          "1": 12,
+          "2": 12,
+          "3": 6
+        },
+        "PAGED": {
+          "1": 11,
+          "2": 11,
+          "3": 8
+        },
+        "BUS12": {
+          "1": 8,
+          "2": 12,
+          "3": 10
+        },
+        "BUS5": {
+          "1": 5,
+          "2": 18,
+          "3": 7
+        },
+        "DUR": {
+          "1": 8,
+          "2": 11,
+          "3": 11
+        }
+      },
+      "conversation_id": "01a1db81-cf1e-7320-b8f4-cb483303574e",
+      "gemini_model": null
+    },
+    "2021-01|lower_quartile": {
+      "counts": {
+        "PAGO": {
+          "1": 2,
+          "2": 10,
+          "3": 18
+        },
+        "PAGED": {
+          "1": 4,
+          "2": 14,
+          "3": 12
+        },
+        "BUS12": {
+          "1": 2,
+          "2": 13,
+          "3": 15
+        },
+        "BUS5": {
+          "1": 5,
+          "2": 14,
+          "3": 11
+        },
+        "DUR": {
+          "1": 3,
+          "2": 10,
+          "3": 17
+        }
+      },
+      "conversation_id": "01a1db86-77a6-7832-875b-81ff487bdcb0",
+      "gemini_model": "gemini-3.5-flash-lite"
+    },
+    "2021-01|middle_income": {
+      "counts": {
+        "PAGO": {
+          "1": 7,
+          "2": 11,
+          "3": 12
+        },
+        "PAGED": {
+          "1": 8,
+          "2": 12,
+          "3": 10
+        },
+        "BUS12": {
+          "1": 8,
+          "2": 12,
+          "3": 10
+        },
+        "BUS5": {
+          "1": 6,
+          "2": 15,
+          "3": 9
+        },
+        "DUR": {
+          "1": 7,
+          "2": 10,
+          "3": 13
+        }
+      },
+      "conversation_id": "01a1db86-7516-77f0-a2a5-5008e8c68812",
+      "gemini_model": "gemini-3.5-flash-lite"
+    },
+    "2021-02|lower_quartile": {
+      "counts": {
+        "PAGO": {
+          "1": 4,
+          "2": 8,
+          "3": 18
+        },
+        "PAGED": {
+          "1": 6,
+          "2": 13,
+          "3": 11
+        },
+        "BUS12": {
+          "1": 2,
+          "2": 14,
+          "3": 14
+        },
+        "BUS5": {
+          "1": 3,
+          "2": 18,
+          "3": 9
+        },
+        "DUR": {
+          "1": 4,
+          "2": 8,
+          "3": 18
+        }
+      },
+      "conversation_id": "01a1db86-75d0-7bc2-a9ad-40f9b268e150",
+      "gemini_model": "gemini-3.5-flash-lite"
+    },
+    "2021-02|middle_income": {
+      "counts": {
+        "PAGO": {
+          "1": 7,
+          "2": 11,
+          "3": 12
+        },
+        "PAGED": {
+          "1": 9,
+          "2": 12,
+          "3": 9
+        },
+        "BUS12": {
+          "1": 7,
+          "2": 12,
+          "3": 11
+        },
+        "BUS5": {
+          "1": 6,
+          "2": 15,
+          "3": 9
+        },
+        "DUR": {
+          "1": 6,
+          "2": 8,
+          "3": 16
+        }
+      },
+      "conversation_id": "01a1db86-75a7-7483-a1f6-ab053aafc655",
+      "gemini_model": "gemini-3.5-flash-lite"
+    },
+    "2021-02|upper_quartile": {
+      "counts": {
+        "PAGO": {
+          "1": 9,
+          "2": 14,
+          "3": 7
+        },
+        "PAGED": {
+          "1": 11,
+          "2": 12,
+          "3": 7
+        },
+        "BUS12": {
+          "1": 6,
+          "2": 16,
+          "3": 8
+        },
+        "BUS5": {
+          "1": 6,
+          "2": 16,
+          "3": 8
+        },
+        "DUR": {
+          "1": 8,
+          "2": 8,
+          "3": 14
+        }
+      },
+      "conversation_id": "01a1db86-7587-78a0-8a0f-36118cf703fd",
+      "gemini_model": "gemini-3.5-flash-lite"
+    },
+    "2021-04|lower_quartile": {
+      "counts": {
+        "PAGO": {
+          "1": 3,
+          "2": 9,
+          "3": 18
+        },
+        "PAGED": {
+          "1": 8,
+          "2": 10,
+          "3": 12
+        },
+        "BUS12": {
+          "1": 6,
+          "2": 14,
+          "3": 10
+        },
+        "BUS5": {
+          "1": 4,
+          "2": 17,
+          "3": 9
+        },
+        "DUR": {
+          "1": 3,
+          "2": 10,
+          "3": 17
+        }
+      },
+      "conversation_id": "01a1db87-d751-7980-aa6a-3b8732b45bc1",
+      "gemini_model": "gemini-3.5-flash-lite"
+    },
+    "2021-03|lower_quartile": {
+      "counts": {
+        "PAGO": {
+          "1": 3,
+          "2": 7,
+          "3": 20
+        },
+        "PAGED": {
+          "1": 6,
+          "2": 13,
+          "3": 11
+        },
+        "BUS12": {
+          "1": 3,
+          "2": 15,
+          "3": 12
+        },
+        "BUS5": {
+          "1": 5,
+          "2": 14,
+          "3": 11
+        },
+        "DUR": {
+          "1": 3,
+          "2": 9,
+          "3": 18
+        }
+      },
+      "conversation_id": "01a1db87-d66f-78c1-90c8-481a966e59d2",
+      "gemini_model": "gemini-3.5-flash-lite"
+    },
+    "2021-05|upper_quartile": {
+      "counts": {
+        "PAGO": {
+          "1": 13,
+          "2": 12,
+          "3": 5
+        },
+        "PAGED": {
+          "1": 12,
+          "2": 13,
+          "3": 5
+        },
+        "BUS12": {
+          "1": 11,
+          "2": 12,
+          "3": 7
+        },
+        "BUS5": {
+          "1": 9,
+          "2": 14,
+          "3": 7
+        },
+        "DUR": {
+          "1": 8,
+          "2": 8,
+          "3": 14
+        }
+      },
+      "conversation_id": "01a1db87-d612-7813-9101-c114e3b72450",
+      "gemini_model": "gemini-3.5-flash-lite"
+    },
+    "2021-05|middle_income": {
+      "counts": {
+        "PAGO": {
+          "1": 10,
+          "2": 10,
+          "3": 10
+        },
+        "PAGED": {
+          "1": 11,
+          "2": 13,
+          "3": 6
+        },
+        "BUS12": {
+          "1": 9,
+          "2": 13,
+          "3": 8
+        },
+        "BUS5": {
+          "1": 8,
+          "2": 16,
+          "3": 6
+        },
+        "DUR": {
+          "1": 7,
+          "2": 11,
+          "3": 12
+        }
+      },
+      "conversation_id": "01a1db87-d5a2-75c1-a6ed-333d9e181bac",
+      "gemini_model": "gemini-3.5-flash-lite"
+    },
+    "2021-04|upper_quartile": {
+      "counts": {
+        "PAGO": {
+          "1": 13,
+          "2": 9,
+          "3": 8
+        },
+        "PAGED": {
+          "1": 13,
+          "2": 13,
+          "3": 4
+        },
+        "BUS12": {
+          "1": 10,
+          "2": 14,
+          "3": 6
+        },
+        "BUS5": {
+          "1": 9,
+          "2": 14,
+          "3": 7
+        },
+        "DUR": {
+          "1": 9,
+          "2": 9,
+          "3": 12
+        }
+      },
+      "conversation_id": "01a1db87-de86-7e73-a90f-233a1c3c064e",
+      "gemini_model": "gemini-3.5-flash-lite"
+    },
+    "2021-03|upper_quartile": {
+      "counts": {
+        "PAGO": {
+          "1": 10,
+          "2": 12,
+          "3": 8
+        },
+        "PAGED": {
+          "1": 11,
+          "2": 15,
+          "3": 4
+        },
+        "BUS12": {
+          "1": 8,
+          "2": 12,
+          "3": 10
+        },
+        "BUS5": {
+          "1": 8,
+          "2": 15,
+          "3": 7
+        },
+        "DUR": {
+          "1": 8,
+          "2": 8,
+          "3": 14
+        }
+      },
+      "conversation_id": "01a1db87-d5c9-7a42-a14d-3efdd639e649",
+      "gemini_model": "gemini-3.5-flash-lite"
+    },
+    "2021-04|middle_income": {
+      "counts": {
+        "PAGO": {
+          "1": 8,
+          "2": 13,
+          "3": 9
+        },
+        "PAGED": {
+          "1": 11,
+          "2": 10,
+          "3": 9
+        },
+        "BUS12": {
+          "1": 8,
+          "2": 16,
+          "3": 6
+        },
+        "BUS5": {
+          "1": 7,
+          "2": 15,
+          "3": 8
+        },
+        "DUR": {
+          "1": 7,
+          "2": 10,
+          "3": 13
+        }
+      },
+      "conversation_id": "01a1db87-d624-7c12-9f24-5d023729150e",
+      "gemini_model": "gemini-3.5-flash-lite"
+    },
+    "2021-03|middle_income": {
+      "counts": {
+        "PAGO": {
+          "1": 8,
+          "2": 12,
+          "3": 10
+        },
+        "PAGED": {
+          "1": 9,
+          "2": 12,
+          "3": 9
+        },
+        "BUS12": {
+          "1": 7,
+          "2": 15,
+          "3": 8
+        },
+        "BUS5": {
+          "1": 6,
+          "2": 14,
+          "3": 10
+        },
+        "DUR": {
+          "1": 7,
+          "2": 8,
+          "3": 15
+        }
+      },
+      "conversation_id": "01a1db87-d663-7d00-aa6b-eda28ec85af7",
+      "gemini_model": "gemini-3.5-flash-lite"
+    }
+  }
+}
