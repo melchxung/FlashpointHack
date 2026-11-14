@@ -241,3 +241,74 @@ if __name__ == "__main__":
         main()
     except requests.HTTPError as e:
         sys.exit(f"Download failed: {e}")
+
+________________________________________________________________________
+
+
+Stocks to read:
+
+  Mid-cap consumer discretionary stocks move most on sentiment releases. The most reactive groups are travel and leisure, casinos, apparel and footwear, big-ticket recreation, experiential restaurants and housing-linked names. The big sector ETF (XLY) is a weak gauge because two mega-caps dominate it. Most 2026 reactions came alongside oil and gasoline moves from the Iran war, so a release rarely moves these stocks on its own.
+
+Stocks that moved on 2026 sentiment releases
+
+Travel, cruises and timeshares (most reactive)
+
+Norwegian Cruise Line, Hilton Grand Vacations, Marriott Vacations, Lindblad Expeditions and United Parks & Resorts fell sharply together after a weak release. Lindblad fell 7.8%. 
+barchart
+Travel + Leisure fell on the March Michigan release, when the final March reading fell to 55.3, driven by mounting unease over personal finances following the war with Iran. 
+barchart
+
+Casinos and entertainment
+
+Caesars Entertainment (NASDAQ:CZR) fell 3.8%, with MGM Resorts and Viking in the same sell-off. 
+barchart
+AMC Entertainment (NYSE:AMC) fell 4%. 
+barchart
+Dave & Buster’s is down 42.7% since the beginning of the year, as of that report. 
+barchart
+
+Big-ticket recreation
+
+Polaris (PII) is a clean read on discretionary spending. Polaris’s shares are very volatile and have had 27 moves greater than 5% over the last year. 
+barchart
+
+Apparel and footwear
+
+Genesco, Caleres, PVH and Kontoor Brands. Kontoor fell when the University of Michigan’s key sentiment index dropped to 48.2 in early May. 
+barchart
+
+Housing-linked discretionary
+
+eXp World, Zillow, Offerpad, Compass, RE/MAX and Somnigroup (mattresses). eXp World (NASDAQ:EXPI) fell 4%, and Somnigroup (NYSE:SGI) fell 3.7%. 
+barchart
+barchart
+
+Airlines. United, American and Frontier are classified as industrials, not consumer discretionary, but they trade with leisure demand and fuel costs.
+
+Use the discretionary-versus-staples spread as a sector gauge
+
+The cleaner signal is consumer discretionary (XLY) against consumer staples (XLP). On the June preliminary Michigan release, the Consumer Staples Select Sector SPDR Fund (XLP) rose about 0.1%, while the consumer discretionary ETF (XLY) slipped 0.7%. 
+stocktwits
+
+XLY on its own is weak for this because it is concentrated, with Amazon (NASDAQ:AMZN) at 22.22% and Tesla (NASDAQ:TSLA) at 19.64% of net assets as of June 30, 2026, which makes it a poor gauge of shoppers. The equal-weight retail ETF (XRT) or the individual names above track household mood more closely. 
+247wallst
+
+Oil confounds most 2026 reactions
+
+Almost every move above happened on a day with a large oil swing. As one market report put it, gas is the most direct variable: when filling the tank costs more, households have less left for everything else. 
+barchart
+
+Sell-offs can also fade quickly. After the September Conference Board reading fell to 81.9 in September from 88.6 in August, a 6.7-point drop, and it is the lowest reading since 2014, the same analysis noted the stocks that depend on American shoppers are barely flinching. This fits the Chicago Fed paper: if Michigan understates sentiment by 25 to 30 points, markets may already discount its weak headline readings. 
+247wallst
+
+Release calendar
+Michigan preliminary: the second Friday of each month, 10:00 a.m. ET
+Michigan final: the last Friday of each month, 10:00 a.m. ET
+Conference Board: the last Tuesday of each month, 10:00 a.m. ET
+
+Market reaction depends on the surprise against the consensus forecast more than on the level. A reading of 50 beats expectations if the consensus was 47.
+
+This is market information, not a buy or sell recommendation; I’m not a financial advisor.
+
+Next step: I can add an event study to your script. It would measure how XRT, XLY versus XLP, and five of the names above moved on each Michigan release date since 2018, with the oil move on the same day included so the sentiment effect is separated out. Shall I build it?
+  
