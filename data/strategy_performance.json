@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generated": "2026-11-14T22:17:49.656890+00:00",
+    "generated": "2026-10 (data vintage)",
     "description": "Monthly strategy backtests: SPY buy&hold, always-on COST/WMT pair, and signal-gated pre-release vs on-release variants. Gate = wedge (S_upper - S_equal) rising for 2 consecutive months observed at prior month close. Jensen's alpha = OLS intercept of monthly strategy returns on SPY returns (rf=0)."
   },
   "dates": [

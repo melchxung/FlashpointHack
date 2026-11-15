@@ -201,7 +201,9 @@ def build_strategy_performance(
 
     return {
         "metadata": {
-            "generated": pd.Timestamp.now(tz="UTC").isoformat(),
+            # Deterministic stamp: derived from the input data, not wall clock,
+            # so two pipeline runs produce byte-identical output.
+            "generated": f"{dates[-1]} (data vintage)",
             "description": (
                 "Monthly strategy backtests: SPY buy&hold, always-on "
                 "COST/WMT pair, and signal-gated pre-release vs on-release "
