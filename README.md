@@ -1,4 +1,4 @@
-# FlashpointHack
+# K-Alpha
 
 A research pipeline that tests one idea: does the sentiment gap between affluent and other
 US consumers (the "K-shape") predict stock returns?
